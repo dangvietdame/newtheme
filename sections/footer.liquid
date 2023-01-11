@@ -1,35 +1,63 @@
 {{ 'footer.css' | asset_url | stylesheet_tag }}
 <footer>
-    {% if section.settings.email_signup_ck %}
-        <div class="email-signup-container">
-            <div class="title">
-                {{ section.settings.email_title_text }}
-            </div>
-            <div class="content">
-                {{ section.settings.email_content_text }}
-            </div>
-            {%- form 'customer' -%}
-                <input type="hidden" name="contact[tags]" value="newsletter">
-                <div class="newsletter-form-wrapper">
-                    <div class="field">
-                        <input class="newsletter-email" type="email" name="contact[email]" value="{{ form.email }}">
-                        <label class="email-placeholder">{{ section.settings.placeholder }}</label>
-                        <button type="submit" class="submit-btn">
-                            {% render 'icon-right' %}
-                        </button>
-                    </div>
+    <div class="container">
+        {% if section.settings.email_signup_ck %}
+            <div class="email-signup-container">
+                <div class="title">
+                    {{ section.settings.email_title_text }}
                 </div>
-                {%- if form.posted_successfully? -%}
-                    <div class="newsletter-success">
-                        {% render 'icon-check' %}{{ section.settings.success_text }}
+                <div class="content">
+                    {{ section.settings.email_content_text }}
+                </div>
+                {%- form 'customer' -%}
+                    <input type="hidden" name="contact[tags]" value="newsletter">
+                    <div class="newsletter-form-wrapper">
+                        <div class="field">
+                            <input class="newsletter-email" type="email" name="contact[email]" value="{{ form.email }}">
+                            <label class="email-placeholder">{{ section.settings.placeholder }}</label>
+                            <button type="submit" class="submit-btn">
+                                {% render 'icon-right' %}
+                            </button>
+                        </div>
                     </div>
-                {%- endif -%}
-            {%- endform -%}
+                    {%- if form.posted_successfully? -%}
+                        <div class="newsletter-success">
+                            {% render 'icon-check' %}{{ section.settings.success_text }}
+                        </div>
+                    {%- endif -%}
+                {%- endform -%}
+            </div>
+        {% endif %}
+        <div class="footer-content">
+            {% for block in section.blocks %}
+                {% case block.type %}
+                    {% when 'menu'%}
+                        <div class="footer-menu">
+                            <div class="title">{{ block.settings.menu_title }}</div>
+                            <ul class="menu-item-wrapper">
+                                {% for link in block.settings.menu.links %}
+                                    <li class="{% if link.active %}menu-item-active {% endif %}menu-item">
+                                        {{ link.title | link_to: link.url }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% when 'detail' %}
+                        <div class="footer-detail">
+                            <div class="title">{{ block.settings.title }}</div>
+                            <div class="content">{{ block.settings.content }}</div>
+                        </div>
+                {% endcase %}
+            {% endfor %}
         </div>
-    {% endif %}
+    </div>
 </footer>
 
 {% style %}
+    footer .email-signup-container{
+        padding-top: {{ section.settings.padding_top}}px;
+        padding-bottom: {{ section.settings.email_margin_bottom}}px;
+    }
     footer .email-signup-container .title{
         font-size: {{ section.settings.email_title_size }}px;
         color: {{ section.settings.text_color }};
@@ -55,6 +83,44 @@
 {% schema %}
 {
     "name": "Footer",
+    "blocks":[
+        {
+            "type": "menu",
+            "name": "Menu",
+            "settings":[
+                {
+                    "type": "text",
+                    "id": "menu_title",
+                    "label": "Menu Title",
+                    "default": "Quick Links"
+                },
+                {
+                    "type": "link_list",
+                    "id": "menu",
+                    "label": "Menu",
+                    "default": "footer"
+                }
+            ]
+        },
+        {
+            "type": "detail",
+            "name": "Footer detail",
+            "settings":[
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "Heading"
+                },
+                {
+                    "type": "textarea",
+                    "id": "content",
+                    "label": "Details",
+                    "default": "Share contact information, store details, and brand content with your customers."
+                }
+            ]
+        }
+    ],
     "settings": [
         {
             "type": "checkbox",
@@ -115,6 +181,26 @@
             "id": "placeholder",
             "label": "Placeholder",
             "default": "Email"
+        },
+        {
+            "type": "range",
+            "id": "padding_top",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Padding Top",
+            "default": 30
+        },
+        {
+            "type": "range",
+            "id": "email_margin_bottom",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Email signup margin bottom",
+            "default": 30
         },
         {
             "type": "header",

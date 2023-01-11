@@ -1,33 +1,77 @@
 {
-    "current": {
-        "sections": {
-            "text_section": {
-                "type": "text_section",
-                "blocks": {
-                    "70d2fe0f-b2ef-4ef2-aab4-d4cd1a33ed2b": {
-                        "type": "text_section_type",
-                        "settings": {
-                            "text": "Welcome to our store",
-                            "text_font": "helvetica_n4",
-                            "font_size": 20,
-                            "link": "",
-                            "text_alignment": "center",
-                            "height": 61,
-                            "text_color": "#ffffff",
-                            "bg_color": "#000000"
-                        }
-                    }
-                },
-                "block_order": [
-                    "70d2fe0f-b2ef-4ef2-aab4-d4cd1a33ed2b"
-                ],
-                "settings": {}
-            },
-            "header": {
-                "type": "header",
-                "settings": {}
+  "current": {
+    "sections": {
+      "text_section": {
+        "type": "text_section",
+        "blocks": {
+          "70d2fe0f-b2ef-4ef2-aab4-d4cd1a33ed2b": {
+            "type": "text_section_type",
+            "settings": {
+              "text": "Welcome to our store",
+              "font_size": 20,
+              "link": "",
+              "text_alignment": "center",
+              "height": 61,
+              "text_color": "#ffffff"
             }
+          }
         },
-        "content_for_index": []
-    }
+        "block_order": [
+          "70d2fe0f-b2ef-4ef2-aab4-d4cd1a33ed2b"
+        ],
+        "settings": {
+        }
+      },
+      "header": {
+        "type": "header",
+        "settings": {
+          "font_size": 20,
+          "text_color": "#252525",
+          "menu_item_size": 15,
+          "menu_item_color": "#606366",
+          "padding_top": 20,
+          "between": 20,
+          "padding_bot": 20
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "blocks": {
+          "309b30dc-8896-4915-8374-31d051d46225": {
+            "type": "menu",
+            "settings": {
+              "menu_title": "Quick Links",
+              "menu": "footer"
+            }
+          },
+          "a77b710a-a29a-49dc-b5c4-8610677e5044": {
+            "type": "detail",
+            "settings": {
+              "title": "Heading",
+              "content": "Share contact information, store details, and brand content with your customers."
+            }
+          }
+        },
+        "block_order": [
+          "309b30dc-8896-4915-8374-31d051d46225",
+          "a77b710a-a29a-49dc-b5c4-8610677e5044"
+        ],
+        "settings": {
+          "email_signup_ck": true,
+          "email_title_text": "Subscribe to our emails",
+          "email_title_size": 40,
+          "email_content_text": "Subscribe to our mailing list for insider news, product launches, and more.",
+          "email_content_size": 20,
+          "success_text": "Subscribe Success.",
+          "text_color": "#EFECEC",
+          "placeholder": "Email",
+          "padding_top": 30,
+          "email_margin_bottom": 30
+        }
+      }
+    },
+    "content_for_index": [
+
+    ]
+  }
 }

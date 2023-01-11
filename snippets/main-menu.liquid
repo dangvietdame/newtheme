@@ -1,10 +1,9 @@
 {% assign linklist = "main-menu" %}
-{% assign no = 1 %}
 <ul class="main-menu menu-1">
     {% for link in linklists[linklist].links %}
         {% assign child_list_handle = link.title | handle %}
         {% if linklists[child_list_handle] and linklists[child_list_handle].links.size > 0 %}
-            <li class="{% if link.active or link.child_active %}menu-item-active {% endif %}has-dropdown menu-item menu-item-1 menu1-item{{ no }}">
+            <li class="{% if link.active or link.child_active %}menu-item-active {% endif %}has-dropdown menu-item menu-item-1 menu1-item">
                 {{ link.title | link_to: link.url }}
                 <ul class="has-dropdown menu-2">
                     {% for child_link in linklists[child_list_handle].links %}
