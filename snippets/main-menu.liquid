@@ -1,0 +1,40 @@
+{% assign linklist = "main-menu" %}
+{% assign no = 1 %}
+<ul class="main-menu menu-1">
+    {% for link in linklists[linklist].links %}
+        {% assign child_list_handle = link.title | handle %}
+        {% if linklists[child_list_handle] and linklists[child_list_handle].links.size > 0 %}
+            <li class="{% if link.active or link.child_active %}menu-item-active {% endif %}has-dropdown menu-item menu-item-1 menu1-item{{ no }}">
+                {{ link.title | link_to: link.url }}
+                <ul class="has-dropdown menu-2">
+                    {% for child_link in linklists[child_list_handle].links %}
+                    {% assign grand_child_list_handle = child_link.title | handle %}
+                        {% if linklists[grand_child_list_handle] and linklists[grand_child_list_handle].links.size > 0 %}
+                            <li class="has-dropdown menu-item menu-item-2">
+                                {{ child_link.title | link_to: child_link.url }}
+                                <ul class="has-dropdown menu-3">
+                                    {% for grand_child_link in linklists[grand_child_list_handle].links %}
+                                        <li class="menu-item menu-item-3">
+                                            {{ grand_child_link.title | link_to: grand_child_link.url }}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                                {% render "icon-dropdown" %}
+
+                            </li>
+                        {% else %}
+                            <li class="menu-item menu-item-2">
+                                {{ child_link.title | link_to: child_link.url }}
+                            </li>
+                        {% endif %}
+                    {% endfor %}        
+                </ul>
+                {% render "icon-dropdown" %}
+            </li>
+        {% else %}
+            <li class="{% if link.active %}menu-item-active {% endif %}menu-item menu-item-1">
+                {{ link.title | link_to: link.url }}
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>

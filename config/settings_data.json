@@ -1,0 +1,33 @@
+{
+    "current": {
+        "sections": {
+            "text_section": {
+                "type": "text_section",
+                "blocks": {
+                    "70d2fe0f-b2ef-4ef2-aab4-d4cd1a33ed2b": {
+                        "type": "text_section_type",
+                        "settings": {
+                            "text": "Welcome to our store",
+                            "text_font": "helvetica_n4",
+                            "font_size": 20,
+                            "link": "",
+                            "text_alignment": "center",
+                            "height": 61,
+                            "text_color": "#ffffff",
+                            "bg_color": "#000000"
+                        }
+                    }
+                },
+                "block_order": [
+                    "70d2fe0f-b2ef-4ef2-aab4-d4cd1a33ed2b"
+                ],
+                "settings": {}
+            },
+            "header": {
+                "type": "header",
+                "settings": {}
+            }
+        },
+        "content_for_index": []
+    }
+}

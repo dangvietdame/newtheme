@@ -1,0 +1,58 @@
+[
+    {
+        "name": "theme_info",
+        "theme_name": "Abc Theme",
+        "theme_version": "1.0.1",
+        "theme_author": "Coua",
+        "theme_support_email": "abc@gmail.com",
+        "theme_documentation_url": "https:\/\/www.google.com"
+    },
+    {
+        "name": "Color",
+        "settings": [
+            {
+                "type": "header",
+                "content": "Color"
+            },
+            {
+                "type": "color",
+                "id": "primary_color",
+                "default": "#3F5147",
+                "label": "Primary Color"
+            },
+            {
+                "type": "color",
+                "id": "secondary_color",
+                "default": "#333333",
+                "label": "Secondary Color"
+            },
+            {
+                "id": "bg_color_1",
+                "type": "color_background",
+                "label": "Background Color 1",
+                "default": "#EFECEC"
+            }
+        ]
+    },
+    {
+        "name": "Font",
+        "settings": [
+            {
+                "type": "header",
+                "content": "Font"
+            },
+            {
+                "type": "font_picker",
+                "id": "primary_font",
+                "default": "americana_n4",
+                "label": "Primary Font Family"
+            },
+            {
+                "type": "font_picker",
+                "id": "secondary_font",
+                "default": "quattrocento_sans_n4",
+                "label": "Secondary Font Family"
+            }
+        ]
+    }
+]

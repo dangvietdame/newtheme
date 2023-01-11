@@ -1,0 +1,20 @@
+{% if search.performed %}
+    <h2>There are somthing may that you are looking for<h2>
+    {% paginate search.results by 2 %}
+        {% for result in search.results %}
+            <p>{{result.object_type}}</p>
+            {% if result.object_type == "product" %}
+                <p>{{ result.title }}</p>
+            {% endif %}
+            {% if result.object_type == "page" %}
+                <p>{{ result.title }}</p>
+            {% endif %}
+            {% if result.object_type == "article" %}
+                <p>{{ result.title }}</p>
+            {% endif %}
+        {% endfor %}
+        {{ paginate | default_pagination }}
+    {% endpaginate %}
+{% else %}
+    <h2>Search somthing</h2>
+{% endif %}

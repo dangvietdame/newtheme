@@ -1,0 +1,125 @@
+{{ 'footer.css' | asset_url | stylesheet_tag }}
+<footer>
+    {% if section.settings.email_signup_ck %}
+        <div class="email-signup-container">
+            <div class="title">
+                {{ section.settings.email_title_text }}
+            </div>
+            <div class="content">
+                {{ section.settings.email_content_text }}
+            </div>
+            {%- form 'customer' -%}
+                <input type="hidden" name="contact[tags]" value="newsletter">
+                <div class="newsletter-form-wrapper">
+                    <div class="field">
+                        <input class="newsletter-email" type="email" name="contact[email]" value="{{ form.email }}">
+                        <label class="email-placeholder">{{ section.settings.placeholder }}</label>
+                        <button type="submit" class="submit-btn">
+                            {% render 'icon-right' %}
+                        </button>
+                    </div>
+                </div>
+                {%- if form.posted_successfully? -%}
+                    <div class="newsletter-success">
+                        {% render 'icon-check' %}{{ section.settings.success_text }}
+                    </div>
+                {%- endif -%}
+            {%- endform -%}
+        </div>
+    {% endif %}
+</footer>
+
+{% style %}
+    footer .email-signup-container .title{
+        font-size: {{ section.settings.email_title_size }}px;
+        color: {{ section.settings.text_color }};
+    }
+    footer .email-signup-container .content{
+        font-size: {{ section.settings.email_content_size }}px;
+        color: {{ section.settings.text_color }};
+    }
+    footer .email-signup-container .newsletter-email{
+        color: {{ section.settings.text_color }};
+    }
+    footer .email-signup-container .email-placeholder{
+        color: {{ section.settings.text_color }};
+    }
+    footer .email-signup-container .newsletter-success{
+        color: {{ section.settings.text_color }};
+    }
+    footer .newsletter-form-wrapper .field .submit-btn .icon-right{
+        fill: {{ section.settings.text_color }};
+    }
+{% endstyle %}
+
+{% schema %}
+{
+    "name": "Footer",
+    "settings": [
+        {
+            "type": "checkbox",
+            "id": "email_signup_ck",
+            "label": "Show Email Signup?",
+            "default": true
+        },
+        {
+            "type": "header",
+            "content": "Email Signup"
+        },
+        {
+            "type": "text",
+            "id": "email_title_text",
+            "label": "Title",
+            "default": "Subscribe to our emails"
+        },
+        {
+            "type": "range",
+            "id": "email_title_size",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Title font size",
+            "default": 40
+        },
+        {
+            "type": "textarea",
+            "id": "email_content_text",
+            "label": "Content",
+            "default": "Subscribe to our mailing list for insider news, product launches, and more."
+        },
+        {
+            "type": "range",
+            "id": "email_content_size",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Content font size",
+            "default": 20
+        },
+        {
+            "type": "textarea",
+            "id": "success_text",
+            "label": "Success Text",
+            "default": "Subscribe Success."
+        },
+        {
+            "type": "color",
+            "id": "text_color",
+            "label": "Text color",
+            "default": "#EFECEC"
+        },
+        {
+            "type": "textarea",
+            "id": "placeholder",
+            "label": "Placeholder",
+            "default": "Email"
+        },
+        {
+            "type": "header",
+            "content": "Email Signup"
+        }
+    ]
+}
+{% endschema %}

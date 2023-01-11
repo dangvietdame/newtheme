@@ -1,0 +1,46 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    {%- unless settings.primary_font.system? and settings.secondary_font.system? -%}
+        <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    {%- endunless -%}
+
+    {% style %}
+
+        {{ settings.primary_font | font_face: font_display: 'swap' }}
+        {{ settings.secondary_font | font_face: font_display: 'swap' }}
+        
+        :root {
+            --primary-color: {{ settings.primary_color }};
+            --secondary-color: {{ settings.secondary_color }};
+            --bg-color-1: {{ settings.bg_color_1 }};
+            --primary-font-family: {{ settings.primary_font.family }}, {{ settings.primary_font.fallback_families }};
+            --primary-font-style: {{ settings.primary_font.style }};
+            --primary-font-weight: {{ settings.primary_font.weight }};
+            --secondary-font-family: {{ settings.secondary_font.family }}, {{ settings.primary_font.fallback_families }};
+            --secondary-font-style: {{ settings.secondary_font.style }};
+            --secondary-font-weight: {{ settings.secondary_font.weight }};
+        }
+
+    {%- endstyle -%}
+
+    {{ content_for_header }}
+    {{ 'style.scss' | asset_url | stylesheet_tag }}
+    {{ 'scripts.js' | asset_url | script_tag }}
+    {{ 'jquery.min.js' | asset_url | script_tag }}
+ 
+</head>
+<body>
+    {% section 'text_section'%}
+    <div class="overlay"></div>
+    {% section 'header' %}
+    {{ content_for_layout }}
+    {% section 'footer' %}
+</body>
+</html>

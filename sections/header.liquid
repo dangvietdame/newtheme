@@ -1,0 +1,134 @@
+{{ 'header.css' | asset_url | stylesheet_tag }}
+{{ 'search.js' | asset_url | script_tag }}
+{{ 'mobile-menu.js' | asset_url | script_tag }}
+<header>
+    <div class="search-container">
+        <form action="/search">
+            <input type="text" name="q"/>
+        </form>
+        {% render 'icon-close' %}
+    </div>
+    <div class="header-section container">
+        <div class=function-container>
+            {% render 'icon-search' %}
+            {% render 'icon-cart' %}
+            {% render 'icon-menu' %}
+            {% render 'icon-menu-close' %}
+            <a class="shop-title" href="{{ shop.url }}">{{ shop.name }}</a>
+        </div>
+        <div class="mobile-menu-container">
+            <div class="mobile-menu-overlay"></div>
+            <div class="mobile-menu-content">
+                {% render "mobile-menu" %}
+            </div>
+        </div>
+        {% render "main-menu" %}
+    </div>
+</header>
+
+{% style %}
+    .shop-title{
+        font-size: {{ section.settings.font_size }}px;
+        font-family: var(--primary-font-family);
+        font-weight: var(--primary-font-weight);
+        font-style: var(--primary-font-style);
+        color: {{ section.settings.text_color }};
+
+    }
+    .menu-item > a{
+        font-size: {{ section.settings.menu_item_size }}px;
+        font-family: var(--secondary-font-family);
+        font-weight: var(--secondary-font-weight);
+        font-style: var(--secondary-font-style);
+        color: {{ section.settings.menu_item_color }};
+    }
+    .header-section{
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bot }}px;
+    }
+    .function-container{
+        margin-bottom: {{ section.settings.between }}px;
+    }
+{% endstyle %}
+
+{% schema %}
+{
+    "name": "Header",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Shop Name"
+        },
+        {
+            "type": "range",
+            "id": "font_size",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Shop title size",
+            "default": 20
+        },
+        {
+            "type": "color",
+            "id": "text_color",
+            "label": "Text color",
+            "default": "#252525"
+        },
+        {
+            "type": "header",
+            "content": "Menu"
+        },
+        {
+            "type": "range",
+            "id": "menu_item_size",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Menu Items Size",
+            "default": 15
+        },
+        {
+            "type": "color",
+            "id": "menu_item_color",
+            "label": "Menu Items Color",
+            "default": "#606366"
+        },
+        {
+            "type": "header",
+            "content": "General"
+        },
+        {
+            "type": "range",
+            "id": "padding_top",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Padding Top",
+            "default": 20
+        },
+        {
+            "type": "range",
+            "id": "between",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Range between Title and Menu",
+            "default": 20
+        },
+        {
+            "type": "range",
+            "id": "padding_bot",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Padding Bottom",
+            "default": 20
+        }
+    ]
+}
+{% endschema %}

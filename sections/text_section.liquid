@@ -1,0 +1,94 @@
+{% for block in section.blocks %}
+    <div class="text-section" style="text-align: {{ block.settings.text_alignment }};">
+        <a href="{{ block.settings.link }}" style="line-height: {{ block.settings.height }}px; color: {{ block.settings.text_color }}; font-size: {{ block.settings.font_size }};">{{ block.settings.text | escape }}</a>
+    </div>
+{% endfor %}
+
+{% style %}
+    .text-section{
+        background-color: {{ settings.primary_color }};
+        a{
+            font-family: var(--primary-font-family);
+            font-weight: var(--primary-font-weight);
+            font-style: var(--primary-font-style);
+        }
+    }
+    .text-section > a{
+        font-family: var(--primary-font-family);
+        font-weight: var(--primary-font-weight);
+        font-style: var(--primary-font-style);
+    }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Text Section",
+  "max_blocks": 6,
+  "blocks": [
+    {
+      "type": "text_section_type",
+      "name": "Text Section",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "text",
+          "default": "Welcome to our store",
+          "label": "Content"
+        },
+        {
+            "type": "range",
+            "id": "font_size",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Font size",
+            "default": 20
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center",
+          "label": "Alignment"
+        },
+        {
+            "type": "range",
+            "id": "height",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Height",
+            "default": 50
+        },
+        {
+            "type": "color",
+            "id": "text_color",
+            "label": "Text color",
+            "default": "#333333"
+        }
+      ]
+    }
+  ]
+
+}
+{% endschema %}
