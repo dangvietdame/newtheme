@@ -28,11 +28,11 @@
                 {%- endform -%}
             </div>
         {% endif %}
-        <div class="footer-content">
+        <div class="footer-content row">
             {% for block in section.blocks %}
                 {% case block.type %}
                     {% when 'menu'%}
-                        <div class="footer-menu">
+                        <div class="footer-menu col-sm-2 col-md-6">
                             <div class="title">{{ block.settings.menu_title }}</div>
                             <ul class="menu-item-wrapper">
                                 {% for link in block.settings.menu.links %}
@@ -43,7 +43,7 @@
                             </ul>
                         </div>
                     {% when 'detail' %}
-                        <div class="footer-detail">
+                        <div class="footer-detail col-sm-10 col-md-6">
                             <div class="title">{{ block.settings.title }}</div>
                             <div class="content">{{ block.settings.content }}</div>
                         </div>

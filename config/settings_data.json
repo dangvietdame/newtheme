@@ -1,27 +1,6 @@
 {
   "current": {
     "sections": {
-      "text_section": {
-        "type": "text_section",
-        "blocks": {
-          "70d2fe0f-b2ef-4ef2-aab4-d4cd1a33ed2b": {
-            "type": "text_section_type",
-            "settings": {
-              "text": "Welcome to our store",
-              "font_size": 20,
-              "link": "",
-              "text_alignment": "center",
-              "height": 61,
-              "text_color": "#ffffff"
-            }
-          }
-        },
-        "block_order": [
-          "70d2fe0f-b2ef-4ef2-aab4-d4cd1a33ed2b"
-        ],
-        "settings": {
-        }
-      },
       "header": {
         "type": "header",
         "settings": {
@@ -63,10 +42,31 @@
           "email_content_text": "Subscribe to our mailing list for insider news, product launches, and more.",
           "email_content_size": 20,
           "success_text": "Subscribe Success.",
-          "text_color": "#EFECEC",
+          "text_color": "#efecec",
           "placeholder": "Email",
           "padding_top": 30,
           "email_margin_bottom": 30
+        }
+      },
+      "text_section": {
+        "type": "text_section",
+        "blocks": {
+          "text_section-0": {
+            "type": "content",
+            "settings": {
+              "content": "Welcome to our store",
+              "content_size": 20,
+              "content_link": "",
+              "content_alignment": "center",
+              "content_height": 50,
+              "content_color": "#fafafa"
+            }
+          }
+        },
+        "block_order": [
+          "text_section-0"
+        ],
+        "settings": {
         }
       }
     },

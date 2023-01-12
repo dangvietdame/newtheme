@@ -29,7 +29,6 @@ jQuery(document).ready(function($) {
         if (width <= 768){
             $('.icon-menu').css('display','block');
             $('.icon-menu-close').css('display','none');
-            $('.mobile-menu-container').css('display','block');
         }
     });
 })

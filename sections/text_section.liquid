@@ -1,19 +1,22 @@
-{% for block in section.blocks %}
-    <div class="text-section" style="text-align: {{ block.settings.text_alignment }};">
-        <a href="{{ block.settings.link }}" style="line-height: {{ block.settings.height }}px; color: {{ block.settings.text_color }}; font-size: {{ block.settings.font_size }};">{{ block.settings.text | escape }}</a>
-    </div>
-{% endfor %}
-
+<div class="text-section background-color-{{ section.settings.background_color }}">
+    {%- for block in section.blocks -%}
+        {%- case block.type -%}
+            {%- when 'title' -%}
+                <div style="text-align: {{ block.settings.title_alignment }};" {{ block.shopify_attributes }}>
+                    <a href="{{ block.settings.title_link }}" style="font-weight: 600; line-height: {{ block.settings.title_height }}px; color: {{ block.settings.title_color }}; font-size: {{ block.settings.title_size }}px;">{{ block.settings.title | escape }}</a>
+                </div>
+            {%- when 'content' -%} 
+                <div style="text-align: {{ block.settings.content_alignment }};" {{ block.shopify_attributes }}>
+                    <a href="{{ block.settings.content_link }}" style="line-height: {{ block.settings.content_height }}px; color: {{ block.settings.content_color }}; font-size: {{ block.settings.content_size }}px;">{{ block.settings.content | escape }}</a>
+                </div>
+        {%- endcase -%}
+    {%- endfor %}
+</div>
 {% style %}
     .text-section{
-        background-color: {{ settings.primary_color }};
-        a{
-            font-family: var(--primary-font-family);
-            font-weight: var(--primary-font-weight);
-            font-style: var(--primary-font-style);
-        }
+        background-color: {{ section.settings.background_color }};
     }
-    .text-section > a{
+    .text-section  a{
         font-family: var(--primary-font-family);
         font-weight: var(--primary-font-weight);
         font-style: var(--primary-font-style);
@@ -22,73 +25,159 @@
 
 {% schema %}
 {
-  "name": "Text Sections",
-  "max_blocks": 6,
-  "blocks": [
-    {
-      "type": "text_section_type",
-      "name": "Text Section",
-      "settings": [
+    "name": "Text Sections",
+    "max_blocks": 6,
+    "blocks": [
         {
-          "type": "textarea",
-          "id": "text",
-          "default": "Welcome to our store",
-          "label": "Content"
+            "type": "title",
+            "name": "Title",
+            "settings": [
+                {
+                    "type": "textarea",
+                    "id": "title",
+                    "label": "Content"
+                },
+                {
+                    "type": "range",
+                    "id": "title_size",
+                    "min": 1,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px",
+                    "label": "Font size",
+                    "default": 30
+                },
+                {
+                    "type": "url",
+                    "id": "title_link",
+                    "label": "Link"
+                },
+                {
+                    "type": "select",
+                    "id": "title_alignment",
+                    "options": [
+                        {
+                        "value": "left",
+                        "label": "Left"
+                        },
+                        {
+                        "value": "center",
+                        "label": "Center"
+                        },
+                        {
+                        "value": "right",
+                        "label": "Right"
+                        }
+                    ],
+                    "default": "center",
+                    "label": "Alignment"
+                },
+                {
+                    "type": "range",
+                    "id": "title_height",
+                    "min": 1,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px",
+                    "label": "Height",
+                    "default": 50
+                },
+                {
+                    "type": "color",
+                    "id": "title_color",
+                    "label": "Text color",
+                    "default": "#333333"
+                }
+            ]
         },
         {
-            "type": "range",
-            "id": "font_size",
-            "min": 1,
-            "max": 100,
-            "step": 1,
-            "unit": "px",
-            "label": "Font size",
-            "default": 20
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Link"
-        },
-        {
-          "type": "select",
-          "id": "text_alignment",
-          "options": [
-            {
-              "value": "left",
-              "label": "Left"
-            },
-            {
-              "value": "center",
-              "label": "Center"
-            },
-            {
-              "value": "right",
-              "label": "Right"
-            }
-          ],
-          "default": "center",
-          "label": "Alignment"
-        },
-        {
-            "type": "range",
-            "id": "height",
-            "min": 1,
-            "max": 100,
-            "step": 1,
-            "unit": "px",
-            "label": "Height",
-            "default": 50
-        },
-        {
-            "type": "color",
-            "id": "text_color",
-            "label": "Text color",
-            "default": "#333333"
+            "type": "content",
+            "name": "Content",
+            "settings": [
+                {
+                    "type": "textarea",
+                    "id": "content",
+                    "default": "Welcome to our store",
+                    "label": "Content"
+                },
+                {
+                    "type": "range",
+                    "id": "content_size",
+                    "min": 1,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px",
+                    "label": "Font size",
+                    "default": 20
+                },
+                {
+                    "type": "url",
+                    "id": "content_link",
+                    "label": "Link"
+                },
+                {
+                    "type": "select",
+                    "id": "content_alignment",
+                    "options": [
+                    {
+                        "value": "left",
+                        "label": "Left"
+                    },
+                    {
+                        "value": "center",
+                        "label": "Center"
+                    },
+                    {
+                        "value": "right",
+                        "label": "Right"
+                    }
+                    ],
+                    "default": "center",
+                    "label": "Alignment"
+                },
+                {
+                    "type": "range",
+                    "id": "content_height",
+                    "min": 1,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px",
+                    "label": "Height",
+                    "default": 50
+                },
+                {
+                    "type": "color",
+                    "id": "content_color",
+                    "label": "Color",
+                    "default": "#333333"
+                }
+            ]
         }
-      ]
+    ],
+    "settings": [
+        {
+            "type": "select",
+            "id": "background_color",
+            "label": "Background Color",
+            "options":[
+                {
+                    "value": "primary_color",
+                    "label": "Primary color"
+                },
+                {
+                    "value": "secondary_color",
+                    "label": "Secondary color"
+                },
+                {
+                    "value": "bg_color_1",
+                    "label": "Background color 1"
+                }
+            ],
+            "default": "primary_color"
+        }
+    ],
+    "enabled_on": {
+        "templates": ["*"]
     }
-  ]
-
 }
 {% endschema %}

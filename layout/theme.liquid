@@ -10,7 +10,6 @@
     {%- unless settings.primary_font.system? and settings.secondary_font.system? -%}
         <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     {%- endunless -%}
-
     {% style %}
 
         {{ settings.primary_font | font_face: font_display: 'swap' }}
@@ -31,7 +30,8 @@
     {%- endstyle -%}
 
     {{ content_for_header }}
-    {{ 'style.scss' | asset_url | stylesheet_tag }}
+    {{ 'style.css' | asset_url | stylesheet_tag }}
+    {{ 'base.css' | asset_url | stylesheet_tag }}
     {{ 'scripts.js' | asset_url | script_tag }}
     {{ 'jquery.min.js' | asset_url | script_tag }}
  
