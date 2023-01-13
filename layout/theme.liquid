@@ -28,13 +28,12 @@
         }
 
     {%- endstyle -%}
-
-    {{ content_for_header }}
+    
     {{ 'style.css' | asset_url | stylesheet_tag }}
     {{ 'base.css' | asset_url | stylesheet_tag }}
     {{ 'scripts.js' | asset_url | script_tag }}
     {{ 'jquery.min.js' | asset_url | script_tag }}
- 
+    {{ content_for_header }}
 </head>
 <body>
     {% section 'text_section'%}

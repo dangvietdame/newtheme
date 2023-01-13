@@ -1,0 +1,30 @@
+<div class="row">
+    {% for collection in collection_list %}
+        {% case column %}
+            {% when 1 %}
+                <div class="col-md-12">
+            {% when 2 %}
+                <div class="col-md-6">
+            {% when 3 %}
+                <div class="col-md-4">
+            {% when 4 %}
+                <div class="col-md-3">
+            {% when 5 %}
+                <div class="collection-5">
+            {% when 6 %}
+                <div class="col-md-2">
+        {% endcase %}
+            <a class="collection" href="{{ collection.url }}">
+                <div class="featured-image">
+                    <img src="{{ collection.featured_image | image_url }}">
+                </div>
+                <div class="title-wrapper">
+                    <div class="title">
+                        {{ collection.title }}
+                    </div>
+                    {% render 'icon-right' %}
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+</div>

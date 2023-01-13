@@ -1,0 +1,37 @@
+.collection img {
+  transition: transform ease-out 0.5s;
+}
+.collection .featured-image {
+  width: 100%;
+  height: 265px;
+  overflow: hidden;
+  margin: 0 auto;
+}
+.collection .title-wrapper {
+  display: flex;
+}
+.collection .title-wrapper .title {
+  display: inline-block;
+}
+.collection .title-wrapper .icon-right {
+  margin-left: 10px;
+}
+.collection .title-wrapper .icon-right > path {
+  transform: translateX(-10px);
+  transition: transform 0.5s;
+}
+.collection:hover img {
+  transform: scale(1.05);
+}
+.collection:hover .icon-right > path {
+  transform: translateX(-5px);
+}
+
+.collection-5 {
+  width: 100%;
+}
+@media screen and (min-width: 768px) {
+  .collection-5 {
+    width: 20%;
+  }
+}

@@ -1,0 +1,84 @@
+{{ 'collection.css' | asset_url | stylesheet_tag }}
+{% if section.settings.ck_width %}
+    <div class="collections-list-wrapper">
+{% else %}
+    <div class="container">
+{% endif %}
+        <div class="title">{{ section.settings.title }}</div>
+        {% render 'collection', collection_list: section.settings.collection_list, column: section.settings.column %}
+        {% if section.settings.ck_btn %}
+            <a href="\list-collections">View more</a>
+        {% endif %}
+    </div>
+{% style %}
+
+{% endstyle %}
+
+{% schema %}
+{
+    "name": "Collections List",
+    "class": "collections-list-section",
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Collections List"
+        },
+        {
+            "type": "collection_list",
+            "id": "collection_list",
+            "label": "Choose collection list"
+        },
+        {
+            "type": "select",
+            "id": "background_color",
+            "label": "Background Color",
+            "options":[
+                {
+                    "value": "primary_color",
+                    "label": "Primary color"
+                },
+                {
+                    "value": "secondary_color",
+                    "label": "Secondary color"
+                },
+                {
+                    "value": "bg_color_1",
+                    "label": "Background color 1"
+                }
+            ],
+            "default": "primary_color"
+        },
+        {
+            "type": "range",
+            "id": "column",
+            "label": "Number of collection each Column",
+            "min": 1,
+            "max": 6,
+            "step": 1,
+            "default": 3
+        },
+        {
+            "type": "checkbox",
+            "id": "ck_btn",
+            "label": "Display VIEW MORE Button if list includes more collections than shown",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "ck_width",
+            "label": "Display full width",
+            "default": false
+        }
+    ],
+    "presets": [
+        {
+            "name": "Collections List"
+        }
+    ],
+    "enabled_on": {
+        "templates": ["*"]
+    }
+}
+{% endschema %}
