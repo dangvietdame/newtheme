@@ -1,0 +1,11 @@
+<a class="product-card" href="{{ product_card.url }}">
+    <div class="featured-image">
+        <img src="{{ product_card.featured_image | image_url }}">
+    </div>
+    <div class="title-wrapper">
+        <div class="title">
+            {{ product_card.title }}
+        </div>
+        {% render 'icon-right' %}
+    </div>
+</a>

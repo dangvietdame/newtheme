@@ -11,7 +11,8 @@
             "title_link": "",
             "title_alignment": "center",
             "title_height": 50,
-            "title_color": "#333333"
+            "title_color": "#333333",
+            "title_font": "primary"
           }
         },
         "77f45333-26b5-4d34-bf19-84b9d8ab334c": {
@@ -22,7 +23,8 @@
             "content_link": "",
             "content_alignment": "center",
             "content_height": 50,
-            "content_color": "#333333"
+            "content_color": "#333333",
+            "content_font": "primary"
           }
         }
       },
@@ -31,6 +33,9 @@
         "77f45333-26b5-4d34-bf19-84b9d8ab334c"
       ],
       "settings": {
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "ck_width": false,
         "background_color": "primary_color"
       }
     },
@@ -45,7 +50,8 @@
             "title_link": "",
             "title_alignment": "center",
             "title_height": 50,
-            "title_color": "#333333"
+            "title_color": "#333333",
+            "title_font": "primary"
           }
         },
         "template--17509697323303__2f9c66c6-ef0d-44b3-bf3d-d7f6b1d0c219-167357599246934618-1": {
@@ -56,7 +62,8 @@
             "content_link": "",
             "content_alignment": "center",
             "content_height": 50,
-            "content_color": "#333333"
+            "content_color": "#333333",
+            "content_font": "primary"
           }
         },
         "36b2ce13-59db-4ffd-aad9-d51e0c821d63": {
@@ -67,7 +74,8 @@
             "content_link": "",
             "content_alignment": "center",
             "content_height": 50,
-            "content_color": "#333333"
+            "content_color": "#333333",
+            "content_font": "primary"
           }
         }
       },
@@ -77,6 +85,9 @@
         "36b2ce13-59db-4ffd-aad9-d51e0c821d63"
       ],
       "settings": {
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "ck_width": false,
         "background_color": "primary_color"
       }
     },
@@ -98,11 +109,47 @@
         "ck_btn": false,
         "ck_width": false
       }
+    },
+    "2dfbf715-40ee-4168-ba4b-b1240eb630e9": {
+      "type": "mix_section",
+      "blocks": {
+        "template--17509697323303__2dfbf715-40ee-4168-ba4b-b1240eb630e9-1673861567af534c7c-2": {
+          "type": "video",
+          "settings": {
+            "image_cover": "shopify:\/\/shop_images\/person-fishing-on-the-beach-is-silhouetted-at-sunset.jpg",
+            "video": "https:\/\/www.youtube.com\/watch?v=G7KNmW9a75Y"
+          }
+        },
+        "c410ec31-552b-495e-973b-f2811de7c1ad": {
+          "type": "collection",
+          "settings": {
+            "collection": "collection-2"
+          }
+        },
+        "346f781b-b9e1-4826-acb0-253ee80cdea0": {
+          "type": "product",
+          "settings": {
+            "product": "olive-green-jacket"
+          }
+        }
+      },
+      "block_order": [
+        "template--17509697323303__2dfbf715-40ee-4168-ba4b-b1240eb630e9-1673861567af534c7c-2",
+        "c410ec31-552b-495e-973b-f2811de7c1ad",
+        "346f781b-b9e1-4826-acb0-253ee80cdea0"
+      ],
+      "settings": {
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "ck_width": false,
+        "background_color": "primary_color"
+      }
     }
   },
   "order": [
     "text-1",
     "2f9c66c6-ef0d-44b3-bf3d-d7f6b1d0c219",
-    "d13104aa-c4f6-4e75-b8bc-8a2ddec5ee13"
+    "d13104aa-c4f6-4e75-b8bc-8a2ddec5ee13",
+    "2dfbf715-40ee-4168-ba4b-b1240eb630e9"
   ]
 }

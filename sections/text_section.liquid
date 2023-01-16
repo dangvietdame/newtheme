@@ -1,25 +1,36 @@
-<div class="text-section background-color-{{ section.settings.background_color }}">
+<div class="text-section-{{ section.id }} background-color-{{ section.settings.background_color }}">
+    {% if section.settings.ck_width %}
+        <div class="text-section-inner">
+    {% else %}
+        <div class="container">
+    {% endif%}
     {%- for block in section.blocks -%}
         {%- case block.type -%}
             {%- when 'title' -%}
                 <div style="text-align: {{ block.settings.title_alignment }};" {{ block.shopify_attributes }}>
-                    <a href="{{ block.settings.title_link }}" style="font-weight: 600; line-height: {{ block.settings.title_height }}px; color: {{ block.settings.title_color }}; font-size: {{ block.settings.title_size }}px;">{{ block.settings.title | escape }}</a>
+                    <a class="{% if block.settings.title_font == "primary" %}font-primary{% else %}font-secondary{% endif %}" href="{{ block.settings.title_link }}" 
+                        style="font-weight: 600; 
+                        line-height: {{ block.settings.title_height }}px; 
+                        color: {{ block.settings.title_color }}; 
+                        font-size: {{ block.settings.title_size }}px;">{{ block.settings.title | escape }}</a>
                 </div>
             {%- when 'content' -%} 
                 <div style="text-align: {{ block.settings.content_alignment }};" {{ block.shopify_attributes }}>
-                    <a href="{{ block.settings.content_link }}" style="line-height: {{ block.settings.content_height }}px; color: {{ block.settings.content_color }}; font-size: {{ block.settings.content_size }}px;">{{ block.settings.content | escape }}</a>
+                    <a class="{% if block.settings.content_font == "primary" %}font-primary{% else %}font-secondary{% endif %}" 
+                        href="{{ block.settings.content_link }}" 
+                        style="line-height: {{ block.settings.content_height }}px; 
+                        color: {{ block.settings.content_color }}; 
+                        font-size: {{ block.settings.content_size }}px;">{{ block.settings.content | escape }}</a>
                 </div>
         {%- endcase -%}
     {%- endfor %}
+    </div>
 </div>
 {% style %}
-    .text-section{
+    .text-section-{{ section.id }}{
         background-color: {{ section.settings.background_color }};
-    }
-    .text-section  a{
-        font-family: var(--primary-font-family);
-        font-weight: var(--primary-font-weight);
-        font-style: var(--primary-font-style);
+        padding-top:{{ section.settings.margin_top }}px;
+        padding-bottom:{{ section.settings.margin_bottom }}px;
     }
 {% endstyle %}
 
@@ -88,6 +99,22 @@
                     "id": "title_color",
                     "label": "Text color",
                     "default": "#333333"
+                },
+                {
+                    "type": "select",
+                    "id": "title_font",
+                    "label": "Font style",
+                    "options":[
+                        {
+                            "value":"primary",
+                            "label": "Primary Font"
+                        },
+                        {
+                            "value":"secondary",
+                            "label": "Secondary Font"
+                        }
+                    ],
+                    "default": "primary"
                 }
             ]
         },
@@ -151,11 +178,53 @@
                     "id": "content_color",
                     "label": "Color",
                     "default": "#333333"
+                },
+                {
+                    "type": "select",
+                    "id": "content_font",
+                    "label": "Font style",
+                    "options":[
+                        {
+                            "value":"primary",
+                            "label": "Primary Font"
+                        },
+                        {
+                            "value":"secondary",
+                            "label": "Secondary Font"
+                        }
+                    ],
+                    "default": "primary"
                 }
             ]
         }
     ],
     "settings": [
+        {
+            "type": "range",
+            "id": "margin_top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Margin Top",
+            "default": 0
+        },
+        {
+            "type": "range",
+            "id": "margin_bottom",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Margin Bottom",
+            "default": 0
+        },
+        {
+            "type": "checkbox",
+            "id": "ck_width",
+            "label": "Display full width",
+            "default": false
+        },
         {
             "type": "select",
             "id": "background_color",

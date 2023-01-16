@@ -1,0 +1,203 @@
+{{ 'mix-section.css' | asset_url | stylesheet_tag }}
+{{ 'collection.css' | asset_url | stylesheet_tag }}
+{{ 'product-card.css' | asset_url | stylesheet_tag }}
+{{ 'video-popup.js' | asset_url | script_tag }}
+<div class="mix-section mix-section-{{ section.id }} background-color-{{ section.settings.background_color }}">
+    {% if section.settings.ck_width %}
+        <div class="mix-section-inner">
+    {% else %}
+        <div class="container mix-section-inner">
+    {% endif%}
+        <div class="left-section">
+            {% for block in section.blocks limit: 1 %}
+                {%- case block.type -%}
+                    {%- when 'image' -%}
+                        <div {{ block.shopify_attributes }}>
+                            <img src="{{ block.settings.image | image_url}}">
+                        </div>
+                    {%- when 'video' -%}
+                        <div class="cover-image" {{ block.shopify_attributes }}>
+                            <img src="{{ block.settings.image_cover | image_url }}">"
+                        </div>
+                        <div class="video-popup">
+                            <div class=container>
+                                <iframe src="https://www.youtube.com/embed/{{ block.settings.video.id }}?enablejsapi=1" class="js-youtube" allow="autoplay; encrypted-media" allowfullscreen title="{{ block.settings.description | escape }}" ></iframe>
+                            </div>
+                        </div>
+                    {%- when 'product' -%}
+                        <div {{ block.shopify_attributes }}>
+                            {% render 'product', product_card: block.settings.product %}
+                        </div>
+                    {%- when 'collection' -%}
+                        <div {{ block.shopify_attributes }}>
+                            {% render 'collection', collection_card: block.settings.collection %}
+                        </div>
+                {%- endcase -%}
+            {%- endfor %}
+        </div>
+        <div class="right-section">
+            {% for block in section.blocks offset: 1 %}
+                {%- case block.type -%}
+                    {%- when 'image' -%}
+                        <div {{ block.shopify_attributes }}>
+                            <img src="{{ block.settings.image | image_url}}">
+                        </div>
+                    {%- when 'video' -%}
+                        <div class="cover-image" {{ block.shopify_attributes }}>
+                            {{ block.settings.image_cover | image_url }}
+                        </div>
+                        <div class="video-popup">
+                            <div class=container>
+                                <iframe src="https://www.youtube.com/embed/{{ block.settings.video.id }}?enablejsapi=1" class="js-youtube" allow="autoplay; encrypted-media" allowfullscreen title="{{ block.settings.description | escape }}" ></iframe>
+                            </div>
+                        </div>
+                    {%- when 'product' -%}
+                        <div {{ block.shopify_attributes }}>
+                            {% render 'product', product_card: block.settings.product %}
+                        </div>
+                    {%- when 'collection' -%}
+                        <div {{ block.shopify_attributes }}>
+                            {% render 'collection', collection_card: block.settings.collection %}
+                        </div>
+                {%- endcase -%}
+            {%- endfor %}
+        </div>
+    </div>
+</div>
+{% style %}
+    .mix-section-{{ section.id }}{
+        background-color: {{ section.settings.background_color }};
+        padding-top:{{ section.settings.margin_top }}px;
+        padding-bottom:{{ section.settings.margin_bottom }}px;
+    }
+{% endstyle %}
+
+{% schema %}
+{
+    "name": "Mix Sections",
+    "settings": [
+        {
+            "type": "range",
+            "id": "margin_top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Margin Top",
+            "default": 0
+        },
+        {
+            "type": "range",
+            "id": "margin_bottom",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Margin Bottom",
+            "default": 0
+        },
+        {
+            "type": "checkbox",
+            "id": "ck_width",
+            "label": "Display full width",
+            "default": false
+        },
+        {
+            "type": "select",
+            "id": "background_color",
+            "label": "Background Color",
+            "options":[
+                {
+                    "value": "primary_color",
+                    "label": "Primary color"
+                },
+                {
+                    "value": "secondary_color",
+                    "label": "Secondary color"
+                },
+                {
+                    "value": "bg_color_1",
+                    "label": "Background color 1"
+                }
+            ],
+            "default": "primary_color"
+        }
+    ],
+    "max_blocks": 3,
+    "blocks": [
+        {
+            "type": "image",
+            "name": "Image",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Choose Image"
+                }
+            ]
+        },
+        {
+            "type": "video",
+            "name": "Video",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "image_cover",
+                    "label": "Choose Image Cover"
+                },
+                {
+                    "type": "video_url",
+                    "id": "video",
+                    "label": "Video URL",
+                    "accept": [
+                        "youtube",
+                        "vimeo"
+                    ],
+                    "default": "https://www.youtube.com/watch?v=G7KNmW9a75Y"
+                }
+            ]
+        },
+        {
+            "type": "product",
+            "name": "Product",
+            "settings": [
+                {
+                    "type": "product",
+                    "id": "product",
+                    "label": "Choose product"
+                }
+            ]
+        },
+        {
+            "type": "collection",
+            "name": "Collection",
+            "settings": [
+                {
+                    "type": "collection",
+                    "id": "collection",
+                    "label": "Choose collection"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Mix Section",
+            "blocks": [
+                {
+                    "type": "product"
+                },
+                {
+                    "type": "image"
+                },
+                {
+                    "type": "video"
+                }
+            ]
+        }
+    ],
+    "enabled_on": {
+        "templates": ["*"]
+    }
+}
+{% endschema %}
