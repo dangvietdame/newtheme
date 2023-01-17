@@ -4,59 +4,75 @@
 {{ 'video-popup.js' | asset_url | script_tag }}
 <div class="mix-section mix-section-{{ section.id }} background-color-{{ section.settings.background_color }}">
     {% if section.settings.ck_width %}
-        <div class="mix-section-inner">
+        <div class="mix-section-inner row">
     {% else %}
-        <div class="container mix-section-inner">
+        <div class="container mix-section-inner row">
     {% endif%}
-        <div class="left-section">
+        <div class="left-section col-md-8">
             {% for block in section.blocks limit: 1 %}
                 {%- case block.type -%}
                     {%- when 'image' -%}
-                        <div {{ block.shopify_attributes }}>
+                        <div class="image-block" {{ block.shopify_attributes }}>
                             <img src="{{ block.settings.image | image_url}}">
                         </div>
                     {%- when 'video' -%}
-                        <div class="cover-image" {{ block.shopify_attributes }}>
-                            <img src="{{ block.settings.image_cover | image_url }}">"
-                        </div>
-                        <div class="video-popup">
-                            <div class=container>
-                                <iframe src="https://www.youtube.com/embed/{{ block.settings.video.id }}?enablejsapi=1" class="js-youtube" allow="autoplay; encrypted-media" allowfullscreen title="{{ block.settings.description | escape }}" ></iframe>
+                        <div class="video-block" {{ block.shopify_attributes }}>
+                            <div class="cover-image">
+                                <img src="{{ block.settings.image_cover | image_url }}">
+                                {% render 'icon-play' %}
+                            </div>
+                            <div class="video-popup">
+                                <div class=container>
+                                    {% render 'icon-close' %}
+                                    {% if block.settings.video.type == 'youtube' %}
+                                        <iframe  src="https://www.youtube.com/embed/{{ block.settings.video.id }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                    {% else %}
+                                        <iframe src="https://player.vimeo.com/video/{{ block.settings.video.id }}?h=de6f341435" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
                     {%- when 'product' -%}
-                        <div {{ block.shopify_attributes }}>
+                        <div class="product-block" {{ block.shopify_attributes }}>
                             {% render 'product', product_card: block.settings.product %}
                         </div>
                     {%- when 'collection' -%}
-                        <div {{ block.shopify_attributes }}>
+                        <div class="collection-block" {{ block.shopify_attributes }}>
                             {% render 'collection', collection_card: block.settings.collection %}
                         </div>
                 {%- endcase -%}
             {%- endfor %}
         </div>
-        <div class="right-section">
+        <div class="right-section col-md-4">
             {% for block in section.blocks offset: 1 %}
                 {%- case block.type -%}
                     {%- when 'image' -%}
-                        <div {{ block.shopify_attributes }}>
+                        <div class="image-block" {{ block.shopify_attributes }}>
                             <img src="{{ block.settings.image | image_url}}">
                         </div>
                     {%- when 'video' -%}
-                        <div class="cover-image" {{ block.shopify_attributes }}>
-                            {{ block.settings.image_cover | image_url }}
-                        </div>
-                        <div class="video-popup">
-                            <div class=container>
-                                <iframe src="https://www.youtube.com/embed/{{ block.settings.video.id }}?enablejsapi=1" class="js-youtube" allow="autoplay; encrypted-media" allowfullscreen title="{{ block.settings.description | escape }}" ></iframe>
+                        <div class="video-block" {{ block.shopify_attributes }}>
+                            <div class="cover-image">
+                                <img src="{{ block.settings.image_cover | image_url }}">
+                                {% render 'icon-play' %}
+                            </div>
+                            <div class="video-popup">
+                                <div class=container>
+                                    {% render 'icon-close' %}
+                                    {% if block.settings.video.type == 'youtube' %}
+                                        <iframe  src="https://www.youtube.com/embed/{{ block.settings.video.id }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                    {% else %}
+                                        <iframe src="https://player.vimeo.com/video/{{ block.settings.video.id }}?h=de6f341435" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
                     {%- when 'product' -%}
-                        <div {{ block.shopify_attributes }}>
+                        <div class="product-block" {{ block.shopify_attributes }}>
                             {% render 'product', product_card: block.settings.product %}
                         </div>
                     {%- when 'collection' -%}
-                        <div {{ block.shopify_attributes }}>
+                        <div class="colleciton-block" {{ block.shopify_attributes }}>
                             {% render 'collection', collection_card: block.settings.collection %}
                         </div>
                 {%- endcase -%}
@@ -66,7 +82,6 @@
 </div>
 {% style %}
     .mix-section-{{ section.id }}{
-        background-color: {{ section.settings.background_color }};
         padding-top:{{ section.settings.margin_top }}px;
         padding-bottom:{{ section.settings.margin_bottom }}px;
     }
@@ -148,7 +163,7 @@
                 {
                     "type": "video_url",
                     "id": "video",
-                    "label": "Video URL",
+                    "label": "Video URL (support Youtube and Vimeo)",
                     "accept": [
                         "youtube",
                         "vimeo"

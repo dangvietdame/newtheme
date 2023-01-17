@@ -1,6 +1,10 @@
 jQuery(document).ready(function($) {
     $('.cover-image').click(function(){
-        alert('abc');
-        $('.video-popup').css('display','block');
+        $('.video-popup').fadeIn('fast');
+        $('body').css('overflow','hidden');
+    });
+    $('.video-popup, .video-popup .icon-close').click(function(){
+        $('.video-popup').fadeOut('fast');
+        $('body').css('overflow','auto');
     });
 })
