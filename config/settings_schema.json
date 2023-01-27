@@ -17,41 +17,44 @@
             {
                 "type": "color",
                 "id": "primary_color",
-                "default": "#3F5147",
+                "default": "#ffffff",
                 "label": "Primary Color"
             },
             {
                 "type": "color",
                 "id": "secondary_color",
-                "default": "#333333",
+                "default": "#041E42",
                 "label": "Secondary Color"
             },
             {
+                "type": "color",
+                "id": "third_color",
+                "default": "#626974",
+                "label": "Third Color"
+            },
+            {
+                "type": "color",
+                "id": "fourth_color",
+                "default": "#0053F6",
+                "label": "Fourth Color"
+            },
+            {
                 "id": "bg_color_1",
-                "type": "color_background",
+                "type": "color",
                 "label": "Background Color 1",
+                "default": "#ffffff"
+            },
+            {
+                "id": "bg_color_2",
+                "type": "color",
+                "label": "Background Color 2",
                 "default": "#EFECEC"
-            }
-        ]
-    },
-    {
-        "name": "Font",
-        "settings": [
-            {
-                "type": "header",
-                "content": "Font"
             },
             {
-                "type": "font_picker",
-                "id": "primary_font",
-                "default": "americana_n4",
-                "label": "Primary Font Family"
-            },
-            {
-                "type": "font_picker",
-                "id": "secondary_font",
-                "default": "quattrocento_sans_n4",
-                "label": "Secondary Font Family"
+                "id": "bg_color_3",
+                "type": "color",
+                "label": "Background Color 3",
+                "default": "#EFECEC"
             }
         ]
     }

@@ -2,52 +2,99 @@
 {{ 'header.js' | asset_url | script_tag }}
 {{ 'search.js' | asset_url | script_tag }}
 <header>
-    <div class="search-container">
-        <form action="/search">
-            <input type="text" name="q"/>
-        </form>
-        {% render 'icon-close' %}
-    </div>
-    <div class="header-section container">
-        <div class=function-container>
-            {% render 'icon-search' %}
-            {% render 'icon-cart' %}
-            {% render 'icon-menu' %}
-            {% render 'icon-menu-close' %}
-            <a class="shop-title" href="{{ shop.url }}">{{ shop.name }}</a>
-        </div>
-        <div class="mobile-menu-container">
-            <div class="mobile-menu-overlay"></div>
-            <div class="mobile-menu-content">
-                {% render "mobile-menu" %}
+    <div class="{{section.id}}">
+        <div class="container">
+            <div class="row">
+                <a class="logo col-lg-2" href="\home">
+                    <img src="{{section.settings.logo | image_url}}">
+                </a>
+                <div class="col-lg-6">
+                    <div class="search-wrapper row">
+                        <div class="category col-3">
+                            {{section.settings.category}}
+                            {% render "icon-dropdown" %}
+                        </div>
+                        <div class="search-container col-9">
+                            <span class="seperate"></span>
+                            <form action="/search">
+                                <input type="text" name="q" placeholder="{{section.settings.placeholder}}"/>
+                                <button class="search-button">
+                                    {% render "icon-search" %}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 row function-bar">
+                    <a class="wishlist col-lg-4 row" href="#">
+                        <div class="icon-wrapper">
+                            {%render "icon-heart"%}
+                        </div>
+                        <div>
+                            <div class="title">{{section.settings.wishlist_title}}</div>
+                            <div class="sub-title">{{section.settings.wishlist_sub_title}}</div>
+                        </div>
+                    </a>
+                    <a class="signin col-lg-4 row" href="#">
+                        <div class="icon-wrapper">
+                            {%render "icon-user"%}
+                        </div>
+                        <div>
+                            <div class="title">{{section.settings.signin_title}}</div>
+                            <div class="sub-title">{{section.settings.signin_sub_title}}</div>
+                        </div>
+                    </a>
+                    <a class="cart col-lg-4 row" href="/cart">
+                        <div class="icon-wrapper">
+                            {%render "icon-cart"%}
+                            <div class="cart-count">
+                                {{cart.item_count}}
+                            </div>
+                        </div>
+                        <div>
+                            <div class="title">{{cart.original_total_price | money}}</div>
+                            <div class="sub-title">{{section.settings.cart_title}}</div>
+                        </div>
+                    </a>
+                </div>
+                {% comment %} <div class="search-container">
+                    <form action="/search">
+                        <input type="text" name="q"/>
+                    </form>
+                    {% render 'icon-close' %}
+                </div>
+                <div class="header-section container">
+                    <div class=function-container>
+                        {% render 'icon-search' %}
+                        {% render 'icon-cart' %}
+                        {% render 'icon-menu' %}
+                        {% render 'icon-menu-close' %}
+                        <a class="shop-title" href="{{ shop.url }}">{{ shop.name }}</a>
+                    </div>
+                    <div class="mobile-menu-container">
+                        <div class="mobile-menu-overlay"></div>
+                        <div class="mobile-menu-content">
+                            {% render "mobile-menu" %}
+                        </div>
+                    </div>
+                    {% render "main-menu" %}
+                </div> {% endcomment %}
             </div>
         </div>
-        {% render "main-menu" %}
     </div>
 </header>
 
 {% style %}
-    .shop-title{
-        font-size: {{ section.settings.font_size }}px;
-        font-family: var(--primary-font-family);
-        font-weight: var(--primary-font-weight);
-        font-style: var(--primary-font-style);
-        color: {{ section.settings.text_color }};
-
+    .{{section.id}}, .{{section.id}} a{
+        background-color: {{section.settings.background_color}};
+        color: {{section.settings.text_color}};
     }
-    .menu-item > a{
-        font-size: {{ section.settings.menu_item_size }}px;
-        font-family: var(--secondary-font-family);
-        font-weight: var(--secondary-font-weight);
-        font-style: var(--secondary-font-style);
-        color: {{ section.settings.menu_item_color }};
+    .{{section.id}} img{
+        width: {{section.settings.logo_width}}px;
     }
-    .header-section{
-        padding-top: {{ section.settings.padding_top }}px;
-        padding-bottom: {{ section.settings.padding_bot }}px;
-    }
-    .function-container{
-        margin-bottom: {{ section.settings.between }}px;
+    .{{section.id}} svg path, .{{section.id}} svg circle{
+        fill: {{section.settings.text_color}};
+        stroke: {{section.settings.text_color}};
     }
 {% endstyle %}
 
@@ -57,77 +104,101 @@
     "settings": [
         {
             "type": "header",
-            "content": "Shop Name"
+            "content": "Logo"
         },
         {
-            "type": "range",
-            "id": "font_size",
-            "min": 1,
-            "max": 100,
-            "step": 1,
-            "unit": "px",
-            "label": "Shop title size",
-            "default": 20
+            "type": "image_picker",
+            "id": "logo",
+            "label": "Choose Logo"
+        },
+        {
+            "type": "number",
+            "id": "logo_width",
+            "label": "Logo Width(px)"
+        },
+        {
+            "type": "header",
+            "content": "Category"
+        },
+        {
+            "type": "text",
+            "id": "category",
+            "label": "Category text",
+            "default": "All Category"
+        },
+        {
+            "type": "header",
+            "content": "Search form"
+        },
+        {
+            "type": "text",
+            "id": "placeholder",
+            "label": "Placeholder text",
+            "default": "Search products..."
+        },
+        {
+            "type": "header",
+            "content": "Function Bar - Wishlist"
+        },
+        {
+            "type": "text",
+            "id": "wishlist_title",
+            "label": "Wishlist title",
+            "default": "Wishlist"
+        },
+        {
+            "type": "text",
+            "id": "wishlist_sub_title",
+            "label": "Wishlist sub title",
+            "default": "My Items"
+        },
+        {
+            "type": "header",
+            "content": "Function Bar - Sign In"
+        },
+        {
+            "type": "text",
+            "id": "signin_title",
+            "label": "Sign in title",
+            "default": "Sign In"
+        },
+        {
+            "type": "text",
+            "id": "signin_sub_title",
+            "label": "Sign in sub title",
+            "default": "Account"
+        },
+        {
+            "type": "header",
+            "content": "Function Bar - Cart"
+        },
+        {
+            "type": "text",
+            "id": "cart_title",
+            "label": "Cart title",
+            "default": "Total"
+        },
+        {
+            "type": "header",
+            "content": "Color"
         },
         {
             "type": "color",
             "id": "text_color",
-            "label": "Text color",
-            "default": "#252525"
-        },
-        {
-            "type": "header",
-            "content": "Menu"
-        },
-        {
-            "type": "range",
-            "id": "menu_item_size",
-            "min": 1,
-            "max": 100,
-            "step": 1,
-            "unit": "px",
-            "label": "Menu Items Size",
-            "default": 15
+            "label": "Text Color",
+            "default": "#ffffff"
         },
         {
             "type": "color",
-            "id": "menu_item_color",
-            "label": "Menu Items Color",
-            "default": "#606366"
+            "id": "background_color",
+            "label": "Background Color",
+            "default": "#443297"
         },
         {
-            "type": "header",
-            "content": "General"
-        },
-        {
-            "type": "range",
-            "id": "padding_top",
-            "min": 1,
-            "max": 100,
-            "step": 1,
-            "unit": "px",
-            "label": "Padding Top",
-            "default": 20
-        },
-        {
-            "type": "range",
-            "id": "between",
-            "min": 1,
-            "max": 100,
-            "step": 1,
-            "unit": "px",
-            "label": "Range between Title and Menu",
-            "default": 20
-        },
-        {
-            "type": "range",
-            "id": "padding_bot",
-            "min": 1,
-            "max": 100,
-            "step": 1,
-            "unit": "px",
-            "label": "Padding Bottom",
-            "default": 20
+            "type": "color",
+            "id": "second_color",
+            "label": "Second Background Color",
+            "default": "#F5C34B"
         }
     ]
 }

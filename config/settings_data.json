@@ -4,13 +4,18 @@
       "header": {
         "type": "header",
         "settings": {
-          "font_size": 20,
-          "text_color": "#252525",
-          "menu_item_size": 15,
-          "menu_item_color": "#606366",
-          "padding_top": 20,
-          "between": 20,
-          "padding_bot": 20
+          "logo": "shopify:\/\/shop_images\/logo.png",
+          "logo_width": 128,
+          "category": "All Category",
+          "placeholder": "Search products...",
+          "wishlist_title": "Wishlist",
+          "wishlist_sub_title": "My Items",
+          "signin_title": "Sign In",
+          "signin_sub_title": "Account",
+          "cart_title": "Total",
+          "text_color": "#ffffff",
+          "background_color": "#443297",
+          "second_color": "#F5C34B"
         }
       },
       "footer": {
