@@ -1,44 +1,49 @@
-header .header {
-  display: flex;
-  height: 90px;
+header .header-layout1 .function-wrapper .container {
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1019607843);
 }
-header .icon-heart, header .icon-user, header .icon-cart {
+header .header-layout1 .function-wrapper .icon-heart, header .header-layout1 .function-wrapper .icon-user, header .header-layout1 .function-wrapper .icon-cart {
   width: 20px;
   height: 20px;
 }
-header .icon-search {
+header .header-layout1 .function-wrapper .icon-search {
   width: 22px;
   height: 22px;
 }
-header .icon-search circle, header .icon-search path {
+header .header-layout1 .function-wrapper .icon-search circle, header .header-layout1 .function-wrapper .icon-search path {
   fill: none !important;
   stroke: #000 !important;
 }
-header .icon-dropdown path {
+header .header-layout1 .function-wrapper .icon-dropdown path {
   fill: #000 !important;
 }
-header .search-wrapper {
+header .header-layout1 .function-wrapper .search-wrapper {
   height: 50px;
   background-color: #ffffff;
   margin: 0;
   border-radius: 6px;
+  align-items: center;
 }
-header .search-wrapper .category {
+header .header-layout1 .function-wrapper .search-wrapper .category {
   color: #000;
   display: flex;
   align-items: center;
   justify-content: space-around;
   font-weight: 500;
   font-size: 15px;
+  height: 25px;
+  border-right: 1px solid #ebebeb;
 }
-header .search-wrapper .search-container {
+header .header-layout1 .function-wrapper .search-wrapper .search-container {
   padding: 0;
+  padding-left: 30px;
+  height: 100%;
 }
-header .search-wrapper .search-container form {
+header .header-layout1 .function-wrapper .search-wrapper .search-container form {
   position: relative;
   height: 100%;
 }
-header .search-wrapper .search-container form input {
+header .header-layout1 .function-wrapper .search-wrapper .search-container form input {
   height: 100%;
   border: transparent;
   width: 100%;
@@ -46,13 +51,13 @@ header .search-wrapper .search-container form input {
   padding-right: 55px;
   font-size: 15px;
 }
-header .search-wrapper .search-container form input:focus-visible {
+header .header-layout1 .function-wrapper .search-wrapper .search-container form input:focus-visible {
   outline: none;
 }
-header .search-wrapper .search-container form input::placeholder {
+header .header-layout1 .function-wrapper .search-wrapper .search-container form input::placeholder {
   font-size: 14px;
 }
-header .search-wrapper .search-container form .search-button {
+header .header-layout1 .function-wrapper .search-wrapper .search-container form .search-button {
   position: absolute;
   right: 0;
   height: 100%;
@@ -63,7 +68,7 @@ header .search-wrapper .search-container form .search-button {
   padding: 0;
   width: 50px;
 }
-header .icon-wrapper {
+header .header-layout1 .function-wrapper .icon-wrapper {
   width: 50px;
   display: flex;
   justify-content: center;
@@ -74,7 +79,7 @@ header .icon-wrapper {
   transition: background-color 0.2s;
   position: relative;
 }
-header .icon-wrapper .cart-count {
+header .header-layout1 .function-wrapper .icon-wrapper .cart-count {
   position: absolute;
   background-color: #F5C34B;
   border-radius: 50%;
@@ -90,30 +95,30 @@ header .icon-wrapper .cart-count {
   top: 0;
   text-align: center;
 }
-header .function-bar {
+header .header-layout1 .function-wrapper .function-bar {
   justify-content: space-between;
   margin-left: 15px;
   padding: 0;
 }
-header .function-bar .wishlist, header .function-bar .signin, header .function-bar .cart {
+header .header-layout1 .function-wrapper .function-bar .wishlist, header .header-layout1 .function-wrapper .function-bar .signin, header .header-layout1 .function-wrapper .function-bar .cart {
   padding: 0;
 }
-header .function-bar .wishlist:hover .icon-wrapper, header .function-bar .signin:hover .icon-wrapper, header .function-bar .cart:hover .icon-wrapper {
+header .header-layout1 .function-wrapper .function-bar .wishlist:hover .icon-wrapper, header .header-layout1 .function-wrapper .function-bar .signin:hover .icon-wrapper, header .header-layout1 .function-wrapper .function-bar .cart:hover .icon-wrapper {
   background-color: rgba(255, 255, 255, 0.0509803922);
 }
-header .function-bar .wishlist .title, header .function-bar .signin .title, header .function-bar .cart .title {
+header .header-layout1 .function-wrapper .function-bar .wishlist .title, header .header-layout1 .function-wrapper .function-bar .signin .title, header .header-layout1 .function-wrapper .function-bar .cart .title {
   font-size: 13px;
   font-weight: 400;
   line-height: 22px;
 }
-header .function-bar .wishlist .sub-title, header .function-bar .signin .sub-title, header .function-bar .cart .sub-title {
+header .header-layout1 .function-wrapper .function-bar .wishlist .sub-title, header .header-layout1 .function-wrapper .function-bar .signin .sub-title, header .header-layout1 .function-wrapper .function-bar .cart .sub-title {
   font-size: 16px;
   font-weight: 500;
   line-height: 22px;
 }
-header .function-bar > a:not(:last-child) {
+header .header-layout1 .function-wrapper .function-bar > a:not(:last-child) {
   margin-right: 25px;
 }
-header .function-bar .cart svg path {
+header .header-layout1 .function-wrapper .function-bar .cart svg path {
   fill: none !important;
 }
