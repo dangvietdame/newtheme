@@ -132,6 +132,7 @@ header .header-layout1 .menu-container .cat-menu .category {
   padding-right: 15px;
   border-right: 1px solid rgba(255, 255, 255, 0.1019607843);
   font-size: 16px;
+  cursor: pointer;
 }
 header .header-layout1 .menu-container .cat-menu .category .icon-menu {
   width: 30px;
@@ -154,12 +155,40 @@ header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu {
   position: relative;
   font-size: 16px;
 }
-header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu > .menu-item {
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-item-1 {
+  position: relative;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-item-1::after {
+  content: "";
+  width: 0;
+  height: 0;
+  position: absolute;
+  left: 10%;
+  bottom: -3px;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 7px solid #ffffff;
+  visibility: hidden;
+  transition-duration: 0.1s;
+  opacity: 0;
+  transition-property: opacity, bottom;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 145px;
+  background-color: #818EA0;
+  opacity: 0.5;
+  display: none;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu > .menu-item-1 {
   position: relative;
   padding-right: 40px;
   line-height: 55px;
 }
-header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu > .menu-item::before {
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu > .menu-item-1::before {
   content: "";
   width: 0;
   height: 2px;
@@ -168,15 +197,6 @@ header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu > .men
   top: 0;
   left: 0;
   transition: width ease 0.4s;
-}
-header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu > .menu-item:hover::before {
-  width: 40px;
-}
-header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-item:hover > a {
-  color: #F5C34B;
-}
-header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-item:hover path {
-  stroke: #F5C34B;
 }
 header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .has-dropdown {
   position: relative;
@@ -206,13 +226,19 @@ header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .has-d
 }
 header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .has-dropdown:last-child .menu-2 {
   right: -30px;
+  left: auto;
 }
 header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-2 {
   position: absolute;
+  top: 80%;
+  left: -10px;
+  opacity: 0;
   width: 250px;
-  display: none;
-  background-color: gray;
+  background-color: #ffffff;
+  visibility: hidden;
+  z-index: -1;
   border-radius: 0 0 3px 3px;
+  transition: all 0.25s;
 }
 header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-2 .menu-item {
   padding: 15px 35px;
@@ -220,22 +246,51 @@ header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-
 header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-2 .menu-item path {
   transition: stroke ease 0.4s;
 }
-header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-2 .menu-item:hover path {
-  stroke: #F5C34B;
-}
 header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-2 a {
   background-color: transparent !important;
   transition: color ease 0.4s;
 }
 header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-2 .menu-3 {
-  background-color: green;
+  background-color: #ffffff;
   position: absolute;
   left: 100%;
   top: 0;
+  opacity: 1;
   width: 250px;
-  display: none;
+  visibility: hidden;
+  z-index: 1;
   border-radius: 0 0 3px 3px;
+  transition: visibility 0.1s ease 0.05s, opacity 0.2s ease 0.1s;
 }
-header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .active {
-  z-index: 5;
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-2 .menu-3 .menu-item:hover a {
+  color: #F5C34B;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-item-1:hover::before {
+  width: 40px;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-item-1:hover::after {
+  opacity: 1;
+  bottom: 0;
+  transition-delay: 0.15s;
+  visibility: visible;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-item-1:hover > a {
+  color: #F5C34B;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-item-1:hover .icon-dropdown-1 path {
+  stroke: #F5C34B;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-item-1:hover .menu-2 {
+  visibility: visible;
+  opacity: 1;
+  top: 100%;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-item-2:hover > a {
+  color: #F5C34B;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-item-2:hover .icon-dropdown-right path {
+  stroke: #F5C34B;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-item-2:hover .menu-3 {
+  visibility: visible;
 }

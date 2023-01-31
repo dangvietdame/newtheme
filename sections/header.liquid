@@ -1,6 +1,5 @@
 {{ 'header.css' | asset_url | stylesheet_tag }}
 {{ 'header.js' | asset_url | script_tag }}
-{{ 'search.js' | asset_url | script_tag }}
 <header>
     {% assign menu = section.settings.menu %}
     <div class="{{section.id}} header-layout{{section.settings.layout}}">
@@ -77,13 +76,13 @@
                             {% for link in menu.links %}
                                 {% assign child_list_handle = link.title | handle %}
                                 {% if linklists[child_list_handle] and linklists[child_list_handle].links.size > 0 %}
-                                    <li class="has-dropdown menu-item">
+                                    <li class="has-dropdown menu-item menu-item-1">
                                         {{ link.title | link_to: link.url }}
                                         <ul class="menu-2">
                                             {% for child_link in linklists[child_list_handle].links %}
                                             {% assign grand_child_list_handle = child_link.title | handle %}
                                                 {% if linklists[grand_child_list_handle] and linklists[grand_child_list_handle].links.size > 0 %}
-                                                    <li class="has-dropdown menu-item">
+                                                    <li class="has-dropdown menu-item menu-item-2">
                                                         {{ child_link.title | link_to: child_link.url }}
                                                         <ul class="menu-3">
                                                             {% for grand_child_link in linklists[grand_child_list_handle].links %}
@@ -96,22 +95,22 @@
                                                         {% comment %} {% render "icon-dropdown-up" %} {% endcomment %}
                                                     </li>
                                                 {% else %}
-                                                    <li class="menu-item">
+                                                    <li class="menu-item menu-item-2">
                                                         {{ child_link.title | link_to: child_link.url }}
                                                     </li>
                                                 {% endif %}
                                             {% endfor %}
-                                            {% comment %} <div class="menu-overlay"></div>         {% endcomment %}
                                         </ul>
                                         {% render "icon-dropdown-1" %}
                                         {% comment %} {% render "icon-dropdown-up" %} {% endcomment %}
                                     </li>
                                 {% else %}
-                                    <li class="menu-item">
+                                    <li class="menu-item menu-item-1">
                                         {{ link.title | link_to: link.url }}
                                     </li>
                                 {% endif %}
                             {% endfor %}
+                            {% comment %} <div class="menu-overlay"></div> {% endcomment %}
                         </ul>
                     </div>
                 </div>
