@@ -173,16 +173,6 @@ header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-
   opacity: 0;
   transition-property: opacity, bottom;
 }
-header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-overlay {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 145px;
-  background-color: #818EA0;
-  opacity: 0.5;
-  display: none;
-}
 header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu > .menu-item-1 {
   position: relative;
   padding-right: 40px;
@@ -217,7 +207,7 @@ header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .has-d
   width: 20px;
   height: 20px;
   top: 50%;
-  right: 0;
+  right: 20px;
   transform: translateY(-50%);
 }
 header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .has-dropdown .icon-dropdown-right path {
@@ -230,18 +220,21 @@ header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .has-d
 }
 header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-2 {
   position: absolute;
-  top: 80%;
+  top: 100%;
   left: -10px;
   opacity: 0;
   width: 250px;
   background-color: #ffffff;
   visibility: hidden;
+  padding-top: 10px;
+  padding-bottom: 10px;
   z-index: -1;
   border-radius: 0 0 3px 3px;
   transition: all 0.25s;
 }
 header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-2 .menu-item {
-  padding: 15px 35px;
+  padding-left: 35px;
+  line-height: 35px;
 }
 header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-2 .menu-item path {
   transition: stroke ease 0.4s;
@@ -257,12 +250,17 @@ header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-
   top: 0;
   opacity: 1;
   width: 250px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   visibility: hidden;
   z-index: 1;
   border-radius: 0 0 3px 3px;
   transition: visibility 0.1s ease 0.05s, opacity 0.2s ease 0.1s;
 }
 header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-2 .menu-3 .menu-item:hover a {
+  color: #F5C34B;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-item-1:hover {
   color: #F5C34B;
 }
 header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-item-1:hover::before {
@@ -280,7 +278,7 @@ header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-
 header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-item-1:hover .icon-dropdown-1 path {
   stroke: #F5C34B;
 }
-header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-item-1:hover .menu-2 {
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-item-1:hover .menu-2, header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-item-1:hover .mega-menu-wrapper {
   visibility: visible;
   opacity: 1;
   top: 100%;
@@ -293,4 +291,148 @@ header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-
 }
 header .header-layout1 .menu-container .cat-menu .menu-wrapper .main-menu .menu-item-2:hover .menu-3 {
   visibility: visible;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .mega-menu-wrapper {
+  position: absolute;
+  visibility: hidden;
+  background-color: transparent;
+  width: calc(100vw - 17px);
+  opacity: 0;
+  z-index: -1;
+  top: 80%;
+  transition: all 0.25s;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .mega-menu-wrapper .mega-menu {
+  margin: auto;
+  padding: 30px 0 30px 15px;
+  background-color: #ffffff;
+  border-radius: 0 0 3px 3px;
+}
+@media (min-width: 992px) {
+  header .header-layout1 .menu-container .cat-menu .menu-wrapper .mega-menu-wrapper .mega-menu {
+    width: 960px;
+  }
+}
+@media (min-width: 1200px) {
+  header .header-layout1 .menu-container .cat-menu .menu-wrapper .mega-menu-wrapper .mega-menu {
+    width: 1140px;
+  }
+}
+@media (min-width: 1366px) {
+  header .header-layout1 .menu-container .cat-menu .menu-wrapper .mega-menu-wrapper .mega-menu {
+    width: 1320px;
+  }
+}
+@media (min-width: 1400px) {
+  header .header-layout1 .menu-container .cat-menu .menu-wrapper .mega-menu-wrapper .mega-menu {
+    width: 1400px;
+  }
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .mega-menu-wrapper .mega-menu .column-wrapper a {
+  background-color: transparent !important;
+  transition: color ease 0.4s;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .mega-menu-wrapper .mega-menu .column-wrapper .column-title {
+  color: #041E42;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.4;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .mega-menu-wrapper .mega-menu .column-wrapper .column-content a {
+  color: #041E42;
+  font-size: 16px;
+  line-height: 35px;
+  transition: color ease 0.4s;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .mega-menu-wrapper .mega-menu .column-wrapper .column-content .mega-item:hover a {
+  color: #F5C34B;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .mega-menu-wrapper .mega-menu .product-wrapper {
+  width: 470px;
+  margin-right: 60px;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .mega-menu-wrapper .mega-menu .product-wrapper .product-item {
+  max-height: 270px;
+  display: flex;
+  align-items: center;
+  background-color: #F2F2F2;
+  border-radius: 6px;
+  position: relative;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .mega-menu-wrapper .mega-menu .product-wrapper .product-item:not(:last-child) {
+  margin-bottom: 30px;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .mega-menu-wrapper .mega-menu .product-wrapper .product-item::before {
+  content: "";
+  background-color: #ffffff;
+  width: 0;
+  height: 0;
+  position: absolute;
+  bottom: -17px;
+  right: -17px;
+  border-radius: 50%;
+  transition: all ease 0.3s;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .mega-menu-wrapper .mega-menu .product-wrapper .product-item:hover::before {
+  border-radius: 100% 0 0 0;
+  bottom: 0;
+  right: 0;
+  height: 75%;
+  width: 45%;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .mega-menu-wrapper .mega-menu .product-wrapper .product-item .text {
+  padding-left: 50px;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .mega-menu-wrapper .mega-menu .product-wrapper .product-item .text .product-name {
+  color: #041E42;
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 38px;
+  letter-spacing: 0em;
+  margin-bottom: 8px;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .mega-menu-wrapper .mega-menu .product-wrapper .product-item .text .product-link {
+  color: #041E42;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 35px;
+  letter-spacing: 0em;
+  background-color: transparent;
+  position: relative;
+  transition: color ease 0.3s;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .mega-menu-wrapper .mega-menu .product-wrapper .product-item .text .product-link::before {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  height: 2px;
+  width: 30px;
+  background-color: #041E42;
+  transition: width ease 0.3s;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .mega-menu-wrapper .mega-menu .product-wrapper .product-item .text .product-link:hover {
+  color: #F5C34B;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .mega-menu-wrapper .mega-menu .product-wrapper .product-item .text .product-link:hover::before {
+  width: 65px;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .mega-menu-wrapper .mega-menu .product-wrapper .product-item .text .min-price-wrapper {
+  font-size: 15px;
+  line-height: 22px;
+  color: #0053F6;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .mega-menu-wrapper .mega-menu .product-wrapper .product-item .text .min-price-wrapper .min-price {
+  font-weight: 600;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .mega-menu-wrapper .mega-menu .product-wrapper .product-item .image {
+  width: 55%;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+header .header-layout1 .menu-container .cat-menu .menu-wrapper .mega-menu-wrapper .mega-menu .product-wrapper .product-item .image img {
+  width: 100%;
+  height: auto;
 }

@@ -3,7 +3,30 @@
     "sections": {
       "header": {
         "type": "header",
+        "blocks": {
+          "24d89ddc-583b-4565-b193-e985d908146a": {
+            "type": "megamenu_product",
+            "settings": {
+              "product": "health-care-monitor",
+              "min_price": true,
+              "link_text": "Shop Now"
+            }
+          },
+          "9782f09b-ab43-4d2d-9352-8760401c8df4": {
+            "type": "megamenu_product",
+            "settings": {
+              "product": "stainless-steel-scissors",
+              "min_price": true,
+              "link_text": "Shop Now"
+            }
+          }
+        },
+        "block_order": [
+          "24d89ddc-583b-4565-b193-e985d908146a",
+          "9782f09b-ab43-4d2d-9352-8760401c8df4"
+        ],
         "settings": {
+          "layout": "1",
           "logo": "shopify:\/\/shop_images\/logo.png",
           "logo_width": 128,
           "category": "All Category",
@@ -13,9 +36,15 @@
           "signin_title": "Sign In",
           "signin_sub_title": "Account",
           "cart_title": "Total",
+          "cat_header": "Browse Categories",
+          "menu": "main-menu",
+          "mega_menu": "mega-menu",
+          "megamenu_pos": 2,
           "text_color": "#ffffff",
+          "menu_item_color": "#041e42",
+          "menu_background_color": "#ffffff",
           "background_color": "#443297",
-          "second_color": "#F5C34B"
+          "second_color": "#f5c34b"
         }
       },
       "footer": {

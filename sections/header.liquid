@@ -2,6 +2,8 @@
 {{ 'header.js' | asset_url | script_tag }}
 <header>
     {% assign menu = section.settings.menu %}
+    {% assign mega = section.settings.mega_menu %}
+    {% assign pos = section.settings.megamenu_pos | minus: 1 %}
     <div class="{{section.id}} header-layout{{section.settings.layout}}">
         <div class="function-wrapper">
             <div class="container">
@@ -73,44 +75,13 @@
                     </div>
                     <div class="menu-wrapper">
                         <ul class="main-menu">
-                            {% for link in menu.links %}
-                                {% assign child_list_handle = link.title | handle %}
-                                {% if linklists[child_list_handle] and linklists[child_list_handle].links.size > 0 %}
-                                    <li class="has-dropdown menu-item menu-item-1">
-                                        {{ link.title | link_to: link.url }}
-                                        <ul class="menu-2">
-                                            {% for child_link in linklists[child_list_handle].links %}
-                                            {% assign grand_child_list_handle = child_link.title | handle %}
-                                                {% if linklists[grand_child_list_handle] and linklists[grand_child_list_handle].links.size > 0 %}
-                                                    <li class="has-dropdown menu-item menu-item-2">
-                                                        {{ child_link.title | link_to: child_link.url }}
-                                                        <ul class="menu-3">
-                                                            {% for grand_child_link in linklists[grand_child_list_handle].links %}
-                                                                <li class="menu-item">
-                                                                    {{ grand_child_link.title | link_to: grand_child_link.url }}
-                                                                </li>
-                                                            {% endfor %}
-                                                        </ul>
-                                                        {% render "icon-dropdown-right" %}
-                                                        {% comment %} {% render "icon-dropdown-up" %} {% endcomment %}
-                                                    </li>
-                                                {% else %}
-                                                    <li class="menu-item menu-item-2">
-                                                        {{ child_link.title | link_to: child_link.url }}
-                                                    </li>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </ul>
-                                        {% render "icon-dropdown-1" %}
-                                        {% comment %} {% render "icon-dropdown-up" %} {% endcomment %}
-                                    </li>
-                                {% else %}
-                                    <li class="menu-item menu-item-1">
-                                        {{ link.title | link_to: link.url }}
-                                    </li>
-                                {% endif %}
+                            {% for link in menu.links limit: pos %}
+                                {% render "menu", link: link %}
                             {% endfor %}
-                            {% comment %} <div class="menu-overlay"></div> {% endcomment %}
+                            {% render "mega-menu", mega: mega, blocks: section.blocks %}
+                            {% for link in menu.links offset: pos %}
+                                {% render "menu", link: link %}
+                            {% endfor %}
                         </ul>
                     </div>
                 </div>
@@ -263,8 +234,23 @@
         {
             "type": "link_list",
             "id": "menu",
-            "label": "Select menu to display",
+            "label": "Select Main menu to display",
             "default": "main-menu"
+        },
+        {
+            "type": "header",
+            "content": "Mega menu"
+        },
+        {
+            "type": "link_list",
+            "id": "mega_menu",
+            "label": "Select Mega menu to display"
+        },
+        {
+            "type": "number",
+            "id": "megamenu_pos",
+            "label": "Position-Order(Exp: 1,2,3..)",
+            "default": 2
         },
         {
             "type": "header",
@@ -299,6 +285,38 @@
             "id": "second_color",
             "label": "Second Background Color",
             "default": "#F5C34B"
+        }
+    ],
+    "max_blocks": 2,
+    "blocks":[
+        {
+            "type": "megamenu_product",
+            "name": "Product in Mega menu",
+            "settings":[
+                {
+                    "type": "product",
+                    "id": "product",
+                    "label": "Product"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "min_price",
+                    "label": "Show Min price?",
+                    "default": true
+                },
+                {
+                    "type": "text",
+                    "id": "min_price_text",
+                    "label": "Display text before Min price",
+                    "default": "Starting from"
+                },
+                {
+                    "type": "text",
+                    "id": "link_text",
+                    "label": "Link Text",
+                    "default": "Shop Now"
+                }
+            ]
         }
     ]
 }

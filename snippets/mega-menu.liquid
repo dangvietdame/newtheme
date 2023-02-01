@@ -1,0 +1,55 @@
+{% if mega %}
+    <li class="has-dropdown menu-item menu-item-1">
+        {{ mega.title }}
+        {% render "icon-dropdown-1" %}
+        <div class="mega-menu-wrapper">
+            <ul class="mega-menu row">
+                {% for link in mega.links %}
+                    <div class="col column-wrapper">
+                        <div class="column-title">{{ link.title }}</div>
+                        <ul class="column-content">
+                            {% assign child_list_handle = link.title | handle %}
+                            {% if linklists[child_list_handle] and linklists[child_list_handle].links.size > 0 %}
+                                {% for child_link in linklists[child_list_handle].links %}
+                                    <li class="mega-item">
+                                        {{ child_link.title | link_to: child_link.url }}
+                                    </li>
+                                {% endfor %}
+                            {% endif %}
+                        </ul>
+                    </div>
+                {% endfor %}
+                <div class="product-wrapper">
+                    {% for block in blocks %}
+                        <div class="product-item">
+                            <div class="text">
+                                {% if block.settings.min_price %}
+                                    <div class="min-price-wrapper">
+                                        {{ block.settings.min_price_text }}
+                                        {% assign variants = block.settings.product.variants %}
+                                        {% assign min = 999999999999999 %}
+                                        <span class="min-price">
+                                            {% for variant in variants %}
+                                                {% if variant.price < min %}
+                                                    {% assign min = variant.price %}
+                                                {% endif%}
+                                            {% endfor %}
+                                            {{ min | money }}
+                                        </span>
+                                    </div>
+                                {% endif%}
+                                <div class="product-name">
+                                    {{ block.settings.product.title }}
+                                </div>
+                                <a class="product-link" href="{{ block.settings.product.url }}">{{ block.settings.link_text }}</a>
+                            </div>
+                            <div class="image">
+                                <img src="{{ block.settings.product.featured_image | image_url }}">
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </ul>
+        </div>
+    </li>
+{% endif %}
