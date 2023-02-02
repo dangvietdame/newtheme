@@ -4,6 +4,21 @@
     {% assign menu = section.settings.menu %}
     {% assign mega = section.settings.mega_menu %}
     {% assign pos = section.settings.megamenu_pos | minus: 1 %}
+
+    {% assign product_mega = 0 %}
+    {% for block in section.blocks %}
+        {% if block.type == "megamenu_product" %}
+            {% assign product_mega = product_mega | plus: 1 %}
+        {% endif %}
+    {% endfor %}
+
+    {% assign collection_list_item = 0 %}
+    {% for block in section.blocks %}
+        {% if block.type == "browse_collection" %}
+            {% assign collection_list_item = collection_list_item | plus: 1 %}
+        {% endif %}
+    {% endfor %}
+
     <div class="{{section.id}} header-layout{{section.settings.layout}}">
         <div class="function-wrapper">
             <div class="container">
@@ -71,14 +86,34 @@
                         {{ section.settings.collection_header }}
                         <ul class="col-dropdown">
                             {% for block in section.blocks %}
-                                {% case block.type %}
-                                    {% when "browse_collection" %}
-                                        <li class="collection-item">
-                                            <i class="icon {{block.settings.icon_class}}"></i>
-                                            {{ block.settings.collection.title | capitalize }}
-                                            {% render "icon-dropdown-right" %}
-                                        </li>
-                                {% endcase %}
+                                {% if block.type == "browse_collection" %}
+                                    <li class="collection-item-wrapper">
+                                        <a class="collection-item" href="{{block.settings.collection.url}}">
+                                        <i class="icon {{block.settings.icon_class}}"></i>
+                                        {{ block.settings.collection.title | downcase }}
+                                        {% render "icon-dropdown-right" %}
+                                        </a>
+                                        <ul class="type-tag-wrapper">
+                                            {% for product_type in block.settings.collection.all_types %}
+                                                <li class="type-item-wrapper">
+                                                {{ product_type | link_to_type }}
+                                                    <ul class="tag-wrapper">
+                                                        {% assign tag_array = "" | split: "," %}
+                                                        {% for product in block.settings.collection.products %}
+                                                            {% if product.type == product_type %}
+                                                                {% assign tag_array = tag_array | concat: product.tags %}
+                                                            {% endif %}
+                                                        {% endfor%}
+                                                        {% assign tag_array = tag_array | uniq %}
+                                                        {% for tag in tag_array %}
+                                                            <li><a href="/?constraint={{ tag | handle }}">{{tag}}</li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </li>
+                                            {% endfor%}
+                                        </ul>
+                                    </li>
+                                {% endif%}
                             {% endfor %}
                         </ul>
                     </div>
@@ -87,12 +122,7 @@
                             {% for link in menu.links limit: pos %}
                                 {% render "menu", link: link %}
                             {% endfor %}
-                            {% for block in section.blocks %}
-                                {% case block.type %}
-                                    {% when "megamenu_product"%}
-                                        {% render "mega-menu", mega: mega, blocks: section.blocks %}
-                                {% endcase %}
-                            {% endfor %}
+                            {% render "mega-menu", mega: mega, blocks: section.blocks, count: product_mega %}
                             {% for link in menu.links offset: pos %}
                                 {% render "menu", link: link %}
                             {% endfor %}

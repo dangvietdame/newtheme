@@ -20,7 +20,7 @@
                     </div>
                 {% endfor %}
                 <div class="product-wrapper">
-                    {% for block in blocks %}
+                    {% for block in blocks limit: count %}
                         <div class="product-item">
                             <div class="text">
                                 {% if block.settings.min_price %}

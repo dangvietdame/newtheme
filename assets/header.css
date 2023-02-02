@@ -136,6 +136,9 @@ header .header-layout1 .menu-container .col-menu .collections {
   line-height: 55px;
   cursor: pointer;
 }
+header .header-layout1 .menu-container .col-menu .collections a {
+  background-color: transparent;
+}
 header .header-layout1 .menu-container .col-menu .collections .icon-menu {
   width: 30px;
   margin-right: 10px;
@@ -149,20 +152,33 @@ header .header-layout1 .menu-container .col-menu .collections .icon-menu path:fi
 header .header-layout1 .menu-container .col-menu .collections .icon-menu path:last-child {
   transform: translateX(-3px);
 }
-header .header-layout1 .menu-container .col-menu .collections:hover .col-dropdown {
-  top: 100%;
-  visibility: visible;
-  opacity: 1;
-}
 header .header-layout1 .menu-container .col-menu .collections .col-dropdown {
   position: absolute;
   top: 130%;
   width: 250px;
-  visibility: hidden;
-  opacity: 0;
+  visibility: visible;
+  opacity: 1;
   transition: all ease 0.3s;
 }
-header .header-layout1 .menu-container .col-menu .collections .col-dropdown .collection-item {
+header .header-layout1 .menu-container .col-menu .collections .col-dropdown::after {
+  content: "";
+  width: 0;
+  height: 0;
+  position: absolute;
+  left: 10%;
+  bottom: 98%;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-bottom: 9px solid #ffffff;
+  visibility: hidden;
+  transition-duration: 0.1s;
+  opacity: 0;
+  transition-property: opacity, bottom;
+}
+header .header-layout1 .menu-container .col-menu .collections .col-dropdown .collection-item-wrapper {
+  position: relative;
+}
+header .header-layout1 .menu-container .col-menu .collections .col-dropdown .collection-item-wrapper .collection-item {
   color: #041E42;
   font-size: 14px;
   line-height: 50px;
@@ -174,22 +190,47 @@ header .header-layout1 .menu-container .col-menu .collections .col-dropdown .col
   border: 1px solid #EAEAEA;
   border-left: 2px solid transparent;
   transition: all ease 0.3s;
+  text-transform: capitalize;
 }
-header .header-layout1 .menu-container .col-menu .collections .col-dropdown .collection-item:hover {
+header .header-layout1 .menu-container .col-menu .collections .col-dropdown .collection-item-wrapper .collection-item:hover {
   background-color: #F3F5F6;
   border-left: 2px solid #443297;
 }
-header .header-layout1 .menu-container .col-menu .collections .col-dropdown .collection-item .icon {
+header .header-layout1 .menu-container .col-menu .collections .col-dropdown .collection-item-wrapper .collection-item .icon {
   margin-right: 15px;
 }
-header .header-layout1 .menu-container .col-menu .collections .col-dropdown .collection-item .icon-dropdown-right {
+header .header-layout1 .menu-container .col-menu .collections .col-dropdown .collection-item-wrapper .collection-item .icon-dropdown-right {
   height: 15px;
   position: absolute;
   right: 20px;
 }
-header .header-layout1 .menu-container .col-menu .collections .col-dropdown .collection-item .icon-dropdown-right path {
+header .header-layout1 .menu-container .col-menu .collections .col-dropdown .collection-item-wrapper .collection-item .icon-dropdown-right path {
   fill: none !important;
   stroke: #041E42;
+}
+header .header-layout1 .menu-container .col-menu .collections .col-dropdown .collection-item-wrapper .type-tag-wrapper {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  display: flex;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity ease 0.3s;
+}
+header .header-layout1 .menu-container .col-menu .collections .col-dropdown .collection-item-wrapper:hover .type-tag-wrapper {
+  visibility: visible;
+  opacity: 1;
+}
+header .header-layout1 .menu-container .col-menu .collections:hover .col-dropdown {
+  top: calc(100% + 3px);
+  visibility: visible;
+  opacity: 1;
+}
+header .header-layout1 .menu-container .col-menu .collections:hover .col-dropdown::after {
+  transition-delay: 0.2s;
+  visibility: visible;
+  bottom: calc(100% - 2px);
+  opacity: 1;
 }
 header .header-layout1 .menu-container .col-menu .menu-wrapper {
   margin-left: 25px;
@@ -317,7 +358,7 @@ header .header-layout1 .menu-container .col-menu .menu-wrapper .main-menu .menu-
 header .header-layout1 .menu-container .col-menu .menu-wrapper .main-menu .menu-item-1:hover::after {
   opacity: 1;
   bottom: 0;
-  transition-delay: 0.15s;
+  transition-delay: 0.2s;
   visibility: visible;
 }
 header .header-layout1 .menu-container .col-menu .menu-wrapper .main-menu .menu-item-1:hover > a {

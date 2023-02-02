@@ -9,6 +9,7 @@
             "settings": {
               "product": "health-care-monitor",
               "min_price": true,
+              "min_price_text": "Starting from",
               "link_text": "Shop Now"
             }
           },
@@ -17,13 +18,62 @@
             "settings": {
               "product": "stainless-steel-scissors",
               "min_price": true,
+              "min_price_text": "Starting from",
               "link_text": "Shop Now"
+            }
+          },
+          "7a5fc778-dd05-45a2-bda3-e2c074912608": {
+            "type": "browse_collection",
+            "settings": {
+              "collection": "adidas",
+              "icon_class": "las la-tag"
+            }
+          },
+          "bf7afea7-f2fa-438a-b953-06f45d950b10": {
+            "type": "browse_collection",
+            "settings": {
+              "collection": "converse",
+              "icon_class": "las la-bell"
+            }
+          },
+          "e3e344c8-6c9c-4015-aaf6-c458fb34d8c3": {
+            "type": "browse_collection",
+            "settings": {
+              "collection": "dr-martens",
+              "icon_class": "las la-glasses"
+            }
+          },
+          "914b5599-7e48-4d30-b0d5-45abc49022ec": {
+            "type": "browse_collection",
+            "settings": {
+              "collection": "flex-fit",
+              "icon_class": "las la-user-tie"
+            }
+          },
+          "f1327a97-2c3d-47f5-9931-d9d1b0c77967": {
+            "type": "browse_collection",
+            "settings": {
+              "collection": "men",
+              "icon_class": "las la-hat-cowboy"
+            }
+          },
+          "4c0828b4-744e-4a0d-a46e-3269af1b6958": {
+            "type": "browse_collection",
+            "settings": {
+              "collection": "women",
+              "icon_class": "las la-bell"
             }
           }
         },
         "block_order": [
           "24d89ddc-583b-4565-b193-e985d908146a",
-          "9782f09b-ab43-4d2d-9352-8760401c8df4"
+          "9782f09b-ab43-4d2d-9352-8760401c8df4",
+          "7a5fc778-dd05-45a2-bda3-e2c074912608",
+          "bf7afea7-f2fa-438a-b953-06f45d950b10",
+          "e3e344c8-6c9c-4015-aaf6-c458fb34d8c3",
+          "914b5599-7e48-4d30-b0d5-45abc49022ec",
+          "f1327a97-2c3d-47f5-9931-d9d1b0c77967",
+          "4c0828b4-744e-4a0d-a46e-3269af1b6958"
         ],
         "settings": {
           "layout": "1",
@@ -36,7 +86,7 @@
           "signin_title": "Sign In",
           "signin_sub_title": "Account",
           "cart_title": "Total",
-          "cat_header": "Browse Categories",
+          "collection_header": "Browse Collections",
           "menu": "main-menu",
           "mega_menu": "mega-menu",
           "megamenu_pos": 2,
