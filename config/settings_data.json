@@ -9,6 +9,7 @@
             "settings": {
               "product": "health-care-monitor",
               "min_price": true,
+              "min_price_text": "Starting from",
               "link_text": "Shop Now"
             }
           },
@@ -17,13 +18,44 @@
             "settings": {
               "product": "stainless-steel-scissors",
               "min_price": true,
+              "min_price_text": "Starting from",
+              "link_text": "Shop Now"
+            }
+          },
+          "de09b8d0-0e9a-4d1f-afa1-0736f6796051": {
+            "type": "megamenu_product",
+            "settings": {
+              "product": "dr-martens-1460z-dmc-8-eye-boot-cherry-smooth",
+              "min_price": true,
+              "min_price_text": "Starting from",
+              "link_text": "Shop Now"
+            }
+          },
+          "4797f765-c631-4bfd-9b9c-34f35bcf7d16": {
+            "type": "megamenu_product",
+            "settings": {
+              "product": "adidas-classic-backpack",
+              "min_price": true,
+              "min_price_text": "Starting from",
+              "link_text": "Shop Now"
+            }
+          },
+          "906fe38c-a9b8-4d33-ae95-afb98b5874ee": {
+            "type": "megamenu_product",
+            "settings": {
+              "product": "adidas-superstar-80s",
+              "min_price": true,
+              "min_price_text": "Starting from",
               "link_text": "Shop Now"
             }
           }
         },
         "block_order": [
           "24d89ddc-583b-4565-b193-e985d908146a",
-          "9782f09b-ab43-4d2d-9352-8760401c8df4"
+          "9782f09b-ab43-4d2d-9352-8760401c8df4",
+          "de09b8d0-0e9a-4d1f-afa1-0736f6796051",
+          "4797f765-c631-4bfd-9b9c-34f35bcf7d16",
+          "906fe38c-a9b8-4d33-ae95-afb98b5874ee"
         ],
         "settings": {
           "layout": "1",
@@ -36,7 +68,7 @@
           "signin_title": "Sign In",
           "signin_sub_title": "Account",
           "cart_title": "Total",
-          "cat_header": "Browse Categories",
+          "collection_header": "Browse Collections",
           "menu": "main-menu",
           "mega_menu": "mega-menu",
           "megamenu_pos": 2,
