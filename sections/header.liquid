@@ -65,20 +65,34 @@
         </div>
         <div class="menu-container">
             <div class="container">
-                <div class="cat-menu">
-                    <div class="category">
+                <div class="col-menu">
+                    <div class="collections">
                         {% render "icon-menu" %}
-                        {{ section.settings.cat_header }}
-                        <div class="cat-dropdown">
-                        
-                        </div>
+                        {{ section.settings.collection_header }}
+                        <ul class="col-dropdown">
+                            {% for block in section.blocks %}
+                                {% case block.type %}
+                                    {% when "browse_collection" %}
+                                        <li class="collection-item">
+                                            <i class="icon {{block.settings.icon_class}}"></i>
+                                            {{ block.settings.collection.title | capitalize }}
+                                            {% render "icon-dropdown-right" %}
+                                        </li>
+                                {% endcase %}
+                            {% endfor %}
+                        </ul>
                     </div>
                     <div class="menu-wrapper">
                         <ul class="main-menu">
                             {% for link in menu.links limit: pos %}
                                 {% render "menu", link: link %}
                             {% endfor %}
-                            {% render "mega-menu", mega: mega, blocks: section.blocks %}
+                            {% for block in section.blocks %}
+                                {% case block.type %}
+                                    {% when "megamenu_product"%}
+                                        {% render "mega-menu", mega: mega, blocks: section.blocks %}
+                                {% endcase %}
+                            {% endfor %}
                             {% for link in menu.links offset: pos %}
                                 {% render "menu", link: link %}
                             {% endfor %}
@@ -219,13 +233,13 @@
         },
         {
             "type": "header",
-            "content": "Category"
+            "content": "Browse Collections"
         },
         {
             "type": "text",
-            "id": "cat_header",
-            "label": "Category header",
-            "default": "Browse Categories"
+            "id": "collection_header",
+            "label": "Browse Collections header",
+            "default": "Browse Collections"
         },
         {
             "type": "header",
@@ -287,7 +301,6 @@
             "default": "#F5C34B"
         }
     ],
-    "max_blocks": 2,
     "blocks":[
         {
             "type": "megamenu_product",
@@ -296,7 +309,8 @@
                 {
                     "type": "product",
                     "id": "product",
-                    "label": "Product"
+                    "label": "Product",
+                    "info": "For best result, product should have featured image (.png) with transparent background, width should be greater than or equal to height and the difference is not too big."
                 },
                 {
                     "type": "checkbox",
@@ -315,6 +329,25 @@
                     "id": "link_text",
                     "label": "Link Text",
                     "default": "Shop Now"
+                }
+            ]
+        },
+        {
+            "type": "browse_collection",
+            "name": "Collection Dropdown",
+            "settings":[
+                {
+                    "type": "collection",
+                    "id": "collection",
+                    "label": "Collections Item",
+                    "info": "Choose collection to display in Dropdown list"
+                },
+                {
+                    "type": "text",
+                    "id": "icon_class",
+                    "label": "Class of icon",
+                    "default": "las la-bell",
+                    "info": "Find corresponding icon to the collection in Line-awesome and paste class of this icon to here"
                 }
             ]
         }

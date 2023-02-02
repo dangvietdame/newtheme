@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-    $('.menu-item-1').hover(function(){
+    $('.menu-item-1, .collections').hover(function(){
         $('.menu-overlay').toggleClass('menu-overlay-active');
     });
 
