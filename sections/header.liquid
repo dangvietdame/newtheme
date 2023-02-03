@@ -29,7 +29,7 @@
                     <div class="col-lg-6">
                         <div class="search-wrapper row">
                             <div class="category col-3">
-                                {{section.settings.category}}
+                                {{section.settings.dropdown_search}}
                                 {% render "icon-dropdown" %}
                             </div>
                             <div class="search-container col-9">
@@ -84,38 +84,43 @@
                     <div class="collections">
                         {% render "icon-menu" %}
                         {{ section.settings.collection_header }}
-                        <ul class="col-dropdown">
-                            {% for block in section.blocks %}
-                                {% if block.type == "browse_collection" %}
-                                    <li class="collection-item-wrapper">
-                                        <a class="collection-item" href="{{block.settings.collection.url}}">
-                                        <i class="icon {{block.settings.icon_class}}"></i>
-                                        {{ block.settings.collection.title | downcase }}
-                                        {% render "icon-dropdown-right" %}
-                                        </a>
-                                        <ul class="type-tag-wrapper">
-                                            {% for product_type in block.settings.collection.all_types %}
-                                                <li class="type-item-wrapper">
-                                                {{ product_type | link_to_type }}
-                                                    <ul class="tag-wrapper">
-                                                        {% assign tag_array = "" | split: "," %}
-                                                        {% for product in block.settings.collection.products %}
-                                                            {% if product.type == product_type %}
-                                                                {% assign tag_array = tag_array | concat: product.tags %}
-                                                            {% endif %}
-                                                        {% endfor%}
-                                                        {% assign tag_array = tag_array | uniq %}
-                                                        {% for tag in tag_array %}
-                                                            <li><a href="/?constraint={{ tag | handle }}">{{tag}}</li>
-                                                        {% endfor %}
-                                                    </ul>
-                                                </li>
-                                            {% endfor%}
-                                        </ul>
-                                    </li>
-                                {% endif%}
-                            {% endfor %}
-                        </ul>
+                        <div class="col-dropdown-wrapper">
+                            <ul class="col-dropdown">
+                                {% for block in section.blocks %}
+                                    {% if block.type == "browse_collection" %}
+                                        <li class="collection-item-wrapper">
+                                            <a class="collection-item" href="{{block.settings.collection.url}}">
+                                            <i class="icon {{block.settings.icon_class}}"></i>
+                                            {{ block.settings.collection.title | downcase }}
+                                            {% render "icon-dropdown-right" %}
+                                            </a>
+                                            <ul class="type-tag-wrapper">
+                                                {% for product_type in block.settings.collection.all_types %}
+                                                    <li class="type-item-wrapper">
+                                                        {{ product_type | downcase }}
+                                                        <ul class="tag-wrapper">
+                                                            <li class="tag-item">
+                                                                {{section.settings.link_to_type}} {{ product_type | downcase | link_to_type }}
+                                                            </li>
+                                                            {% assign tag_array = "" | split: "," %}
+                                                            {% for product in block.settings.collection.products %}
+                                                                {% if product.type == product_type %}
+                                                                    {% assign tag_array = tag_array | concat: product.tags %}
+                                                                {% endif %}
+                                                            {% endfor%}
+                                                            {% assign tag_array = tag_array | uniq %}
+                                                            {% for tag in tag_array %}
+                                                                <li class="tag-item"><a href="/?constraint={{ tag | handle }}">{{ tag | replace: '-',' ' }}</a></li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </li>
+                                                {% endfor%}
+                                            </ul>
+                                        </li>
+                                    {% endif%}
+                                {% endfor %}
+                            </ul>
+                        </div>
                     </div>
                     <div class="menu-wrapper">
                         <ul class="main-menu">
@@ -130,7 +135,21 @@
                     </div>
                 </div>
                 <div class="quick-link">
-
+                    {% if section.settings.title_1 != "" %}
+                        <a class="link" href="{{section.settings.url_1}}">{{section.settings.title_1}}</a>
+                    {% endif %}
+                    {% if section.settings.title_2 != "" %}
+                        <a class="link" href="{{section.settings.url_2}}">{{section.settings.title_2}}</a>
+                    {% endif %}
+                    {% if section.settings.title_3 != "" %}
+                        <a class="link" href="{{section.settings.url_3}}">{{section.settings.title_3}}</a>
+                    {% endif %}
+                    {% if section.settings.title_4 != "" %}
+                        <a class="link" href="{{section.settings.url_4}}">{{section.settings.title_4}}</a>
+                    {% endif %}
+                    {% if section.settings.title_5 != "" %}
+                        <a class="link" href="{{section.settings.url_5}}">{{section.settings.title_5}}</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -201,17 +220,13 @@
         },
         {
             "type": "header",
-            "content": "Category"
+            "content": "Search Form"
         },
         {
             "type": "text",
-            "id": "category",
-            "label": "Category text",
-            "default": "All Category"
-        },
-        {
-            "type": "header",
-            "content": "Search form"
+            "id": "dropdown_search",
+            "label": "Dropdown text search option",
+            "default": "All Collection"
         },
         {
             "type": "text",
@@ -272,6 +287,12 @@
             "default": "Browse Collections"
         },
         {
+            "type": "text",
+            "id": "link_to_type",
+            "label": "Link to Type - Text inner",
+            "default": "Show All"
+        },
+        {
             "type": "header",
             "content": "Menu"
         },
@@ -295,6 +316,64 @@
             "id": "megamenu_pos",
             "label": "Position-Order(Exp: 1,2,3..)",
             "default": 2
+        },
+        {
+            "type": "header",
+            "content": "Quick Link"
+        },
+        {
+            "type": "text",
+            "id": "title_1",
+            "label": "Title 1",
+            "default": "Quick Link 1"
+        },
+        {
+            "type": "url",
+            "id": "url_1",
+            "label": "URL 1"
+        },
+        {
+            "type": "text",
+            "id": "title_2",
+            "label": "Title 2",
+            "default": "Quick Link 2"
+        },
+        {
+            "type": "url",
+            "id": "url_2",
+            "label": "URL 2"
+        },
+        {
+            "type": "text",
+            "id": "title_3",
+            "label": "Title 3",
+            "default": "Quick Link 3"
+        },
+        {
+            "type": "url",
+            "id": "url_3",
+            "label": "URL 3"
+        },
+        {
+            "type": "text",
+            "id": "title_4",
+            "label": "Title 4",
+            "default": "Quick Link 4"
+        },
+        {
+            "type": "url",
+            "id": "url_4",
+            "label": "URL 4"
+        },
+        {
+            "type": "text",
+            "id": "title_5",
+            "label": "Title 5"
+        },
+        {
+            "type": "url",
+            "id": "url_5",
+            "label": "URL 5"
         },
         {
             "type": "header",
