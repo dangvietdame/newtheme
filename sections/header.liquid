@@ -1,5 +1,6 @@
 {{ 'header.css' | asset_url | stylesheet_tag }}
 {{ 'header.js' | asset_url | script_tag }}
+<script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
 <header>
     {% assign menu = section.settings.menu %}
     {% assign mega = section.settings.mega_menu %}
@@ -33,13 +34,25 @@
                                 {% render "icon-dropdown" %}
                             </div>
                             <div class="search-container col-9">
-                                <span class="seperate"></span>
-                                <form action="/search">
-                                    <input type="text" name="q" placeholder="{{section.settings.placeholder}}"/>
-                                    <button class="search-button">
-                                        {% render "icon-search" %}
-                                    </button>
-                                </form>
+                                <predictive-search>
+                                    <form class="search-form" action="{{ routes.search_url }}" method="get" role="search">
+                                        <input 
+                                            id="Search" 
+                                            type="search" 
+                                            name="q"
+                                            value="{{ search.terms | escape }}"
+                                            aria-expanded="false"
+                                            aria-owns="predictive-search-results"
+                                            aria-controls="predictive-search-results"
+                                            aria-haspopup="listbox"
+                                            aria-autocomplete="list"
+                                            placeholder="{{section.settings.placeholder}}"/>
+                                        <button class="search-button">
+                                            {% render "icon-search" %}
+                                        </button>
+                                        <div id="predictive-search" tabindex="-1"></div>
+                                    </form>
+                                </predictive-search>
                             </div>
                         </div>
                     </div>

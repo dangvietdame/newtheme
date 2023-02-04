@@ -1,0 +1,28 @@
+{%- if predictive_search.performed -%}
+    <div id="predictive-search-results">
+      {%- if predictive_search.resources.products.size > 0 -%}
+        <ul class="result-wrapper" role="listbox" aria-labelledby="predictive-search-products">
+          {%- for product in predictive_search.resources.products -%}
+            <li class="result-item" role="option">
+              <a href="{{ product.url }}">
+                <div class="image">
+                    <img src="{{ product.featured_image | image_url }}">
+                </div>
+                <div class="info">
+                    <div class="product-title">
+                        {{ product.title }}
+                    </div>
+                    <div class="product-price">
+                        {{ product.price | money }}
+                    </div>
+                </div>
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+      <button>
+        Search for “{{ predictive_search.terms }}”
+      </button>
+    </div>
+{%- endif -%}
