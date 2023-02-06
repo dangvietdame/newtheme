@@ -22,7 +22,8 @@
         </ul>
       {%- endif -%}
       <button>
-        Search for “{{ predictive_search.terms }}”
+        <span>Search for </span> 
+        <span>{{ predictive_search.terms | truncate: 45}}</span>
       </button>
     </div>
 {%- endif -%}

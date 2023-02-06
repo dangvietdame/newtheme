@@ -31,9 +31,16 @@
     {{ content_for_header }}
 </head>
 <body>
-    <div class="menu-overlay"></div>
-    {% section 'header' %}
-    {{ content_for_layout }}
-    {% section 'footer' %}
+    <div class="container-wrapper">
+        <div class="sidebar-menu">
+            {% section 'sidebar-menu' %}
+        </div>
+        <div class="container-inner">
+            <div class="menu-overlay"></div>
+            {% section 'header' %}
+            {{ content_for_layout }}
+            {% section 'footer' %}
+        </div>
+    </div>
 </body>
 </html>

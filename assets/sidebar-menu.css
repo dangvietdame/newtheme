@@ -1,0 +1,100 @@
+.container-wrapper {
+  position: relative;
+}
+.container-wrapper .sidebar-menu {
+  position: absolute;
+  width: 370px;
+  background-color: #ffffff;
+  height: 100%;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity ease 0.4s;
+}
+.container-wrapper .sidebar-menu .sidebar-menu-container .menu-title {
+  color: #555555;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 60px;
+  text-align: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.container-wrapper .sidebar-menu .sidebar-menu-container .menu-title .icon-dropdown-right {
+  transform: rotate(180deg);
+}
+.container-wrapper .sidebar-menu .sidebar-menu-container .menu-wrapper {
+  margin-top: 30px;
+}
+.container-wrapper .sidebar-menu .sidebar-menu-container .menu-wrapper .main-menu .menu-item-1 {
+  height: 44px;
+  padding-left: 20px;
+  padding-right: 54px;
+  display: flex;
+  align-items: center;
+  color: #041E42;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  line-height: 44px;
+}
+.container-wrapper .sidebar-menu .sidebar-menu-container .menu-wrapper .main-menu .menu-item-1 .icon-dropdown-1 {
+  display: none;
+}
+.container-wrapper .sidebar-menu .sidebar-menu-container .menu-wrapper .main-menu .menu-item-1 .icon-dropdown-right {
+  stroke: #041E42;
+  width: 15px;
+  height: 15px;
+}
+.container-wrapper .sidebar-menu .sidebar-menu-container .menu-wrapper .main-menu .menu-item-1 .menu-2 {
+  visibility: hidden;
+  width: 100%;
+  position: absolute;
+  left: 100%;
+  transition: left ease 0.3s;
+  background-color: #ffffff;
+  z-index: 1;
+}
+.container-wrapper .sidebar-menu .sidebar-menu-container .menu-wrapper .main-menu .menu-item-1 .menu-2 .menu-title {
+  margin-bottom: 30px;
+  position: relative;
+}
+.container-wrapper .sidebar-menu .sidebar-menu-container .menu-wrapper .main-menu .menu-item-1 .menu-2 .menu-title > .icon-dropdown-right {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.container-wrapper .sidebar-menu .sidebar-menu-container .menu-wrapper .main-menu .menu-item-1 .menu-2 .menu-item-2 {
+  height: 44px;
+  padding-left: 20px;
+  padding-right: 54px;
+  display: flex;
+  align-items: center;
+  color: #041E42;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  line-height: 44px;
+}
+.container-wrapper .sidebar-menu .sidebar-menu-container .menu-wrapper .main-menu .menu-item-1 .menu-2 .menu-item-2 .menu-3 {
+  visibility: hidden;
+}
+.container-wrapper .sidebar-menu .sidebar-menu-container .menu-wrapper .main-menu .has-dropdown {
+  position: relative;
+}
+.container-wrapper .sidebar-menu .sidebar-menu-container .menu-wrapper .main-menu .has-dropdown > .icon-dropdown-right {
+  position: absolute;
+  top: 50%;
+  right: 25px;
+  transform: translateY(-50%);
+}
+.container-wrapper .sidebar-menu .sidebar-menu-container .menu-wrapper .main-menu .menu-active {
+  left: 0 !important;
+  visibility: visible !important;
+}
+.container-wrapper .container-inner {
+  position: relative;
+  z-index: 5;
+  transition: transform ease 0.4s;
+}

@@ -24,14 +24,23 @@
         <div class="function-wrapper">
             <div class="container">
                 <div class="row">
-                    <a class="logo col-lg-2" href="\home">
+                    <a class="logo col-lg-2 col-xl-2" href="\home">
                         <img src="{{section.settings.logo | image_url}}">
                     </a>
-                    <div class="col-lg-6">
+                    <div class="col-lg-5 col-xl-6">
                         <div class="search-wrapper row">
-                            <div class="category col-3">
-                                {{section.settings.dropdown_search}}
-                                {% render "icon-dropdown" %}
+                            <div class="category-wrapper">
+                                <div class="category">
+                                    {{section.settings.dropdown_search}}
+                                    {% render "icon-dropdown" %}
+                                    <ul class="dropdown-list">
+                                        {% for collection in collections %}
+                                            <li>
+                                                <a class="item" href="{{collection.url}}">{{collection.title | downcase}}</a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
                             </div>
                             <div class="search-container col-9">
                                 <predictive-search>
@@ -56,7 +65,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 row function-bar">
+                    <div class="col-lg-5 col-xl-4 row function-bar">
                         <a class="wishlist col-lg-4 row" href="#">
                             <div class="icon-wrapper">
                                 {%render "icon-heart"%}
@@ -102,11 +111,11 @@
                                 {% for block in section.blocks %}
                                     {% if block.type == "browse_collection" %}
                                         <li class="collection-item-wrapper">
-                                            <a class="collection-item" href="{{block.settings.collection.url}}">
-                                            <i class="icon {{block.settings.icon_class}}"></i>
-                                            {{ block.settings.collection.title | downcase }}
-                                            {% render "icon-dropdown-right" %}
-                                            </a>
+                                            <div class="collection-item">
+                                                <i class="icon {{block.settings.icon_class}}"></i>
+                                                {{ block.settings.collection.title | downcase }}
+                                                {% render "icon-dropdown-right" %}
+                                            </div>
                                             <ul class="type-tag-wrapper">
                                                 {% for product_type in block.settings.collection.all_types %}
                                                     <li class="type-item-wrapper">
@@ -163,6 +172,55 @@
                     {% if section.settings.title_5 != "" %}
                         <a class="link" href="{{section.settings.url_5}}">{{section.settings.title_5}}</a>
                     {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="mobile-layout">
+            <div class="section1-wrapper">
+                <div class="menu-logo-wrapper">
+                    {% render "icon-menu" %}
+                    <div class="close-button">{% render "icon-close" %}</div>
+                    <a class="logo" href="\home">
+                        <img src="{{section.settings.logo | image_url}}">
+                    </a>
+                </div>
+                <div class="account-cart-wrapper">
+                    <a href="#">
+                        <div class="icon-wrapper">
+                            {%render "icon-user"%}
+                        </div>
+                    </a>
+                    <a href="/cart">
+                        <div class="icon-wrapper">
+                            {%render "icon-cart"%}
+                            <div class="cart-count">
+                                {{cart.item_count}}
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="section2-wrapper">
+                <div class="search-wrapper">
+                    <predictive-search>
+                        <form class="search-form" action="{{ routes.search_url }}" method="get" role="search">
+                            <input 
+                                id="Search" 
+                                type="search" 
+                                name="q"
+                                value="{{ search.terms | escape }}"
+                                aria-expanded="false"
+                                aria-owns="predictive-search-results"
+                                aria-controls="predictive-search-results"
+                                aria-haspopup="listbox"
+                                aria-autocomplete="list"
+                                placeholder="{{section.settings.placeholder}}"/>
+                            <button class="search-button">
+                                {% render "icon-search" %}
+                            </button>
+                            <div id="predictive-search" tabindex="-1"></div>
+                        </form>
+                    </predictive-search>
                 </div>
             </div>
         </div>

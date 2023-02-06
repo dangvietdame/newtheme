@@ -1,0 +1,96 @@
+{{ 'sidebar-menu.css' | asset_url | stylesheet_tag }}
+    <div class="{{section.id}} sidebar-menu-container">
+        <div class="menu-title">
+            {{ section.settings.menu_title }}
+        </div>
+        <div class="menu-wrapper">
+            <ul class="main-menu">
+                {% for link in section.settings.menu.links %}
+                    {% render "sidebar-menu", link: link %}
+                {% endfor %}
+            </ul>
+        </div>
+
+        {% comment %} <div class="collections">
+            {% render "icon-menu" %}
+            {{ section.settings.collection_header }}
+            <div class="col-dropdown-wrapper">
+                <ul class="col-dropdown">
+                    {% for block in section.blocks %}
+                        {% if block.type == "browse_collection" %}
+                            <li class="collection-item-wrapper">
+                                <a class="collection-item" href="{{block.settings.collection.url}}">
+                                <i class="icon {{block.settings.icon_class}}"></i>
+                                {{ block.settings.collection.title | downcase }}
+                                {% render "icon-dropdown-right" %}
+                                </a>
+                                <ul class="type-tag-wrapper">
+                                    {% for product_type in block.settings.collection.all_types %}
+                                        <li class="type-item-wrapper">
+                                            {{ product_type | downcase }}
+                                            <ul class="tag-wrapper">
+                                                <li class="tag-item">
+                                                    {{section.settings.link_to_type}} {{ product_type | downcase | link_to_type }}
+                                                </li>
+                                                {% assign tag_array = "" | split: "," %}
+                                                {% for product in block.settings.collection.products %}
+                                                    {% if product.type == product_type %}
+                                                        {% assign tag_array = tag_array | concat: product.tags %}
+                                                    {% endif %}
+                                                {% endfor%}
+                                                {% assign tag_array = tag_array | uniq %}
+                                                {% for tag in tag_array %}
+                                                    <li class="tag-item"><a href="/?constraint={{ tag | handle }}">{{ tag | replace: '-',' ' }}</a></li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                    {% endfor%}
+                                </ul>
+                            </li>
+                        {% endif%}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div> {% endcomment %}
+    </div>
+
+{% schema %}
+{
+    "name": "Sidebar Menu",
+    "settings":[
+        {
+            "type": "link_list",
+            "id": "menu",
+            "label": "Select Menu to display",
+            "default": "main-menu"
+        },
+        {
+            "type": "text",
+            "id": "menu_title",
+            "label": "Menu Title",
+            "default": "Menu"
+        }
+    ],
+    "blocks":[
+        {
+            "type": "browse_collection",
+            "name": "Collection Dropdown",
+            "settings":[
+                {
+                    "type": "collection",
+                    "id": "collection",
+                    "label": "Collections Item",
+                    "info": "Choose collection to display in Dropdown list"
+                },
+                {
+                    "type": "text",
+                    "id": "icon_class",
+                    "label": "Class of icon",
+                    "default": "las la-bell",
+                    "info": "Find corresponding icon to the collection in Line-awesome and paste class of this icon to here"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

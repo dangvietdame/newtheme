@@ -1,0 +1,41 @@
+{% assign child_list_handle = link.title | handle %}
+{% if linklists[child_list_handle] and linklists[child_list_handle].links.size > 0 %}
+    <li class="has-dropdown menu-item menu-item-1">
+        {{ link.title }}
+        <ul class="menu-2">
+            <div class="menu-title">
+                {% render "icon-dropdown-right" %}
+                {{link.title}}
+            </div>
+            {% for child_link in linklists[child_list_handle].links %}
+            {% assign grand_child_list_handle = child_link.title | handle %}
+                {% if linklists[grand_child_list_handle] and linklists[grand_child_list_handle].links.size > 0 %}
+                    <li class="has-dropdown menu-item menu-item-2">
+                        {{ child_link.title | link_to: child_link.url }}
+                        <ul class="menu-3">
+                            <div class="menu-title">
+                                {% render "icon-dropdown-right" %}
+                                {{child_link.title}}
+                            </div>
+                            {% for grand_child_link in linklists[grand_child_list_handle].links %}
+                                <li class="menu-item">
+                                    {{ grand_child_link.title | link_to: grand_child_link.url }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        {% render "icon-dropdown-right" %}
+                    </li>
+                {% else %}
+                    <li class="menu-item menu-item-2">
+                        {{ child_link.title | link_to: child_link.url }}
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+        {% render "icon-dropdown-right" %}
+    </li>
+{% else %}
+    <li class="menu-item menu-item-1">
+        {{ link.title | link_to: link.url }}
+    </li>
+{% endif %}
