@@ -1,10 +1,10 @@
 {% assign child_list_handle = link.title | handle %}
 {% if linklists[child_list_handle] and linklists[child_list_handle].links.size > 0 %}
     <li class="has-dropdown menu-item menu-item-1">
-        {{ link.title }}
+        {{ link.title | link_to: link.url }}
         <ul class="menu-2">
             <div class="menu-title">
-                {% render "icon-dropdown-right" %}
+                {% render "icon-arrow-left" %}
                 {{link.title}}
             </div>
             {% for child_link in linklists[child_list_handle].links %}
@@ -14,7 +14,7 @@
                         {{ child_link.title | link_to: child_link.url }}
                         <ul class="menu-3">
                             <div class="menu-title">
-                                {% render "icon-dropdown-right" %}
+                                {% render "icon-arrow-left" %}
                                 {{child_link.title}}
                             </div>
                             {% for grand_child_link in linklists[grand_child_list_handle].links %}

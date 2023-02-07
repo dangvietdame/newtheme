@@ -163,6 +163,51 @@
         ],
         "settings": {
         }
+      },
+      "sidebar-menu": {
+        "type": "sidebar-menu",
+        "blocks": {
+          "1dcfc656-3bb1-4983-8c70-5cf35abd1fcf": {
+            "type": "browse_collection",
+            "settings": {
+              "collection": "adidas",
+              "icon_class": "las la-bell"
+            }
+          },
+          "a6fb3676-74a8-4c9f-83c2-5d93d9f4557c": {
+            "type": "browse_collection",
+            "settings": {
+              "collection": "dr-martens",
+              "icon_class": "las la-bell"
+            }
+          },
+          "995d2b61-e51c-45ee-82af-80250ab8fbc0": {
+            "type": "browse_collection",
+            "settings": {
+              "collection": "flex-fit",
+              "icon_class": "las la-bell"
+            }
+          },
+          "30c01ced-c156-4560-8f94-1b43bc799d71": {
+            "type": "browse_collection",
+            "settings": {
+              "collection": "puma",
+              "icon_class": "las la-bell"
+            }
+          }
+        },
+        "block_order": [
+          "1dcfc656-3bb1-4983-8c70-5cf35abd1fcf",
+          "a6fb3676-74a8-4c9f-83c2-5d93d9f4557c",
+          "995d2b61-e51c-45ee-82af-80250ab8fbc0",
+          "30c01ced-c156-4560-8f94-1b43bc799d71"
+        ],
+        "settings": {
+          "menu": "main-menu",
+          "menu_title": "Menu",
+          "col_title": "Departments",
+          "col_more": "See More"
+        }
       }
     },
     "content_for_index": [

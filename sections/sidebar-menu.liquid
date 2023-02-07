@@ -10,54 +10,67 @@
                 {% endfor %}
             </ul>
         </div>
-
-        {% comment %} <div class="collections">
-            {% render "icon-menu" %}
-            {{ section.settings.collection_header }}
-            <div class="col-dropdown-wrapper">
-                <ul class="col-dropdown">
+        {% if section.blocks.size > 0 %}
+            <div class="collections">
+                <div class="collections-title">
+                    {{ section.settings.col_title }}
+                </div>
+                <ul class="collections-list">
                     {% for block in section.blocks %}
-                        {% if block.type == "browse_collection" %}
-                            <li class="collection-item-wrapper">
-                                <a class="collection-item" href="{{block.settings.collection.url}}">
+                        <li class="collection-item-wrapper">
+                            <a class="collection-item" href="{{block.settings.collection.url}}">
                                 <i class="icon {{block.settings.icon_class}}"></i>
-                                {{ block.settings.collection.title | downcase }}
+                                <div>
+                                    {{ block.settings.collection.title | upcase }}
+                                </div>
+                            </a>
+                            <ul class="type-tag-wrapper">
+                                <li class="title">
+                                    {% render "icon-arrow-left" %}
+                                    {{ block.settings.collection.title | upcase }}
+                                </li>
+                                {% for product_type in block.settings.collection.all_types %}
+                                    <li class="type-item-wrapper">
+                                        {{ product_type | upcase | link_to_type }}
+                                        <ul class="tag-wrapper">
+                                            <li class="title">
+                                                {% render "icon-arrow-left" %}
+                                                {{section.settings.link_to_type}} 
+                                                {{ product_type | upcase | link_to_type }}
+                                            </li>
+                                            {% assign tag_array = "" | split: "," %}
+                                            {% for product in block.settings.collection.products %}
+                                                {% if product.type == product_type %}
+                                                    {% assign tag_array = tag_array | concat: product.tags %}
+                                                {% endif %}
+                                            {% endfor%}
+                                            {% assign tag_array = tag_array | uniq %}
+                                            {% for tag in tag_array %}
+                                                <li class="tag-item"><a href="/?constraint={{ tag | handle }}">{{ tag | upcase | replace: '-',' ' }}</a></li>
+                                            {% endfor %}
+                                        </ul>
+                                        {% render "icon-dropdown-right" %}
+                                    </li>
+                                {% endfor%}
                                 {% render "icon-dropdown-right" %}
-                                </a>
-                                <ul class="type-tag-wrapper">
-                                    {% for product_type in block.settings.collection.all_types %}
-                                        <li class="type-item-wrapper">
-                                            {{ product_type | downcase }}
-                                            <ul class="tag-wrapper">
-                                                <li class="tag-item">
-                                                    {{section.settings.link_to_type}} {{ product_type | downcase | link_to_type }}
-                                                </li>
-                                                {% assign tag_array = "" | split: "," %}
-                                                {% for product in block.settings.collection.products %}
-                                                    {% if product.type == product_type %}
-                                                        {% assign tag_array = tag_array | concat: product.tags %}
-                                                    {% endif %}
-                                                {% endfor%}
-                                                {% assign tag_array = tag_array | uniq %}
-                                                {% for tag in tag_array %}
-                                                    <li class="tag-item"><a href="/?constraint={{ tag | handle }}">{{ tag | replace: '-',' ' }}</a></li>
-                                                {% endfor %}
-                                            </ul>
-                                        </li>
-                                    {% endfor%}
-                                </ul>
-                            </li>
-                        {% endif%}
+                            </ul>
+                            {% render "icon-dropdown-right" %}
+                        </li>
                     {% endfor %}
                 </ul>
+                <a class="col-more" href="/collections/all">{{ section.settings.col_more}}</a>
             </div>
-        </div> {% endcomment %}
+        {% endif %}
     </div>
 
 {% schema %}
 {
     "name": "Sidebar Menu",
     "settings":[
+        {
+            "type": "header",
+            "content": "Menu"
+        },
         {
             "type": "link_list",
             "id": "menu",
@@ -69,6 +82,22 @@
             "id": "menu_title",
             "label": "Menu Title",
             "default": "Menu"
+        },
+        {
+            "type": "header",
+            "content": "Collections"
+        },
+        {
+            "type": "text",
+            "id": "col_title",
+            "label": "Collections Title",
+            "default": "Departments"
+        },
+        {
+            "type": "text",
+            "id": "col_more",
+            "label": "See more text",
+            "default": "See More"
         }
     ],
     "blocks":[

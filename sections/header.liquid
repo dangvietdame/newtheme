@@ -24,10 +24,10 @@
         <div class="function-wrapper">
             <div class="container">
                 <div class="row">
-                    <a class="logo col-lg-2 col-xl-2" href="\home">
+                    <a class="logo col-lg-2 col-xxl-2" href="\home">
                         <img src="{{section.settings.logo | image_url}}">
                     </a>
-                    <div class="col-lg-5 col-xl-6">
+                    <div class="col-lg-5 col-xxl-6">
                         <div class="search-wrapper row">
                             <div class="category-wrapper">
                                 <div class="category">
@@ -65,12 +65,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-5 col-xl-4 row function-bar">
+                    <div class="col-lg-5 col-xxl-4 row function-bar">
                         <a class="wishlist col-lg-4 row" href="#">
                             <div class="icon-wrapper">
                                 {%render "icon-heart"%}
                             </div>
-                            <div>
+                            <div class="function-content">
                                 <div class="title">{{section.settings.wishlist_title}}</div>
                                 <div class="sub-title">{{section.settings.wishlist_sub_title}}</div>
                             </div>
@@ -79,7 +79,7 @@
                             <div class="icon-wrapper">
                                 {%render "icon-user"%}
                             </div>
-                            <div>
+                            <div class="function-content">
                                 <div class="title">{{section.settings.signin_title}}</div>
                                 <div class="sub-title">{{section.settings.signin_sub_title}}</div>
                             </div>
@@ -91,7 +91,7 @@
                                     {{cart.item_count}}
                                 </div>
                             </div>
-                            <div>
+                            <div class="function-content">
                                 <div class="title">{{cart.original_total_price | money}}</div>
                                 <div class="sub-title">{{section.settings.cart_title}}</div>
                             </div>
