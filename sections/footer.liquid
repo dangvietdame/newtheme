@@ -1,132 +1,187 @@
 {{ 'footer.css' | asset_url | stylesheet_tag }}
 <footer>
-    <div class="container">
-        {% if section.settings.email_signup_ck %}
-            <div class="email-signup-container">
-                <div class="title">
-                    {{ section.settings.email_title_text }}
+    <div class="{{section.id}} footer-layout-{{section.settings.layout}}">
+        <div class="container">
+            {% if section.settings.ck_email_signup %}
+                <div class="row">
+                    <div class="email-signup-container col-lg-6 offset-lg-3">
+                        <div class="email-signup-text">
+                            <div class="title">
+                                {{ section.settings.title }}
+                            </div>
+                            <div class="sub-title">
+                                {{ section.settings.sub_title }}
+                            </div>
+                        </div>
+                        {%- form 'customer' -%}
+                            <input type="hidden" name="contact[tags]" value="subscriber">
+                            <div class="email-signup-wrapper">
+                                <div class="field row">
+                                    <input 
+                                        class="col subscribe-email" 
+                                        type="email" 
+                                        name="contact[email]" 
+                                        value="{{ form.email }}"
+                                        placeholder="{{section.settings.placeholder}}">
+                                    <button type="submit" class="submit-btn">
+                                        {{ section.settings.text_button }}
+                                    </button>
+                                </div>
+                            </div>
+                            {% if form.posted_successfully? %}
+                                <div class="subscribe-success">
+                                    {{ section.settings.success_text }}
+                                    {% render "icon-check" %}
+                                </div>
+                            {% endif %}
+                        {%- endform -%}
+                    </div>
                 </div>
-                <div class="content">
-                    {{ section.settings.email_content_text }}
-                </div>
-                {%- form 'customer' -%}
-                    <input type="hidden" name="contact[tags]" value="newsletter">
-                    <div class="newsletter-form-wrapper">
-                        <div class="field">
-                            <input class="newsletter-email" type="email" name="contact[email]" value="{{ form.email }}">
-                            <label class="email-placeholder">{{ section.settings.placeholder }}</label>
-                            <button type="submit" class="submit-btn">
-                                {% render 'icon-right' %}
-                            </button>
+            {% endif %}
+            <div class="row footer-detail">
+                <div class="col-5 col-md-5 col-lg-3 col-xl-3 contact">
+                    <div class="contact-header">
+                        {{section.settings.contact_header}}
+                    </div>
+                    <div class="phone">
+                        {% render "icon-phone" %}
+                        <div class="text-number">
+                            <div class="text">{{section.settings.phone_text}}</div>
+                            <div class="number">{{section.settings.phone_number}}</div>
                         </div>
                     </div>
-                    {%- if form.posted_successfully? -%}
-                        <div class="newsletter-success">
-                            {% render 'icon-check' %}{{ section.settings.success_text }}
+                    <div class="mail">
+                        {% render "icon-mail" %}
+                        <div class="text-address">
+                            <div class="text">{{section.settings.mail_text}}</div>
+                            <div class="address">{{section.settings.mail_address}}</div>
                         </div>
-                    {%- endif -%}
-                {%- endform -%}
-            </div>
-        {% endif %}
-        <div class="footer-content row">
-            {% for block in section.blocks %}
-                {% case block.type %}
-                    {% when 'menu'%}
-                        <div class="footer-menu col-sm-2 col-md-6">
-                            <div class="title">{{ block.settings.menu_title }}</div>
-                            <ul class="menu-item-wrapper">
-                                {% for link in block.settings.menu.links %}
-                                    <li class="{% if link.active %}menu-item-active {% endif %}menu-item">
-                                        {{ link.title | link_to: link.url }}
-                                    </li>
+                    </div>
+                </div>
+                {% for block in section.blocks %}
+                    <ul class="col-5 col-md-3 col-lg-2 col-xl-2 custom-link" {{ block.shopify_attributes }}>
+                        <li class="custom-link-header">{{block.settings.header}}</li>
+                        <li class="item"><a class="link-item" href="{{block.settings.link1_url}}">{{block.settings.link1_title}}</a><li>
+                        <li class="item"><a class="link-item" href="{{block.settings.link2_url}}">{{block.settings.link2_title}}</a><li>
+                        <li class="item"><a class="link-item" href="{{block.settings.link3_url}}">{{block.settings.link3_title}}</a><li>
+                        <li class="item"><a class="link-item" href="{{block.settings.link4_url}}">{{block.settings.link4_title}}</a><li>
+                        <li class="item"><a class="link-item" href="{{block.settings.link5_url}}">{{block.settings.link5_title}}</a><li>
+                    </ul>
+                {% endfor %}
+                <div class="col-8 col-md-6 col-lg-3 col-xl-3 row social-app-payment">
+                    <div class="social-network">
+                        <div class="social-header">{{section.settings.social_header}}</div>
+                        
+                            <a class="facebook" href="{{section.settings.facebook}}">
+                                {% render "icon-facebook" %}
+                            </a>
+                        
+                        
+                            <a class="twitter" href="{{section.settings.twitter}}">
+                                {% render "icon-twitter" %}
+                            </a>
+                        
+                        
+                            <a class="instagram" href="{{section.settings.instagram}}">
+                                {% render "icon-instagram"%}
+                            </a>
+                        
+                        
+                            <a class="linken" href="{{section.settings.linkedin}}">
+                                {% render "icon-linken" %}
+                            </a>
+                        
+                        
+                            <a class="youtube" href="{{section.settings.youtube}}">
+                                {% render "icon-youtube"%}
+                            </a>
+                        
+                        
+                            <a class="tiktok" href="{{section.settings.tiktok}}">
+                                {% render "icon-tiktok"%}
+                            </a>
+                        
+                        
+                            <a class="pinterest" href="{{section.settings.pinterest}}">
+                                {% render "icon-pinterest" %}
+                            </a>
+                        
+                        
+                            <a class="snapchat" href="{{section.settings.snapchat}}">
+                                {% render "icon-snapchat" %}
+                            </a>
+                        
+                    </div>
+                    {% if section.settings.ck_mobile_apps %}
+                        <div class="mobile-apps">
+                            <div class="mobile-apps-header">{{section.settings.apps_header}}</div>
+
+                            <div class="ios">
+                                <a href="{{section.settings.ios}}">
+                                    {% render "icon-ios" %}
+                                    {{ section.settings.ios_text}}
+                                </a>
+                            </div>
+
+                            <div class="android">
+                                <a href="{{section.settings.android}}">
+                                    {% render "icon-android" %}
+                                    {{ section.settings.android_text}}
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if section.settings.ck_payment %}
+                        <div class="payment-method">
+                            <div class="payment-header">{{section.settings.payment_header}}</div>
+                            <ul class="payment-list">
+                                {% for type in shop.enabled_payment_types %}
+                                  <li class="payment-item">
+                                    {{ type | payment_type_svg_tag: class: 'icon-payment' }}
+                                  </li>
                                 {% endfor %}
                             </ul>
                         </div>
-                    {% when 'detail' %}
-                        <div class="footer-detail col-sm-10 col-md-6">
-                            <div class="title">{{ block.settings.title }}</div>
-                            <div class="content">{{ block.settings.content }}</div>
-                        </div>
-                {% endcase %}
-            {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
 </footer>
 
 {% style %}
-    footer .email-signup-container{
-        padding-top: {{ section.settings.padding_top}}px;
-        padding-bottom: {{ section.settings.email_margin_bottom}}px;
-    }
-    footer .email-signup-container .title{
-        font-size: {{ section.settings.email_title_size }}px;
-        color: {{ section.settings.text_color }};
-    }
-    footer .email-signup-container .content{
-        font-size: {{ section.settings.email_content_size }}px;
-        color: {{ section.settings.text_color }};
-    }
-    footer .email-signup-container .newsletter-email{
-        color: {{ section.settings.text_color }};
-    }
-    footer .email-signup-container .email-placeholder{
-        color: {{ section.settings.text_color }};
-    }
-    footer .email-signup-container .newsletter-success{
-        color: {{ section.settings.text_color }};
-    }
-    footer .newsletter-form-wrapper .field .submit-btn .icon-right{
-        fill: {{ section.settings.text_color }};
+    .footer-layout-{{section.settings.layout}}{
+        background-color: {{section.settings.color_background}};
     }
 {% endstyle %}
 
 {% schema %}
 {
     "name": "Footer",
-    "blocks":[
-        {
-            "type": "menu",
-            "name": "Menu",
-            "settings":[
-                {
-                    "type": "text",
-                    "id": "menu_title",
-                    "label": "Menu Title",
-                    "default": "Quick Links"
-                },
-                {
-                    "type": "link_list",
-                    "id": "menu",
-                    "label": "Menu",
-                    "default": "footer"
-                }
-            ]
-        },
-        {
-            "type": "detail",
-            "name": "Footer detail",
-            "settings":[
-                {
-                    "type": "text",
-                    "id": "title",
-                    "label": "Title",
-                    "default": "Heading"
-                },
-                {
-                    "type": "textarea",
-                    "id": "content",
-                    "label": "Details",
-                    "default": "Share contact information, store details, and brand content with your customers."
-                }
-            ]
-        }
-    ],
     "settings": [
         {
-            "type": "checkbox",
-            "id": "email_signup_ck",
-            "label": "Show Email Signup?",
-            "default": true
+            "type": "header",
+            "content": "Layout"
+        },
+        {
+            "type": "select",
+            "id": "layout",
+            "label": "Choose Layout",
+            "options":[
+                {
+                    "value": "1",
+                    "label": "Layout 1"
+                },
+                {
+                    "value": "2",
+                    "label": "Layout 2"
+                },
+                {
+                    "value": "3",
+                    "label": "Layout 3"
+                }
+            ],
+            "default": "1"
         },
         {
             "type": "header",
@@ -134,77 +189,273 @@
         },
         {
             "type": "text",
-            "id": "email_title_text",
-            "label": "Title",
-            "default": "Subscribe to our emails"
+            "id": "title",
+            "label": "Signup title",
+            "default": "Subscribe and get 20% discount."
         },
         {
-            "type": "range",
-            "id": "email_title_size",
-            "min": 1,
-            "max": 100,
-            "step": 1,
-            "unit": "px",
-            "label": "Title font size",
-            "default": 40
+            "type": "text",
+            "id": "sub_title",
+            "label": "Signup Subtitle",
+            "default": "Subscribe and get 20% discount."
         },
         {
-            "type": "textarea",
-            "id": "email_content_text",
-            "label": "Content",
-            "default": "Subscribe to our mailing list for insider news, product launches, and more."
+            "type": "text",
+            "id": "placeholder",
+            "label": "Placeholder for Email signup",
+            "default": "Your email address"
         },
         {
-            "type": "range",
-            "id": "email_content_size",
-            "min": 1,
-            "max": 100,
-            "step": 1,
-            "unit": "px",
-            "label": "Content font size",
-            "default": 20
+            "type": "text",
+            "id": "text_button",
+            "label": "Text button",
+            "default": "Subscribe"
         },
         {
-            "type": "textarea",
+            "type": "text",
             "id": "success_text",
             "label": "Success Text",
-            "default": "Subscribe Success."
+            "default": "Subscribe Success"
+        },
+        {
+            "type": "checkbox",
+            "id": "ck_email_signup",
+            "label": "Display Email Signup?",
+            "default": true
         },
         {
             "type": "color",
-            "id": "text_color",
-            "label": "Text color",
-            "default": "#EFECEC"
-        },
-        {
-            "type": "textarea",
-            "id": "placeholder",
-            "label": "Placeholder",
-            "default": "Email"
-        },
-        {
-            "type": "range",
-            "id": "padding_top",
-            "min": 1,
-            "max": 100,
-            "step": 1,
-            "unit": "px",
-            "label": "Padding Top",
-            "default": 30
-        },
-        {
-            "type": "range",
-            "id": "email_margin_bottom",
-            "min": 1,
-            "max": 100,
-            "step": 1,
-            "unit": "px",
-            "label": "Email signup margin bottom",
-            "default": 30
+            "id": "color_background",
+            "label": "Background Color"
         },
         {
             "type": "header",
-            "content": "Email Signup"
+            "content": "Contact"
+        },
+        {
+            "type": "text",
+            "id": "contact_header",
+            "label": "Header",
+            "default": "Contact Us"
+        },
+        {
+            "type": "text",
+            "id": "phone_text",
+            "label": "Phone Text",
+            "default": "Monday-Friday: 08am-9pm"
+        },
+        {
+            "type": "text",
+            "id": "phone_number",
+            "label": "Phone Number",
+            "default": "+(1) 123 456 7890"
+        },
+        {
+            "type": "text",
+            "id": "mail_text",
+            "label": "Mail Text",
+            "default": "Need help with your order?"
+        },
+        {
+            "type": "text",
+            "id": "mail_address",
+            "label": "Mail Address",
+            "default": "support@zeomart.com"
+        },
+        {
+            "type": "header",
+            "content": "Social Network"
+        },
+        {
+            "type": "text",
+            "id": "social_header",
+            "label": "Social header",
+            "default": "Follow us"
+        },
+        {
+            "type": "url",
+            "id": "facebook",
+            "label": "Facebook"
+        },
+        {
+            "type": "url",
+            "id": "twitter",
+            "label": "Twitter"
+        },
+        {
+            "type": "url",
+            "id": "instagram",
+            "label": "Instagram"
+        },
+        {
+            "type": "url",
+            "id": "linkedin",
+            "label": "LinkedIn"
+        },
+        {
+            "type": "url",
+            "id": "youtube",
+            "label": "Youtube"
+        },
+        {
+            "type": "url",
+            "id": "tiktok",
+            "label": "TikTok"
+        },
+        {
+            "type": "url",
+            "id": "pinterest",
+            "label": "Pinterest"
+        },
+        {
+            "type": "url",
+            "id": "snapchat",
+            "label": "Snapchat"
+        },
+        {
+            "type": "header",
+            "content": "Mobile Apps"
+        },
+        {
+            "type": "text",
+            "id": "apps_header",
+            "label": "Header",
+            "default": "Mobile Apps"
+        },
+        {
+            "type": "text",
+            "id": "ios_text",
+            "label": "iOS Text",
+            "default": "iOS App"
+        },
+        {
+            "type": "url",
+            "id": "ios",
+            "label": "Link to iOS App"
+        },
+        {
+            "type": "text",
+            "id": "android_text",
+            "label": "Android Text",
+            "default": "Android App"
+        },
+        {
+            "type": "url",
+            "id": "android",
+            "label": "Link to Android App"
+        },
+        {
+            "type": "checkbox",
+            "id": "ck_mobile_apps",
+            "label": "Display Mobile Apps?",
+            "default": true
+        },
+        {
+            "type": "header",
+            "content": "Payment Methods"
+        },
+        {
+            "type": "text",
+            "id": "payment_header",
+            "label": "Payment Header",
+            "default": "We accept"
+        },
+        {
+            "type": "checkbox",
+            "id": "ck_payment",
+            "label": "Display Payment methods?",
+            "default": true
+        }
+    ],
+    "max_blocks": 3,
+    "blocks":[
+        {
+            "type": "custom_column",
+            "name": "Custom Column",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "header",
+                    "label": "Column header",
+                    "default": "About Zenmart",
+                    "info": "For best result, should have 3 blocks"
+                },
+                {
+                    "type": "header",
+                    "content": "Link 1"
+                },
+                {
+                    "type": "text",
+                    "id": "link1_title",
+                    "label": "Title",
+                    "default": "Track Your Order"
+                },
+                {
+                    "type": "url",
+                    "id": "link1_url",
+                    "label": "URL"
+                },
+                {
+                    "type": "header",
+                    "content": "Link 2"
+                },
+                {
+                    "type": "text",
+                    "id": "link2_title",
+                    "label": "Title",
+                    "default": "Product Guides"
+                },
+                {
+                    "type": "url",
+                    "id": "link2_url",
+                    "label": "URL"
+                },
+                {
+                    "type": "header",
+                    "content": "Link 3"
+                },
+                {
+                    "type": "text",
+                    "id": "link3_title",
+                    "label": "Title",
+                    "default": "Wishlists"
+                },
+                {
+                    "type": "url",
+                    "id": "link3_url",
+                    "label": "URL"
+                },
+                {
+                    "type": "header",
+                    "content": "Link 4"
+                },
+                {
+                    "type": "text",
+                    "id": "link4_title",
+                    "label": "Title",
+                    "default": "Privacy Policy"
+                },
+                {
+                    "type": "url",
+                    "id": "link4_url",
+                    "label": "URL"
+                },
+                {
+                    "type": "header",
+                    "content": "Link 5"
+                },
+                {
+                    "type": "text",
+                    "id": "link5_title",
+                    "label": "Title",
+                    "default": "Store Locator"
+                },
+                {
+                    "type": "url",
+                    "id": "link5_url",
+                    "label": "URL"
+                }
+            ]
         }
     ]
 }
