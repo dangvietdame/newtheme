@@ -1,4 +1,5 @@
 {{ 'footer.css' | asset_url | stylesheet_tag }}
+{{ 'footer.js' | asset_url | script_tag }}
 <footer>
     <div class="{{section.id}} footer-layout-{{section.settings.layout}}">
         <div class="container">
@@ -69,66 +70,70 @@
                     </ul>
                 {% endfor %}
                 <div class="col-8 col-md-6 col-lg-3 col-xl-3 row social-app-payment">
-                    <div class="social-network">
-                        <div class="social-header">{{section.settings.social_header}}</div>
-                        
-                            <a class="facebook" href="{{section.settings.facebook}}">
-                                {% render "icon-facebook" %}
-                            </a>
-                        
-                        
-                            <a class="twitter" href="{{section.settings.twitter}}">
-                                {% render "icon-twitter" %}
-                            </a>
-                        
-                        
-                            <a class="instagram" href="{{section.settings.instagram}}">
-                                {% render "icon-instagram"%}
-                            </a>
-                        
-                        
-                            <a class="linken" href="{{section.settings.linkedin}}">
-                                {% render "icon-linken" %}
-                            </a>
-                        
-                        
-                            <a class="youtube" href="{{section.settings.youtube}}">
-                                {% render "icon-youtube"%}
-                            </a>
-                        
-                        
-                            <a class="tiktok" href="{{section.settings.tiktok}}">
-                                {% render "icon-tiktok"%}
-                            </a>
-                        
-                        
-                            <a class="pinterest" href="{{section.settings.pinterest}}">
-                                {% render "icon-pinterest" %}
-                            </a>
-                        
-                        
-                            <a class="snapchat" href="{{section.settings.snapchat}}">
-                                {% render "icon-snapchat" %}
-                            </a>
-                        
-                    </div>
+                    {% if section.settings.ck_social %}
+                        <div class="social-network">
+                            <div class="social-header">{{section.settings.social_header}}</div>
+                            {% if settings.facebook.size > 0 %}
+                                <a class="facebook" href="{{settings.facebook}}">
+                                    {% render "icon-facebook" %}
+                                </a>
+                            {% endif %}
+                            {% if settings.twitter.size > 0 %}
+                                <a class="twitter" href="{{settings.twitter}}">
+                                    {% render "icon-twitter" %}
+                                </a>
+                            {% endif %}
+                            {% if settings.instagram.size > 0 %}
+                                <a class="instagram" href="{{settings.instagram}}">
+                                    {% render "icon-instagram"%}
+                                </a>
+                            {% endif %}
+                            {% if settings.linken.size > 0 %}
+                                <a class="linken" href="{{settings.linkedin}}">
+                                    {% render "icon-linken" %}
+                                </a>
+                            {% endif %}
+                            {% if settings.youtube.size > 0 %}
+                                <a class="youtube" href="{{settings.youtube}}">
+                                    {% render "icon-youtube"%}
+                                </a>
+                            {% endif %}
+                            {% if settings.tiktok.size > 0 %}
+                                <a class="tiktok" href="{{settings.tiktok}}">
+                                    {% render "icon-tiktok"%}
+                                </a>
+                            {% endif %}
+                            {% if settings.pinterest.size > 0 %}
+                                <a class="pinterest" href="{{settings.pinterest}}">
+                                    {% render "icon-pinterest" %}
+                                </a>
+                            {% endif %}
+                            {% if settings.snapchat.size > 0 %}
+                                <a class="snapchat" href="{{settings.snapchat}}">
+                                    {% render "icon-snapchat" %}
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
                     {% if section.settings.ck_mobile_apps %}
                         <div class="mobile-apps">
                             <div class="mobile-apps-header">{{section.settings.apps_header}}</div>
-
+                            {% if section.settings.ios_text.size > 0 %}
                             <div class="ios">
                                 <a href="{{section.settings.ios}}">
                                     {% render "icon-ios" %}
                                     {{ section.settings.ios_text}}
                                 </a>
                             </div>
-
+                            {% endif %}
+                            {% if section.settings.android_text.size > 0 %}
                             <div class="android">
                                 <a href="{{section.settings.android}}">
                                     {% render "icon-android" %}
                                     {{ section.settings.android_text}}
                                 </a>
                             </div>
+                            {% endif %}
                         </div>
                     {% endif %}
                     {% if section.settings.ck_payment %}
@@ -145,6 +150,70 @@
                     {% endif %}
                 </div>
             </div>
+            <div class="row copyright-unit-language">
+                <div class="copyright-term">
+                    {% if section.settings.license.size > 0 %}
+                        <div class="license">
+                            © {{ "now" | date: "%Y" }} {{ section.settings.license }}
+                        </div>
+                    {% endif %}
+                    <div class="term-wrapper">
+                        {% if section.settings.privacy.size > 0 %}
+                            <a href="{{section.settings.privacy_url}}">{{section.settings.privacy}}</a>
+                        {% endif %}
+                        {% if section.settings.terms.size > 0 %}
+                            <a href="{{section.settings.terms_url}}">{{section.settings.terms}}</a>
+                        {% endif %}{% if section.settings.sitemap.size > 0 %}
+                            <a href="{{section.settings.sitemap_url}}">{{section.settings.sitemap}}</a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="unit-language">
+
+                    <noscript>
+                        {%- form 'localization', id: 'FooterLanguageFormNoScript', class: 'localization-form' -%}
+                          <div class="localization-form__select">
+                            <h2 class="visually-hidden" id="FooterLanguageLabelNoScript">{{ 'localization.language_label' | t }}</h2>
+                            <select class="localization-selector link" name="locale_code" aria-labelledby="FooterLanguageLabelNoScript">
+                              {%- for language in localization.available_languages -%}
+                                <option value="{{ language.iso_code }}" lang="{{ language.iso_code }}" {%- if language.iso_code == localization.language.iso_code %} selected{% endif %}>
+                                  {{ language.endonym_name | capitalize }}
+                                </option>
+                              {%- endfor -%}
+                            </select>
+                            {% render 'icon-caret' %}
+                          </div>
+                          <button class="button button--tertiary">{{ localization.update_language }}</button>
+                        {%- endform -%}
+                      </noscript>
+            
+                      <localization-form>
+                        {%- form 'localization', id: 'FooterLanguageForm', class: 'localization-form' -%}
+                          <div class="no-js-hidden">
+                            <h2 class="caption-large text-body" id="FooterLanguageLabel">{{localization.language_label }}</h2>
+                            <div class="disclosure">
+                              <button type="button" class="disclosure__button localization-form__select localization-selector link link--text caption-large" aria-expanded="false" aria-controls="FooterLanguageList" aria-describedby="FooterLanguageLabel">
+                                {{ localization.language.endonym_name | capitalize }}
+                              </button>
+                              <div class="disclosure__list-wrapper" hidden>
+                                <ul id="FooterLanguageList" role="list" class="disclosure__list list-unstyled">
+                                  {%- for language in localization.available_languages -%}
+                                    <li class="disclosure__item" tabindex="-1">
+                                      <a class="link link--text disclosure__link caption-large{% if language.iso_code == localization.language.iso_code %} disclosure__link--active{% endif %} focus-inset" href="#" hreflang="{{ language.iso_code }}" lang="{{ language.iso_code }}"{% if language.iso_code == localization.language.iso_code %} aria-current="true"{% endif %} data-value="{{ language.iso_code }}">
+                                        {{ language.endonym_name | capitalize }}
+                                      </a>
+                                    </li>
+                                  {%- endfor -%}
+                                </ul>
+                              </div>
+                            </div>
+                            <input type="hidden" name="locale_code" value="{{ localization.language.iso_code }}">
+                          </div>
+                        {%- endform -%}
+                      </localization-form>
+
+                </div>
+            </div>
         </div>
     </div>
 </footer>
@@ -154,6 +223,58 @@
         background-color: {{section.settings.color_background}};
     }
 {% endstyle %}
+
+{% javascript %}
+  class LocalizationForm extends HTMLElement {
+    constructor() {
+      super();
+      this.elements = {
+        input: this.querySelector('input[name="locale_code"], input[name="country_code"]'),
+        button: this.querySelector('button'),
+        panel: this.querySelector('.disclosure__list-wrapper'),
+      };
+      this.elements.button.addEventListener('click', this.openSelector.bind(this));
+      this.elements.button.addEventListener('focusout', this.closeSelector.bind(this));
+      this.addEventListener('keyup', this.onContainerKeyUp.bind(this));
+
+      this.querySelectorAll('a').forEach(item => item.addEventListener('click', this.onItemClick.bind(this)));
+    }
+
+    hidePanel() {
+      this.elements.button.setAttribute('aria-expanded', 'false');
+      this.elements.panel.setAttribute('hidden', true);
+    }
+
+    onContainerKeyUp(event) {
+      if (event.code.toUpperCase() !== 'ESCAPE') return;
+
+      this.hidePanel();
+      this.elements.button.focus();
+    }
+
+    onItemClick(event) {
+      event.preventDefault();
+      const form = this.querySelector('form');
+      this.elements.input.value = event.currentTarget.dataset.value;
+      if (form) form.submit();
+    }
+
+    openSelector() {
+      this.elements.button.focus();
+      this.elements.panel.toggleAttribute('hidden');
+      this.elements.button.setAttribute('aria-expanded', (this.elements.button.getAttribute('aria-expanded') === 'false').toString());
+    }
+
+    closeSelector(event) {
+      const shouldClose = event.relatedTarget && event.relatedTarget.nodeName === 'BUTTON';
+      if (event.relatedTarget === null || shouldClose) {
+        this.hidePanel();
+      }
+    }
+  }
+
+  customElements.define('localization-form', LocalizationForm);
+{% endjavascript %}
 
 {% schema %}
 {
@@ -264,7 +385,8 @@
         },
         {
             "type": "header",
-            "content": "Social Network"
+            "content": "Social Network",
+            "info": "Custom Social Media URL in Theme Settings"
         },
         {
             "type": "text",
@@ -273,44 +395,10 @@
             "default": "Follow us"
         },
         {
-            "type": "url",
-            "id": "facebook",
-            "label": "Facebook"
-        },
-        {
-            "type": "url",
-            "id": "twitter",
-            "label": "Twitter"
-        },
-        {
-            "type": "url",
-            "id": "instagram",
-            "label": "Instagram"
-        },
-        {
-            "type": "url",
-            "id": "linkedin",
-            "label": "LinkedIn"
-        },
-        {
-            "type": "url",
-            "id": "youtube",
-            "label": "Youtube"
-        },
-        {
-            "type": "url",
-            "id": "tiktok",
-            "label": "TikTok"
-        },
-        {
-            "type": "url",
-            "id": "pinterest",
-            "label": "Pinterest"
-        },
-        {
-            "type": "url",
-            "id": "snapchat",
-            "label": "Snapchat"
+            "type": "checkbox",
+            "id": "ck_social",
+            "label": "Display Social Media?",
+            "default": true
         },
         {
             "type": "header",
@@ -365,6 +453,49 @@
             "id": "ck_payment",
             "label": "Display Payment methods?",
             "default": true
+        },
+        {
+            "type": "header",
+            "content": "License, Terms..."
+        },
+        {
+            "type": "text",
+            "id": "license",
+            "label": "License Text",
+            "default": "Zeomart. All Rights Reserved"
+        },
+        {
+            "type": "text",
+            "id": "privacy",
+            "label": "Privacy Text",
+            "default": "Privacy"
+        },
+        {
+            "type": "url",
+            "id": "privacy_url",
+            "label": "Privacy URL"
+        },
+        {
+            "type": "text",
+            "id": "terms",
+            "label": "Terms Text",
+            "default": "Terms"
+        },
+        {
+            "type": "url",
+            "id": "terms_url",
+            "label": "Terms URL"
+        },
+        {
+            "type": "text",
+            "id": "sitemap",
+            "label": "Sitemap Text",
+            "default": "Sitemap"
+        },
+        {
+            "type": "url",
+            "id": "sitemap_url",
+            "label": "Sitemap URL"
         }
     ],
     "max_blocks": 3,

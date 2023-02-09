@@ -285,12 +285,11 @@ header .header-layout1 .menu-container .col-menu {
 header .header-layout1 .menu-container .col-menu .collections {
   display: flex;
   align-items: center;
-  padding-right: 15px;
   border-right: 1px solid rgba(255, 255, 255, 0.1019607843);
   font-size: 16px;
   position: relative;
-  line-height: 55px;
-  padding-left: 40px;
+  line-height: 25px;
+  padding: 15px 15px 15px 40px;
   cursor: pointer;
 }
 header .header-layout1 .menu-container .col-menu .collections a {
@@ -340,10 +339,10 @@ header .header-layout1 .menu-container .col-menu .collections .col-dropdown::aft
 header .header-layout1 .menu-container .col-menu .collections .col-dropdown .collection-item-wrapper .collection-item {
   color: #041E42;
   font-size: 14px;
-  line-height: 50px;
+  line-height: 20px;
   display: flex;
   align-items: center;
-  padding: 0 20px;
+  padding: 15px 20px;
   position: relative;
   background-color: #ffffff;
   border: 1px solid #EAEAEA;
@@ -426,6 +425,7 @@ header .header-layout1 .menu-container .col-menu .collections .col-dropdown .col
   line-height: 35px;
   padding: 0;
   transition: color ease 0.2s;
+  overflow-wrap: anywhere;
 }
 header .header-layout1 .menu-container .col-menu .collections .col-dropdown .collection-item-wrapper .type-tag-wrapper .type-item-wrapper .tag-wrapper .tag-item:hover, header .header-layout1 .menu-container .col-menu .collections .col-dropdown .collection-item-wrapper .type-tag-wrapper .type-item-wrapper .tag-wrapper .tag-item > a:hover {
   color: #443297;
@@ -475,7 +475,8 @@ header .header-layout1 .menu-container .col-menu .menu-wrapper .main-menu .menu-
 header .header-layout1 .menu-container .col-menu .menu-wrapper .main-menu > .menu-item-1 {
   position: relative;
   padding-right: 40px;
-  line-height: 55px;
+  line-height: 25px;
+  padding: 15px 40px 15px 0;
 }
 header .header-layout1 .menu-container .col-menu .menu-wrapper .main-menu > .menu-item-1::before {
   content: "";

@@ -57,5 +57,50 @@
                 "default": "#EFECEC"
             }
         ]
+    },
+    {
+        "name": "Social Media",
+        "settings":[
+            {
+                "type": "url",
+                "id": "facebook",
+                "label": "Facebook"
+            },
+            {
+                "type": "url",
+                "id": "twitter",
+                "label": "Twitter"
+            },
+            {
+                "type": "url",
+                "id": "instagram",
+                "label": "Instagram"
+            },
+            {
+                "type": "url",
+                "id": "linken",
+                "label": "LinkedIn"
+            },
+            {
+                "type": "url",
+                "id": "youtube",
+                "label": "Youtube"
+            },
+            {
+                "type": "url",
+                "id": "tiktok",
+                "label": "TikTok"
+            },
+            {
+                "type": "url",
+                "id": "pinterest",
+                "label": "Pinterest"
+            },
+            {
+                "type": "url",
+                "id": "snapchat",
+                "label": "Snapchat"
+            }
+        ]
     }
 ]

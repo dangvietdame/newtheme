@@ -1,5 +1,10 @@
 {
   "current": {
+    "facebook": "#",
+    "twitter": "#",
+    "instagram": "#",
+    "linken": "#",
+    "linkedin": "#",
     "sections": {
       "header": {
         "type": "header",
@@ -130,32 +135,32 @@
           "0b5fbcce-3781-4f99-b6c0-a09d7b28ece7": {
             "type": "custom_column",
             "settings": {
-              "header": "About Zenmart",
-              "link1_title": "Track Your Order",
+              "header": "Customer Support",
+              "link1_title": "Contact Us",
               "link1_url": "",
-              "link2_title": "Product Guides",
+              "link2_title": "Help Centre",
               "link2_url": "",
-              "link3_title": "Wishlists",
+              "link3_title": "Returns & Exchanges",
               "link3_url": "",
-              "link4_title": "Privacy Policy",
+              "link4_title": "Best Buy Financing",
               "link4_url": "",
-              "link5_title": "Store Locator",
+              "link5_title": "Best Buy Gift Card",
               "link5_url": ""
             }
           },
           "9094a346-df0d-41bd-b48d-70f59215f1df": {
             "type": "custom_column",
             "settings": {
-              "header": "About Zenmart",
-              "link1_title": "Track Your Order",
+              "header": "Services",
+              "link1_title": "Geek Squad",
               "link1_url": "",
-              "link2_title": "Product Guides",
+              "link2_title": "In-Home Advisor",
               "link2_url": "",
-              "link3_title": "Wishlists",
+              "link3_title": "Trade-In Program",
               "link3_url": "",
-              "link4_title": "Privacy Policy",
+              "link4_title": "Electronics Recycling",
               "link4_url": "",
-              "link5_title": "Store Locator",
+              "link5_title": "Best Buy Health",
               "link5_url": ""
             }
           }
@@ -172,7 +177,30 @@
           "placeholder": "Your email address",
           "text_button": "Subscribe",
           "success_text": "Subscribe Success",
-          "color_background": ""
+          "ck_email_signup": true,
+          "color_background": "",
+          "contact_header": "Contact Us",
+          "phone_text": "Monday-Friday: 08am-9pm",
+          "phone_number": "+(1) 123 456 7890",
+          "mail_text": "Need help with your order?",
+          "mail_address": "support@zeomart.com",
+          "social_header": "Follow us",
+          "ck_social": true,
+          "apps_header": "Mobile Apps",
+          "ios_text": "iOS App",
+          "ios": "",
+          "android_text": "Android App",
+          "android": "",
+          "ck_mobile_apps": true,
+          "payment_header": "We accept",
+          "ck_payment": true,
+          "license": "Zeomart. All Rights Reserved",
+          "privacy": "Privacy",
+          "privacy_url": "",
+          "terms": "Terms",
+          "terms_url": "",
+          "sitemap": "Sitemap",
+          "sitemap_url": ""
         }
       },
       "sidebar-menu": {
