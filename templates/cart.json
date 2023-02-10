@@ -1,0 +1,10 @@
+{
+    "sections": {
+      "text-1": {
+        "type": "text_section"
+      }
+    },
+    "order": [
+      "text-1"
+    ]
+}

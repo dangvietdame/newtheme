@@ -65,8 +65,7 @@ header .header-layout1 .function-wrapper .search-wrapper .category-wrapper .cate
 header .header-layout1 .function-wrapper .search-wrapper .category-wrapper .category .dropdown-list {
   position: absolute;
   top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 6px;
   width: 140px;
   border-radius: 0 0 3px 0;
   background-color: #ffffff;
@@ -456,6 +455,7 @@ header .header-layout1 .menu-container .col-menu .menu-wrapper .main-menu {
 }
 header .header-layout1 .menu-container .col-menu .menu-wrapper .main-menu .menu-item-1 {
   position: relative;
+  cursor: pointer;
 }
 header .header-layout1 .menu-container .col-menu .menu-wrapper .main-menu .menu-item-1::after {
   content: "";

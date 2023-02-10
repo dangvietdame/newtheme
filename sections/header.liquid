@@ -5,8 +5,8 @@
     {% assign menu = section.settings.menu %}
     {% assign mega = section.settings.mega_menu %}
     {% assign pos = section.settings.megamenu_pos | minus: 1 %}
-
     {% assign product_mega = 0 %}
+    
     {% for block in section.blocks %}
         {% if block.type == "megamenu_product" %}
             {% assign product_mega = product_mega | plus: 1 %}
@@ -84,7 +84,7 @@
                                 <div class="sub-title">{{section.settings.signin_sub_title}}</div>
                             </div>
                         </a>
-                        <a class="cart col-lg-4 row" href="/cart">
+                        <a class="cart col-lg-4 row" href="{{routes.cart_url}}">
                             <div class="icon-wrapper">
                                 {%render "icon-cart"%}
                                 <div class="cart-count">
@@ -190,7 +190,7 @@
                             {%render "icon-user"%}
                         </div>
                     </a>
-                    <a href="/cart">
+                    <a href="{{routes.cart_url}}">
                         <div class="icon-wrapper">
                             {%render "icon-cart"%}
                             <div class="cart-count">
@@ -530,6 +530,11 @@
                     "info": "Find corresponding icon to the collection in Line-awesome and paste class of this icon to here"
                 }
             ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Header"
         }
     ]
 }
