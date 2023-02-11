@@ -26,15 +26,8 @@
                                 {% if block.settings.min_price %}
                                     <div class="min-price-wrapper">
                                         {{ block.settings.min_price_text }}
-                                        {% assign variants = block.settings.product.variants %}
-                                        {% assign min = 999999999999999 %}
                                         <span class="min-price">
-                                            {% for variant in variants %}
-                                                {% if variant.price < min %}
-                                                    {% assign min = variant.price %}
-                                                {% endif%}
-                                            {% endfor %}
-                                            {{ min | money }}
+                                            {{ block.settings.product.price_min | money }}
                                         </span>
                                     </div>
                                 {% endif%}
