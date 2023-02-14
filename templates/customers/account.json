@@ -1,0 +1,10 @@
+{
+    "sections": {
+      "account-1": {
+        "type": "account"
+      }
+    },
+    "order": [
+      "account-1"
+    ]
+}

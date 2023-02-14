@@ -75,7 +75,7 @@
                                 <div class="sub-title">{{section.settings.wishlist_sub_title}}</div>
                             </div>
                         </a>
-                        <a class="signin col-lg-4 row" href="{%if customer %}{{routes.account_account_url}}{%else%}{{routes.account_login_url}}{%endif%}">
+                        <div class="signin col-lg-4 row">
                             <div class="icon-wrapper">
                                 {%render "icon-user"%}
                             </div>
@@ -83,7 +83,7 @@
                                 <div class="title">{{section.settings.signin_title}}</div>
                                 <div class="sub-title">{{section.settings.signin_sub_title}}</div>
                             </div>
-                        </a>
+                        </div>
                         <a class="cart col-lg-4 row" href="{{routes.cart_url}}">
                             <div class="icon-wrapper">
                                 {%render "icon-cart"%}
@@ -185,11 +185,11 @@
                     </a>
                 </div>
                 <div class="account-cart-wrapper">
-                    <a href="{{routes.account_login_url}}">
+                    <div class="signin">
                         <div class="icon-wrapper">
                             {%render "icon-user"%}
                         </div>
-                    </a>
+                    </div>
                     <a href="{{routes.cart_url}}">
                         <div class="icon-wrapper">
                             {%render "icon-cart"%}
@@ -222,6 +222,43 @@
                         </form>
                     </predictive-search>
                 </div>
+            </div>
+        </div>
+        <div class="login-container">
+            <div class="login-overlay"></div>
+            <div class="login-wrapper">
+                <div class="login-header">
+                    {{ section.settings.login_header }}
+                    <div class="close">
+                        {% render "icon-close" %}
+                    </div>
+                </div>
+                {% form 'customer_login' %}
+                    {{ form.errors | default_errors }}
+            
+                    <div class="email">
+                    <label for="email">Email address</label>
+                    <input type="email" name="customer[email]" placeholder="{{section.settings.email_placeholder}}">
+                    </div>
+                
+                    <div class="password">
+                    <label for="password">Password</label>
+                    <input type="password" name="customer[password]" placeholder="{{section.settings.password_placeholder}}">
+                    </div>
+                    
+                    <div class="remember-reset">
+                        <span>{{section.settings.reset_text}}</span>
+                    </div>
+
+                    <div class="submit">
+                    <button type="submit" value="Log in">{{section.settings.login_button}}</button>
+                    </div>
+
+                    <div class="register-wrapper">
+                        <span>{{section.settings.register_pretext}}</span>
+                        <span class="register">{{section.settings.register_text}}</span>
+                    </div>
+                {% endform %}
             </div>
         </div>
     </div>
@@ -445,6 +482,52 @@
             "type": "url",
             "id": "url_5",
             "label": "URL 5"
+        },
+        {
+            "type": "header",
+            "content": "Login Form"
+        },
+        {
+            "type": "text",
+            "id": "login_header",
+            "label": "Header",
+            "default": "Sign-In"
+        },
+        {
+            "type": "text",
+            "id": "email_placeholder",
+            "label": "Email input placeholder",
+            "default": "Example@zeomart.com"
+        },
+        {
+            "type": "text",
+            "id": "password_placeholder",
+            "label": "Password input placeholder",
+            "default": "Password"
+        },
+        {
+            "type": "text",
+            "id": "reset_text",
+            "label": "Reset Password Text",
+            "default": "Lost your password?"
+        },
+        {
+            "type": "text",
+            "id": "login_button",
+            "label": "Log in Button Text",
+            "default": "Log in"
+        },
+        {
+            "type": "text",
+            "id": "register_pretext",
+            "label": "Register pre-text",
+            "default": "Don't have an account?"
+        },
+        {
+            "type": "text",
+            "id": "register_text",
+            "label": "Register text",
+            "default": "Create account"
         },
         {
             "type": "header",

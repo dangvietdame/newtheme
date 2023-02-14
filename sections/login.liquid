@@ -1,0 +1,42 @@
+{% comment %} {{ 'header.css' | asset_url | stylesheet_tag }}
+{{ 'header.js' | asset_url | script_tag }} {% endcomment %}
+
+<div class="{{section.id}} login-page">
+    
+    {% form 'customer_login' %}
+        {{ form.errors | default_errors }}
+
+        <div class="email">
+          <label for="email">Email</label>
+          <input type="email" name="customer[email]">
+        </div>
+      
+        <div class="password">
+          <label for="password">Password</label>
+          <input type="password" name="customer[password]">
+        </div>
+      
+        <div class="submit">
+          <input type="submit" value="Sign in">
+        </div>
+      {% endform %}      
+
+</div>
+
+{% style %}
+
+{% endstyle %}
+
+{% schema %}
+{
+    "name": "Login",
+    "settings": [
+        
+    ],
+    "presets": [
+        {
+            "name": "Login Page"
+        }
+    ]
+}
+{% endschema %}

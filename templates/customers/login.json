@@ -1,0 +1,10 @@
+{
+    "sections": {
+      "login-1": {
+        "type": "login"
+      }
+    },
+    "order": [
+      "login-1"
+    ]
+}

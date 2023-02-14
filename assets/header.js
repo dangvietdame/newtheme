@@ -70,4 +70,14 @@ jQuery(document).ready(function($) {
     $('.type-item-wrapper > .icon-dropdown-right').click(function(){
         $(this).siblings('ul').addClass('active');
     });
+
+    //Sign in
+    $('.function-bar .signin, .account-cart-wrapper .signin').click(function(){
+        $('.login-overlay').addClass('login-overlay-active');
+        $('.login-wrapper').addClass('login-wrapper-active');
+    });
+    $('.login-header .close').click(function(){
+        $('.login-overlay').removeClass('login-overlay-active');
+        $('.login-wrapper').removeClass('login-wrapper-active');
+    });
 });
