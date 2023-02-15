@@ -197,11 +197,19 @@
                     </a>
                 </div>
                 <div class="account-cart-wrapper">
-                    <div class="signin">
-                        <div class="icon-wrapper">
-                            {%render "icon-user"%}
+                    {% if customer %}
+                        <a class="signed" href="{{routes.account_url}}">
+                            <div class="icon-wrapper">
+                                {%render "icon-user"%}
+                            </div>
+                        </a>
+                    {% else %}
+                        <div class="signin">
+                            <div class="icon-wrapper">
+                                {%render "icon-user"%}
+                            </div>
                         </div>
-                    </div>
+                    {% endif %}
                     <a href="{{routes.cart_url}}">
                         <div class="icon-wrapper">
                             {%render "icon-cart"%}
