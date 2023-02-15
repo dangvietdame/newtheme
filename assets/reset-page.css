@@ -3,27 +3,50 @@
 }
 .reset-page .reset-header {
   margin-top: 40px;
+  margin-bottom: 30px;
   font-weight: 500;
-  font-size: 20px;
+  font-size: 25px;
   line-height: 29px;
   padding: 20px 0;
   border-bottom: 1px solid #eaeaea;
+  text-align: center;
 }
 .reset-page label {
   font-size: 16px;
   font-weight: 500;
-  line-height: 28px;
   margin-bottom: 8px;
+  margin-right: 20px;
+  line-height: 35px;
+}
+.reset-page input {
+  border-radius: 5px;
+  padding: 0 10px;
+  border: 1px solid grey;
+}
+.reset-page input:focus-visible {
+  outline: none;
+}
+.reset-page .password, .reset-page .password_confirm {
+  display: flex;
+  justify-content: space-between;
 }
 .reset-page .password, .reset-page .password_confirm, .reset-page .submit {
   margin-top: 20px;
+}
+.reset-page .submit {
+  margin-bottom: 20px;
+  margin-top: 30px;
+  width: 30%;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .reset-page .submit button {
   background-color: #F5C34B;
   font-size: 15px;
   font-weight: 500;
   line-height: 22px;
-  height: 52px;
+  height: 40px;
   width: 100%;
   margin-bottom: 20px;
   cursor: pointer;
