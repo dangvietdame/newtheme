@@ -80,4 +80,20 @@ jQuery(document).ready(function($) {
         $('.login-overlay').removeClass('login-overlay-active');
         $('.login-wrapper').removeClass('login-wrapper-active');
     });
+
+    //Recover password
+    $('.login-wrapper .remember-reset span').click(function(){
+        $('.login-container .recover-container').addClass('login-wrapper-active');
+    });
+    $('.recover-header .close').click(function(){
+        $('.login-container .recover-container').removeClass('login-wrapper-active');
+    });
+
+    //Create account
+    $('.login-wrapper .register').click(function(){
+        $('.login-container .create-container').addClass('login-wrapper-active');
+    });
+    $('.create-header .close').click(function(){
+        $('.login-container .create-container').removeClass('login-wrapper-active');
+    });
 });

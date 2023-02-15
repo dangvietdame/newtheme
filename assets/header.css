@@ -1078,6 +1078,204 @@ header .header-layout1 .login-container .login-wrapper form .register-wrapper .r
   font-weight: 500;
   cursor: pointer;
 }
+header .header-layout1 .login-container .recover-container {
+  position: fixed;
+  top: 0;
+  right: -430px;
+  width: 430px;
+  height: 100%;
+  background-color: #fff;
+  color: #041E42;
+  visibility: hidden;
+  opacity: 0;
+  transition: all ease 0.4s;
+}
+header .header-layout1 .login-container .recover-container .recover-wrapper .recover-header {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 29px;
+  padding: 25px 20px 25px 30px;
+  border-bottom: 1px solid #eaeaea;
+  position: relative;
+}
+header .header-layout1 .login-container .recover-container .recover-wrapper .recover-header .close {
+  position: absolute;
+  top: 50%;
+  right: 25px;
+  transform: translateY(-50%);
+  background-color: #F3F5F6;
+  border-radius: 8px;
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+header .header-layout1 .login-container .recover-container .recover-wrapper .recover-header .close .icon-close {
+  width: 13px;
+  height: 13px;
+}
+header .header-layout1 .login-container .recover-container .recover-wrapper form {
+  padding: 35px 30px 0 30px;
+}
+header .header-layout1 .login-container .recover-container .recover-wrapper form label, header .header-layout1 .login-container .recover-container .recover-wrapper form input {
+  display: block;
+}
+header .header-layout1 .login-container .recover-container .recover-wrapper form label {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 28px;
+  margin-bottom: 8px;
+}
+header .header-layout1 .login-container .recover-container .recover-wrapper form input {
+  width: 100%;
+  border: 1px solid #EAEAEA;
+  border-radius: 6px;
+  font-size: 15px;
+  height: 55px;
+  padding: 0 15px;
+  transition: all ease 0.2s;
+}
+header .header-layout1 .login-container .recover-container .recover-wrapper form input:focus-visible {
+  outline: none;
+  border-color: #000;
+  box-shadow: 0px 10px 20px rgba(4, 30, 66, 0.05);
+}
+header .header-layout1 .login-container .recover-container .recover-wrapper form .email {
+  margin-bottom: 20px;
+}
+header .header-layout1 .login-container .recover-container .recover-wrapper form .submit button {
+  background-color: #F5C34B;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 22px;
+  height: 52px;
+  width: 100%;
+  margin-bottom: 20px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  border: 1px solid #F5C34B;
+  border-radius: 6px;
+}
+header .header-layout1 .login-container .recover-container .recover-wrapper form .submit button::before {
+  content: "";
+  background-color: #E8B336;
+  height: 100%;
+  left: -100%;
+  position: absolute;
+  top: 0;
+  width: 0;
+  z-index: -1;
+  transform: skew(50deg);
+  transition: width 0.6s;
+  transform-origin: top left;
+}
+header .header-layout1 .login-container .recover-container .recover-wrapper form .submit button:hover::before {
+  height: 100%;
+  width: 200%;
+}
+header .header-layout1 .login-container .create-container {
+  position: fixed;
+  top: 0;
+  right: -430px;
+  width: 430px;
+  height: 100%;
+  background-color: #fff;
+  color: #041E42;
+  visibility: hidden;
+  opacity: 0;
+  transition: all ease 0.4s;
+}
+header .header-layout1 .login-container .create-container .create-wrapper .create-header {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 29px;
+  padding: 25px 20px 25px 30px;
+  border-bottom: 1px solid #eaeaea;
+  position: relative;
+}
+header .header-layout1 .login-container .create-container .create-wrapper .create-header .close {
+  position: absolute;
+  top: 50%;
+  right: 25px;
+  transform: translateY(-50%);
+  background-color: #F3F5F6;
+  border-radius: 8px;
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+header .header-layout1 .login-container .create-container .create-wrapper .create-header .close .icon-close {
+  width: 13px;
+  height: 13px;
+}
+header .header-layout1 .login-container .create-container .create-wrapper form {
+  padding: 35px 30px 0 30px;
+}
+header .header-layout1 .login-container .create-container .create-wrapper form label, header .header-layout1 .login-container .create-container .create-wrapper form input {
+  display: block;
+}
+header .header-layout1 .login-container .create-container .create-wrapper form label {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 28px;
+  margin-bottom: 8px;
+}
+header .header-layout1 .login-container .create-container .create-wrapper form input {
+  width: 100%;
+  border: 1px solid #EAEAEA;
+  border-radius: 6px;
+  font-size: 15px;
+  height: 55px;
+  padding: 0 15px;
+  transition: all ease 0.2s;
+}
+header .header-layout1 .login-container .create-container .create-wrapper form input:focus-visible {
+  outline: none;
+  border-color: #000;
+  box-shadow: 0px 10px 20px rgba(4, 30, 66, 0.05);
+}
+header .header-layout1 .login-container .create-container .create-wrapper form .first-name, header .header-layout1 .login-container .create-container .create-wrapper form .last-name, header .header-layout1 .login-container .create-container .create-wrapper form .password, header .header-layout1 .login-container .create-container .create-wrapper form .email {
+  margin-bottom: 20px;
+}
+header .header-layout1 .login-container .create-container .create-wrapper form .submit button {
+  background-color: #F5C34B;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 22px;
+  height: 52px;
+  width: 100%;
+  margin-bottom: 20px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  border: 1px solid #F5C34B;
+  border-radius: 6px;
+}
+header .header-layout1 .login-container .create-container .create-wrapper form .submit button::before {
+  content: "";
+  background-color: #E8B336;
+  height: 100%;
+  left: -100%;
+  position: absolute;
+  top: 0;
+  width: 0;
+  z-index: -1;
+  transform: skew(50deg);
+  transition: width 0.6s;
+  transform-origin: top left;
+}
+header .header-layout1 .login-container .create-container .create-wrapper form .submit button:hover::before {
+  height: 100%;
+  width: 200%;
+}
 header .header-layout1 .login-container .login-wrapper-active {
   visibility: visible;
   right: 0;

@@ -233,7 +233,7 @@
                         {% render "icon-close" %}
                     </div>
                 </div>
-                {% form 'customer_login' %}
+                {% form 'customer_login', return_to: routes.root_url %}
                     {{ form.errors | default_errors }}
             
                     <div class="email">
@@ -251,7 +251,7 @@
                     </div>
 
                     <div class="submit">
-                    <button type="submit" value="Log in">{{section.settings.login_button}}</button>
+                        <button type="submit" value="Log in">{{section.settings.login_button}}</button>
                     </div>
 
                     <div class="register-wrapper">
@@ -259,6 +259,56 @@
                         <span class="register">{{section.settings.register_text}}</span>
                     </div>
                 {% endform %}
+            </div>
+            <div class="recover-container">
+                <div class="recover-wrapper">
+                    <div class="recover-header">Recover
+                        <div class="close">
+                            {% render "icon-close" %}
+                        </div>
+                    </div>
+                    {% form 'recover_customer_password' %}
+                        {{ form.errors | default_errors }}
+                        <div class="email">
+                          <label for="email">Email address</label>
+                          <input type="email" name="email">
+                        </div>
+                        <div class="submit">
+                          <button type="submit" value="Submit">Submit</button>
+                        </div>
+                    {% endform %}                      
+                </div>
+            </div>
+            <div class="create-container">
+                <div class="create-wrapper">
+                    <div class="create-header">Create Your Account
+                        <div class="close">
+                            {% render "icon-close" %}
+                        </div>
+                    </div>
+                    {% form 'create_customer', return_to: routes.root_url %}
+                        {{ form.errors | default_errors }}
+                        <div class="first-name">
+                          <label for="first-name">First name</label>
+                          <input type="text" name="customer[first_name]" placeholder="Enma">
+                        </div>
+                        <div class="last-name">
+                          <label for="last-name">Last name</label>
+                          <input type="text" name="customer[last_name]" placeholder="Henessy">
+                        </div>
+                        <div class="email">
+                          <label for="email">Email</label>
+                          <input type="email" name="customer[email]" placeholder="Example@zeomart.com">
+                        </div>
+                        <div class="password">
+                          <label for="password">Password</label>
+                          <input type="password" name="customer[password]" placeholder="Password">
+                        </div>
+                        <div class="submit">
+                          <button type="submit" value="Create">Create Account</button>
+                        </div>
+                    {% endform %}                      
+                </div>
             </div>
         </div>
     </div>
