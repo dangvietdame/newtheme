@@ -1,24 +1,31 @@
-{% comment %} {{ 'header.css' | asset_url | stylesheet_tag }}
-{{ 'header.js' | asset_url | script_tag }} {% endcomment %}
+{{ 'reset-page.css' | asset_url | stylesheet_tag }}
 
 <div class="{{section.id}} reset-page">
-    {% form 'reset_customer_password' %}
-        {{ form.errors | default_errors }}
-      
-        <div class="password">
-          <label for="password">Password</label>
-          <input type="password" name="customer[password]">
-        </div>
-      
-        <div class="password_confirm">
-          <label for="password_confirmation">Password confirmation</label>
-          <input type="password" name="customer[password_confirmation]">
-        </div>
-      
-        <div class="submit">
-          <input type="submit" value="Reset password">
-        </div>
-    {% endform %}      
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                {% form 'reset_customer_password' %}
+                    <div class="reset-header">Reset Password</div>
+                    
+                    {{ form.errors | default_errors }}
+                
+                    <div class="password">
+                        <label for="password">Password</label>
+                        <input type="password" name="customer[password]">
+                    </div>
+                
+                    <div class="password_confirm">
+                        <label for="password_confirmation">Password confirmation</label>
+                        <input type="password" name="customer[password_confirmation]">
+                    </div>
+                
+                    <div class="submit">
+                        <button type="submit" value="Reset password">Reset</button>
+                    </div>
+                {% endform %}  
+            </div>
+        </div>    
+    </div>    
 </div>
 
 {% style %}
