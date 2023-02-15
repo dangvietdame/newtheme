@@ -75,19 +75,15 @@
                                 <div class="sub-title">{{section.settings.wishlist_sub_title}}</div>
                             </div>
                         </a>
-                        {% if customer %}
-                          <span>Logged</span>
-                        {% else %}
-                          <div class="signin col-lg-4 row">
-                              <div class="icon-wrapper">
-                                  {%render "icon-user"%}
-                              </div>
-                              <div class="function-content">
-                                  <div class="title">{{section.settings.signin_title}}</div>
-                                  <div class="sub-title">{{section.settings.signin_sub_title}}</div>
-                              </div>
-                          </div>
-                        {% endif %}
+                        <div class="signin col-lg-4 row">
+                            <div class="icon-wrapper">
+                                {%render "icon-user"%}
+                            </div>
+                            <div class="function-content">
+                                <div class="title">{{section.settings.signin_title}}</div>
+                                <div class="sub-title">{{section.settings.signin_sub_title}}</div>
+                            </div>
+                        </div>
                         <a class="cart col-lg-4 row" href="{{routes.cart_url}}">
                             <div class="icon-wrapper">
                                 {%render "icon-cart"%}
