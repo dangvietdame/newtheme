@@ -1,6 +1,9 @@
 .reset-page label, .reset-page input {
   display: block;
 }
+.reset-page .errors {
+  color: red;
+}
 .reset-page .reset-header {
   margin-top: 40px;
   margin-bottom: 30px;
@@ -14,7 +17,6 @@
 .reset-page label {
   font-size: 16px;
   font-weight: 500;
-  margin-bottom: 8px;
   margin-right: 20px;
   line-height: 35px;
 }
