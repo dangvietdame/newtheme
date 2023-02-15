@@ -233,7 +233,7 @@
                         {% render "icon-close" %}
                     </div>
                 </div>
-                {% form 'customer_login' %}
+                {% form 'customer_login', return_to: routes.cart_url %}
                     {{ form.errors | default_errors }}
             
                     <div class="email">
