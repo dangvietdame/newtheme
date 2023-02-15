@@ -246,19 +246,19 @@ header .header-layout1 .function-wrapper .function-bar {
   justify-content: space-between;
   padding: 0;
 }
-header .header-layout1 .function-wrapper .function-bar .wishlist, header .header-layout1 .function-wrapper .function-bar .signin, header .header-layout1 .function-wrapper .function-bar .cart {
+header .header-layout1 .function-wrapper .function-bar .wishlist, header .header-layout1 .function-wrapper .function-bar .signin, header .header-layout1 .function-wrapper .function-bar .cart, header .header-layout1 .function-wrapper .function-bar .signed {
   padding: 0;
   cursor: pointer;
 }
-header .header-layout1 .function-wrapper .function-bar .wishlist:hover .icon-wrapper, header .header-layout1 .function-wrapper .function-bar .signin:hover .icon-wrapper, header .header-layout1 .function-wrapper .function-bar .cart:hover .icon-wrapper {
+header .header-layout1 .function-wrapper .function-bar .wishlist:hover .icon-wrapper, header .header-layout1 .function-wrapper .function-bar .signin:hover .icon-wrapper, header .header-layout1 .function-wrapper .function-bar .cart:hover .icon-wrapper, header .header-layout1 .function-wrapper .function-bar .signed:hover .icon-wrapper {
   background-color: rgba(255, 255, 255, 0.0509803922);
 }
-header .header-layout1 .function-wrapper .function-bar .wishlist .title, header .header-layout1 .function-wrapper .function-bar .signin .title, header .header-layout1 .function-wrapper .function-bar .cart .title {
+header .header-layout1 .function-wrapper .function-bar .wishlist .title, header .header-layout1 .function-wrapper .function-bar .signin .title, header .header-layout1 .function-wrapper .function-bar .cart .title, header .header-layout1 .function-wrapper .function-bar .signed .title {
   font-size: 13px;
   font-weight: 400;
   line-height: 22px;
 }
-header .header-layout1 .function-wrapper .function-bar .wishlist .sub-title, header .header-layout1 .function-wrapper .function-bar .signin .sub-title, header .header-layout1 .function-wrapper .function-bar .cart .sub-title {
+header .header-layout1 .function-wrapper .function-bar .wishlist .sub-title, header .header-layout1 .function-wrapper .function-bar .signin .sub-title, header .header-layout1 .function-wrapper .function-bar .cart .sub-title, header .header-layout1 .function-wrapper .function-bar .signed .sub-title {
   font-size: 16px;
   font-weight: 500;
   line-height: 22px;
