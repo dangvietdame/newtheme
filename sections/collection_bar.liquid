@@ -1,0 +1,66 @@
+{{ 'collection-bar.css' | asset_url | stylesheet_tag }}
+{% comment %} {{ 'header.js' | asset_url | script_tag }} {% endcomment %}
+
+<div class="{{section.id}} collection-bar-section">
+    <div class="container collections-list-wrapper">
+        <ul class="collections-list">   
+            {% for collection in section.settings.collections_header %}
+                <li class="collection-item">
+                    <a class="collection-item-url" href="{{collection.url}}">{{ collection.title | downcase }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+{% style %}
+    .{{section.id}} .collection-item-url{
+        line-height: {{section.settings.height}}px;
+        color: {{section.settings.collection_color}};
+        font-size: {{section.settings.font_size}}px;
+    }
+{% endstyle %}
+
+{% schema %}
+{
+    "name": "Collection Bar",
+    "settings": [
+        {
+            "type": "collection_list",
+            "id": "collections_header",
+            "label": "Collections in header"
+        },
+        {
+            "type": "color",
+            "id": "collection_color",
+            "label": "Collection Color",
+            "default": "#041E42"
+        },   
+        {
+            "type": "range",
+            "id": "font_size",
+            "min": 10,
+            "max": 50,
+            "step": 1,
+            "unit": "px",
+            "label": "Font size",
+            "default": 15
+        },       
+        {
+            "type": "range",
+            "id": "height",
+            "min": 30,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Height",
+            "default": 42
+        }      
+    ],
+    "presets": [
+        {
+            "name": "Collection bar"
+        }
+    ]
+}
+{% endschema %}

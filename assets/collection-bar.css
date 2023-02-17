@@ -1,0 +1,34 @@
+.collection-bar-section {
+  background-color: #fff;
+}
+.collection-bar-section .collections-list-wrapper {
+  border-bottom: 1px solid #EAEAEA;
+}
+.collection-bar-section .collections-list-wrapper .collections-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+.collection-bar-section .collections-list-wrapper .collections-list .collection-item {
+  position: relative;
+}
+.collection-bar-section .collections-list-wrapper .collections-list .collection-item:not(:last-child) {
+  margin-right: 20px;
+}
+.collection-bar-section .collections-list-wrapper .collections-list .collection-item .collection-item-url {
+  text-transform: capitalize;
+}
+.collection-bar-section .collections-list-wrapper .collections-list .collection-item::before {
+  background-color: #041E42;
+  bottom: 0;
+  content: "";
+  height: 2px;
+  left: 50%;
+  position: absolute;
+  width: 0;
+  transition: all 0.3s ease;
+}
+.collection-bar-section .collections-list-wrapper .collections-list .collection-item:hover::before {
+  left: 0;
+  right: 0;
+  width: 100%;
+}

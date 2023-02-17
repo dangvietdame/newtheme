@@ -1,0 +1,135 @@
+{{ 'animation.css' | asset_url | stylesheet_tag }}
+{{ 'single-product.css' | asset_url | stylesheet_tag }}
+{{ 'single-product.js' | asset_url | script_tag }}
+
+{% assign sub_count_product = section.settings.count_product | minus: 1 %}
+
+{% assign product_description_size = product.description.size %}
+{% assign pre_product_description = product.description | strip_html | truncatewords: section.settings.count_description, '' %}
+{% assign pre_product_description_size = pre_product_description.size %}
+{% assign sur_product_description_size = product_description_size | minus: pre_product_description_size %}
+{% assign sur_product_description = product.description | slice: pre_product_description_size, sur_product_description_size %}
+
+<div class="{{section.id}} single-product single-product-layout-{{section.settings.layout}}">
+    <div class="container single-product-wrapper">
+        <div class="product-address-url">
+            <a href="{{routes.root_url}}">Home</a>
+            {{ product.type | link_to_type }}
+            <a href="{{product.url}}">{{product.title | downcase}}</a>
+        </div>
+        <div class="detail-info-product col-xl-7">
+            <div class="image-wrapper">
+                <div class="tab">
+                    {% for image in product.images limit: 1 %}
+                        <button id="defaultOpen" class="tablinks" onclick="openimage(event, 'image-{{image.id}}')">
+                            <img src="{{image.src | image_url}}">
+                        </button>
+                    {% endfor %}
+                    {% for image in product.images offset: 1 limit: sub_count_product %}
+                        <button class="tablinks" onclick="openimage(event, 'image-{{image.id}}')">
+                            <img src="{{image.src | image_url}}">
+                        </button>
+                    {% endfor %}
+                </div>
+                {% for image in product.images limit: section.settings.count_product %}
+                    <div id="image-{{image.id}}" class="tabcontent">
+                        <img src="{{image.src | image_url}}">
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="product-description-wrapper">
+                <div class="title">{{section.settings.description_header}}</div>
+                <span class="pre-description">{{pre_product_description}}</span>
+                <span class="bread-description">...</span>
+                <span class="sur-description">{{sur_product_description}}</span>
+                <div class="seemore">{{section.settings.seemore_description}}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% style %}
+    
+{% endstyle %}
+
+<script>
+    document.getElementById("defaultOpen").click();
+</script>
+
+{% schema %}
+{
+    "name": "Single Product",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Layout"
+        },
+        {
+            "type": "select",
+            "id": "layout",
+            "label": "Layout",
+            "options": [
+              {
+                "value": "1",
+                "label": "Layout 1"
+              },
+              {
+                "value": "2",
+                "label": "Layout 2"
+              },
+              {
+                "value": "3",
+                "label": "Layout 3"
+              },
+              {
+                "value": "4",
+                "label": "Layout 4"
+              },
+              {
+                "value": "5",
+                "label": "Layout 5"
+              }
+            ],
+            "default": "1"
+        },    
+        {
+            "type": "header",
+            "content": "Product Image"
+        },      
+        {
+            "type": "number",
+            "id": "count_product",
+            "label": "Number of image",
+            "default": 3,
+            "info": "Max number of product's image to display"
+        },
+        {
+            "type": "header",
+            "content": "Product Description"
+        },
+        {
+            "type": "text",
+            "id": "description_header",
+            "label": "Description Header",
+            "default": "Overview"
+        },
+        {
+            "type": "number",
+            "id": "count_description",
+            "label": "Number word of Product's Description visible",
+            "default": 50
+        },
+        {
+            "type": "text",
+            "id": "seemore_description",
+            "label": "Show more description Text",
+            "default": "See More"
+        }      
+    ],
+    "presets": [
+        {
+            "name": "Single Product"
+        }
+    ]
+}
+{% endschema %}
