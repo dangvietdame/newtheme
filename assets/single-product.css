@@ -42,9 +42,62 @@
   margin: auto;
   animation: fadeEffect 1s;
 }
+.single-product-layout-1 .single-product-wrapper .detail-info-product .product-description-wrapper {
+  padding-top: 50px;
+  color: #041E42;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .product-description-wrapper .title {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 29px;
+  margin-bottom: 0.5rem;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .product-description-wrapper span {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 28px;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .product-description-wrapper .bread-description, .single-product-layout-1 .single-product-wrapper .detail-info-product .product-description-wrapper .sur-description {
+  display: inline-block;
+}
 .single-product-layout-1 .single-product-wrapper .detail-info-product .product-description-wrapper .sur-description {
-  display: none;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  transition: all ease 1s;
 }
 .single-product-layout-1 .single-product-wrapper .detail-info-product .product-description-wrapper .seemore {
   cursor: pointer;
+  margin: 20px 0 25px 0;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 28px;
+  position: relative;
+  width: fit-content;
+  color: #443297;
+  display: flex;
+  align-items: center;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .product-description-wrapper .seemore .icon-dropdown, .single-product-layout-1 .single-product-wrapper .detail-info-product .product-description-wrapper .seemore .icon-dropdown-up {
+  margin-left: 5px;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .product-description-wrapper .seemore .icon-dropdown path, .single-product-layout-1 .single-product-wrapper .detail-info-product .product-description-wrapper .seemore .icon-dropdown-up path {
+  stroke: #443297;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .product-description-wrapper .seemore .icon-dropdown-up {
+  display: none;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .product-description-wrapper .seemore .active {
+  display: block;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .product-description-wrapper .seemore .de-active {
+  display: none;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .product-description-wrapper .active {
+  display: inline;
+  height: auto;
+  opacity: 1;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .product-description-wrapper .de-active {
+  display: none;
 }

@@ -116,6 +116,7 @@
 .container-wrapper .sidebar-menu .sidebar-menu-container .menu-wrapper .main-menu .menu-active {
   left: 0 !important;
   visibility: visible !important;
+  opacity: 1;
 }
 .container-wrapper .sidebar-menu .sidebar-menu-container .collections .active {
   visibility: visible !important;

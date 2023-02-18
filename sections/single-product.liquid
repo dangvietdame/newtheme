@@ -1,6 +1,7 @@
 {{ 'animation.css' | asset_url | stylesheet_tag }}
 {{ 'single-product.css' | asset_url | stylesheet_tag }}
 {{ 'single-product.js' | asset_url | script_tag }}
+{{ 'product-image-tab.js' | asset_url | script_tag }}
 
 {% assign sub_count_product = section.settings.count_product | minus: 1 %}
 
@@ -42,7 +43,10 @@
                 <span class="pre-description">{{pre_product_description}}</span>
                 <span class="bread-description">...</span>
                 <span class="sur-description">{{sur_product_description}}</span>
-                <div class="seemore">{{section.settings.seemore_description}}</div>
+                <div class="seemore">{{section.settings.seemore_description}}
+                    {% render "icon-dropdown"%}
+                    {% render "icon-dropdown-up"%}
+                </div>
             </div>
         </div>
     </div>
