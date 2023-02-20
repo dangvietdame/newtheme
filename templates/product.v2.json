@@ -1,0 +1,33 @@
+{
+  "sections": {
+    "collection-bar-1": {
+      "type": "collection_bar",
+      "settings": {
+        "collections_header": [
+          "adidas",
+          "converse",
+          "dr-martens",
+          "herschel",
+          "flex-fit"
+        ],
+        "collection_color": "#041E42",
+        "font_size": 15,
+        "height": 42
+      }
+    },
+    "19b084ad-c3fd-461d-9ecc-7c96b3b5cd14": {
+      "type": "single-product",
+      "settings": {
+        "layout": "1",
+        "count_product": 3,
+        "description_header": "Overview",
+        "count_description": 50,
+        "seemore_description": "See More"
+      }
+    }
+  },
+  "order": [
+    "collection-bar-1",
+    "19b084ad-c3fd-461d-9ecc-7c96b3b5cd14"
+  ]
+}

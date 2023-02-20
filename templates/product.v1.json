@@ -1,0 +1,20 @@
+{
+  "sections": {
+    "collection-bar-1": {
+      "type": "collection_bar",
+      "settings": {
+        "collections_header": [
+          "adidas",
+          "converse",
+          "dr-martens"
+        ],
+        "collection_color": "#041E42",
+        "font_size": 15,
+        "height": 42
+      }
+    }
+  },
+  "order": [
+    "collection-bar-1"
+  ]
+}
