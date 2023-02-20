@@ -48,12 +48,99 @@
                     {% render "icon-dropdown-up"%}
                 </div>
             </div>
+            <div class="accordion-wrapper">
+                {% if section.settings.accordion_header_1.size > 0 %}
+                <div class="accordion-1">
+                    <div class="accordion-header">
+                        {{section.settings.accordion_header_1}}
+                    </div>
+                    <ul class="accordion-content">
+                        {% for block in section.blocks %}
+                            {% if block.type == "unorder_list_info" %}
+                                <li class="item" {{block.shopify_attributes}} style="font-size: {{block.settings.size}}px; font-weight: {{block.settings.weight}}; margin-top: {{block.settings.margin_top}}px; margin-bottom: {{block.settings.margin_bottom}}px;{% if block.settings.marked %}list-style-type: disc; {% endif %}">
+                                    {{block.settings.text}}
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                {% if section.settings.accordion_header_2.size > 0 %}
+                <div class="accordion-2">
+                    <div class="accordion-header">
+                        {{section.settings.accordion_header_2}}
+                    </div>
+                    <div class="accordion-content">
+                        <ul class="accordion-table">
+                            {% for block in section.blocks %}
+                                {% if block.type == "table_list_info" %}
+                                    <li class="row item" {% if block.settings.ck_header %}style="font-weight: 500;"{% endif %} {{block.shopify_attributes}}>
+                                        <div class="col-md-6">{{block.settings.title}}</div>
+                                        <div class="col-md-6">{{block.settings.content}}</div>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
+                {% if section.settings.accordion_header_3.size > 0 %}
+                <div class="accordion-3">
+                    <div class="accordion-header">
+                        {{section.settings.accordion_header_3}}
+                    </div>
+                    <div class="accordion-content">
+                        {{section.settings.accordion_content_3}}
+                    </div>
+                </div>
+                {% endif %}
+                {% if section.settings.accordion_header_4.size > 0 %}
+                    <div class="accordion-4">
+                        <div class="accordion-header">
+                            {{section.settings.accordion_header_4}}
+                        </div>
+                        <div class="accordion-content">
+                            {{section.settings.accordion_content_4}}
+                        </div>
+                    </div>
+                {% endif %}
+                {% if section.settings.accordion_header_5.size > 0 %}
+                    <div class="accordion-5">
+                        <div class="accordion-header">
+                            {{section.settings.accordion_header_5}}
+                        </div>
+                        <div class="accordion-content">
+                            {% for block in section.blocks %}
+                                {% if block.type == "qna" %}
+                                    <div class="qna-item" {{block.shopify_attributes}}>
+                                        <div class="question-wrapper">
+                                            <div class="q-content">{{block.settings.question}}</div>
+                                            <div class="q-info">{{block.settings.question_info}}</div>
+                                        </div>
+                                        <div class="answer-wrapper">
+                                            <div class="a-content">{{block.settings.answer}}</div>
+                                            <div class="a-info">{{block.settings.answer_info}}</div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            <a href="{{section.settings.accordion_5_url}}" class="button-wrapper">{{section.settings.accordion_button_5}}</a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>
 
 {% style %}
-    
+    .{{section.id}} .accordion-table{
+        text-align: {{section.settings.table_align}};
+        font-size: {{section.settings.table_size}}px;
+    }
+    .{{section.id}} .accordion-table .item:nth-child(even){
+        background-color: {{section.settings.row_color}};
+    }
 {% endstyle %}
 
 <script>
@@ -128,7 +215,228 @@
             "id": "seemore_description",
             "label": "Show more description Text",
             "default": "See More"
-        }      
+        },
+        {
+            "type": "header",
+            "content": "Accordion - Data"
+        },
+        {
+            "type": "text",
+            "id": "accordion_header_1",
+            "label": "Accordion header 1",
+            "default": "More Information",
+            "info": "Use Unorder List Information - Block to display content"
+        },
+        {
+            "type": "text",
+            "id": "accordion_header_2",
+            "label": "Accordion header 2",
+            "default": "Details & Specs",
+            "info": "Use Table List Information - Block to display content"
+        },
+        {
+            "type": "text",
+            "id": "accordion_header_3",
+            "label": "Accordion header 3",
+            "default": "Shipping and Returns"
+        },
+        {
+            "type": "textarea",
+            "id": "accordion_content_3",
+            "label": "Accordion content 3",
+            "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla auctor aliquam tortor at suscipit. Etiam accumsan, est id vehicula cursus, eros ligula suscipit massa, sed auctor felis mi eu massa. Sed vulputate nisi nibh, vel maximus velit auctor nec. Integer consectetur elementum turpis, nec fermentum ipsum tempor quis. Praesent a quam congue, egestas erat sit amet, finibus justo. Quisque viverra neque vehicula eros gravida ultricies. Ut lacinia enim nec consequat tincidunt. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus ultricies ornare feugiat. Donec vitae rhoncus sapien, ac aliquet nunc."
+        },
+        {
+            "type": "text",
+            "id": "accordion_header_4",
+            "label": "Accordion header 4",
+            "default": "Lorem ipsum"
+        },
+        {
+            "type": "textarea",
+            "id": "accordion_content_4",
+            "label": "Accordion content 4",
+            "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla auctor aliquam tortor at suscipit. Etiam accumsan, est id vehicula cursus, eros ligula suscipit massa, sed auctor felis mi eu massa. Sed vulputate nisi nibh, vel maximus velit auctor nec. Integer consectetur elementum turpis, nec fermentum ipsum tempor quis. Praesent a quam congue, egestas erat sit amet, finibus justo. Quisque viverra neque vehicula eros gravida ultricies. Ut lacinia enim nec consequat tincidunt. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus ultricies ornare feugiat. Donec vitae rhoncus sapien, ac aliquet nunc."
+        },
+        {
+            "type": "text",
+            "id": "accordion_header_5",
+            "label": "Accordion header 5",
+            "default": "Questions and Answers",
+            "info": "Use QnA Block to display content"
+        },
+        {
+            "type": "text",
+            "id": "accordion_button_5",
+            "label": "Accordion Text Button",
+            "default": "Explore all questions"
+        },
+        {
+            "type": "url",
+            "id": "accordion_5_url",
+            "label": "Accordion 5 URL"
+        },
+        {
+            "type": "header",
+            "content": "Table data",
+            "info": "Custom Accordion 2 Style"
+        },
+        {
+            "type": "select",
+            "id": "table_align",
+            "label": "Table Alignment",
+            "options": [
+                {
+                    "value": "left",
+                    "label": "Left"
+                },
+                {
+                    "value": "center",
+                    "label": "Center"
+                },
+                {
+                    "value": "right",
+                    "label": "Right"
+                }
+            ],
+            "default": "left"
+        },
+        {
+            "type": "range",
+            "id": "table_size",
+            "min": 12,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Table font Size",
+            "default": 16
+        },
+        {
+            "type": "color",
+            "id": "row_color",
+            "label": "Row color interleaved",
+            "default": "#f1f1f1"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "unorder_list_info",
+            "name": "Unorder List Infomation",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "text",
+                    "label": "Text",
+                    "default": "Example Text"
+                },
+                {
+                    "type": "range",
+                    "id": "size",
+                    "min": 12,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px",
+                    "label": "Font Size",
+                    "default": 16
+                },
+                {
+                    "type": "select",
+                    "id": "weight",
+                    "label": "Weight",
+                    "options": [
+                        {
+                        "value": "400",
+                        "label": "Regular"
+                        },
+                        {
+                        "value": "500",
+                        "label": "Bold"
+                        }
+                    ],
+                    "default": "400"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "marked",
+                    "label": "Marked with Bullets",
+                    "default": true
+                },
+                {
+                    "type": "range",
+                    "id": "margin_top",
+                    "min": 12,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px",
+                    "label": "Margin Top",
+                    "default": 20
+                },    
+                {
+                    "type": "range",
+                    "id": "margin_bottom",
+                    "min": 12,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px",
+                    "label": "Margin Bottom",
+                    "default": 16
+                }                             
+            ]
+        },
+        {
+            "type": "table_list_info",
+            "name": "Table List Infomation",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Column 1 Data",
+                    "default": "Column 1"
+                },
+                {
+                    "type": "text",
+                    "id": "content",
+                    "label": "Column 2 Data",
+                    "default": "Column 2"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "ck_header",
+                    "label": "Table Header",
+                    "default": false
+                }
+            ]
+        },
+        {
+            "type": "qna",
+            "name": "Questions and Answers",
+            "settings": [
+                {
+                    "type": "textarea",
+                    "id": "question",
+                    "label": "Question content",
+                    "default": "Q: Can dvds be played on apple computers?"
+                },
+                {
+                    "type": "textarea",
+                    "id": "question_info",
+                    "label": "Question Information",
+                    "default": "Asked by Moba - May 14, 2022 on zenmart.com"
+                },
+                {
+                    "type": "textarea",
+                    "id": "answer",
+                    "label": "Answer content",
+                    "default": "A: If you buy a separate CD/DVD drive."
+                },
+                {
+                    "type": "textarea",
+                    "id": "answer_info",
+                    "label": "Answer Information",
+                    "default": "Answered by TFN-Store - May 24, 2022"
+                }
+            ]
+        }
     ],
     "presets": [
         {

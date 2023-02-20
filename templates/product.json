@@ -1,10 +1,184 @@
 {
-    "sections": {
-      "collection-bar-1": {
-        "type": "collection_bar"
+  "sections": {
+    "collection-bar-1": {
+      "type": "collection_bar",
+      "settings": {
+        "collections_header": [
+          "adidas",
+          "converse",
+          "dr-martens",
+          "flex-fit",
+          "herschel",
+          "hot-deal",
+          "kid",
+          "men"
+        ],
+        "collection_color": "#041e42",
+        "font_size": 15,
+        "height": 42
       }
     },
-    "order": [
-      "collection-bar-1"
-    ]
-  }
+    "cb4faed8-ba8f-4fba-a1a5-4ccb14962921": {
+      "type": "single-product",
+      "blocks": {
+        "813618b0-70e0-46e7-84b2-5c1a5959b606": {
+          "type": "unorder_list_info",
+          "settings": {
+            "text": "Powerful performance",
+            "size": 16,
+            "weight": "500",
+            "marked": false,
+            "margin_top": 20,
+            "margin_bottom": 16
+          }
+        },
+        "51417709-2ec2-4bd2-af8f-0af1cd8abda5": {
+          "type": "unorder_list_info",
+          "settings": {
+            "text": "English-language MacBook Pro",
+            "size": 16,
+            "weight": "400",
+            "marked": true,
+            "margin_top": 20,
+            "margin_bottom": 16
+          }
+        },
+        "d9c5208f-0334-403f-a0ac-c9b6ee6ed8b7": {
+          "type": "unorder_list_info",
+          "settings": {
+            "text": "10-core Apple M1 Pro chip for a giant leap in CPU, GPU, and machine learning performance",
+            "size": 16,
+            "weight": "400",
+            "marked": true,
+            "margin_top": 20,
+            "margin_bottom": 16
+          }
+        },
+        "22737845-5b67-40e8-88c9-3103099f1d7c": {
+          "type": "unorder_list_info",
+          "settings": {
+            "text": "16GB of RAM so everything you do is fast and fluid",
+            "size": 16,
+            "weight": "400",
+            "marked": true,
+            "margin_top": 20,
+            "margin_bottom": 16
+          }
+        },
+        "f37ae460-3ae9-4211-ad29-972ee2cbce01": {
+          "type": "unorder_list_info",
+          "settings": {
+            "text": "16-core Neural Engine for advanced machine learning",
+            "size": 16,
+            "weight": "400",
+            "marked": true,
+            "margin_top": 20,
+            "margin_bottom": 16
+          }
+        },
+        "8d893673-74cb-4ed4-aa31-7d589a886a5d": {
+          "type": "unorder_list_info",
+          "settings": {
+            "text": "16-core GPU",
+            "size": 16,
+            "weight": "400",
+            "marked": true,
+            "margin_top": 20,
+            "margin_bottom": 16
+          }
+        },
+        "789a0060-8250-4009-a514-bbb98ec150ec": {
+          "type": "unorder_list_info",
+          "settings": {
+            "text": "Ultrafast 1TB solid state drive (SSD) is blazing fast, so you can take all your photos and videos with you no matter.",
+            "size": 16,
+            "weight": "400",
+            "marked": true,
+            "margin_top": 20,
+            "margin_bottom": 16
+          }
+        },
+        "c874aa3b-8901-48ef-800b-ae2a8913f7dc": {
+          "type": "unorder_list_info",
+          "settings": {
+            "text": "Display and audio",
+            "size": 16,
+            "weight": "500",
+            "marked": false,
+            "margin_top": 30,
+            "margin_bottom": 16
+          }
+        },
+        "0306d31e-ac6f-4d4f-b602-77800951ede8": {
+          "type": "unorder_list_info",
+          "settings": {
+            "text": "16.2-inch liquid retina XDR display delivers a responsive and natural viewing experience",
+            "size": 16,
+            "weight": "400",
+            "marked": true,
+            "margin_top": 20,
+            "margin_bottom": 16
+          }
+        },
+        "60e62f25-e18b-4ef7-85ca-79baa93385d7": {
+          "type": "unorder_list_info",
+          "settings": {
+            "text": "3456 x 2234 native resolution with support for millions of colours",
+            "size": 16,
+            "weight": "400",
+            "marked": true,
+            "margin_top": 20,
+            "margin_bottom": 16
+          }
+        },
+        "dfc60424-ea1a-4934-a327-dacbdc123c2f": {
+          "type": "table_list_info",
+          "settings": {
+            "column_1": "Brand",
+            "column_2": "Apple",
+            "size": 16,
+            "ck_header": true,
+            "row_color": "#cecece"
+          }
+        },
+        "74363158-1cc2-4979-a211-eeab082ec596": {
+          "type": "table_list_info",
+          "settings": {
+            "column_1": "Model Name",
+            "column_2": "MacBook Pro",
+            "size": 16,
+            "ck_header": false,
+            "row_color": "#cecece"
+          }
+        }
+      },
+      "block_order": [
+        "813618b0-70e0-46e7-84b2-5c1a5959b606",
+        "51417709-2ec2-4bd2-af8f-0af1cd8abda5",
+        "d9c5208f-0334-403f-a0ac-c9b6ee6ed8b7",
+        "22737845-5b67-40e8-88c9-3103099f1d7c",
+        "f37ae460-3ae9-4211-ad29-972ee2cbce01",
+        "8d893673-74cb-4ed4-aa31-7d589a886a5d",
+        "789a0060-8250-4009-a514-bbb98ec150ec",
+        "c874aa3b-8901-48ef-800b-ae2a8913f7dc",
+        "0306d31e-ac6f-4d4f-b602-77800951ede8",
+        "60e62f25-e18b-4ef7-85ca-79baa93385d7",
+        "dfc60424-ea1a-4934-a327-dacbdc123c2f",
+        "74363158-1cc2-4979-a211-eeab082ec596"
+      ],
+      "settings": {
+        "layout": "1",
+        "count_product": 3,
+        "description_header": "Overview",
+        "count_description": 58,
+        "seemore_description": "See More",
+        "accordion_header_1": "More Information",
+        "accordion_header_2": "Details & Specs"
+      }
+    }
+  },
+  "order": [
+    "collection-bar-1",
+    "cb4faed8-ba8f-4fba-a1a5-4ccb14962921"
+  ]
+}

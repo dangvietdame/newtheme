@@ -101,3 +101,75 @@
 .single-product-layout-1 .single-product-wrapper .detail-info-product .product-description-wrapper .de-active {
   display: none;
 }
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-header {
+  color: #041E42;
+  font-size: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 40px 0 15px 0;
+  border-top: 1px solid #EAEAEA;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-1 .accordion-content .item {
+  list-style-position: inside;
+  color: #041E42;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-2 .accordion-table {
+  width: 100%;
+  margin-bottom: 40px;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-2 .accordion-table .item {
+  margin: 0;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-2 .accordion-table .item div {
+  padding: 30px 15px 30px 30px;
+  overflow-wrap: anywhere;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-2 .accordion-table .item div:first-child {
+  color: #000;
+  font-weight: 500;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-2 .accordion-table .item div:last-child {
+  color: #041E42;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-2 .accordion-table .item:first-child div {
+  color: #000;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-3 .accordion-content, .single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-4 .accordion-content {
+  color: #041E42;
+  font-size: 16px;
+  line-height: 28px;
+  margin: 10px 0 30px 0;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-5 .qna-item {
+  margin-top: 1rem;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-5 .qna-item .question-wrapper .q-content {
+  line-height: 28px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #041E42;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-5 .qna-item .question-wrapper .q-info {
+  color: #626974;
+  font-size: 14px;
+  line-height: 22px;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-5 .qna-item .answer-wrapper {
+  background-color: #F3F5F6;
+  border-radius: 6px;
+  padding: 30px;
+  margin-top: 1rem;
+  margin-left: 1rem;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-5 .qna-item .answer-wrapper .a-content {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: #041E42;
+  margin-bottom: 0.5rem;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-5 .qna-item .answer-wrapper .a-info {
+  color: #626974;
+  font-size: 14px;
+  line-height: 28px;
+}
