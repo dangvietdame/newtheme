@@ -2,6 +2,7 @@
 {{ 'single-product.css' | asset_url | stylesheet_tag }}
 {{ 'single-product.js' | asset_url | script_tag }}
 {{ 'product-image-tab.js' | asset_url | script_tag }}
+{{ 'jquery.ez-plus.js' | asset_url | script_tag }}
 
 {% assign sub_count_product = section.settings.count_product | minus: 1 %}
 
@@ -10,6 +11,19 @@
 {% assign pre_product_description_size = pre_product_description.size %}
 {% assign sur_product_description_size = product_description_size | minus: pre_product_description_size %}
 {% assign sur_product_description = product.description | slice: pre_product_description_size, sur_product_description_size %}
+
+{% assign sum_rate = section.settings.review_1 | plus: section.settings.review_2 | plus: section.settings.review_3 | plus: section.settings.review_4 | plus: section.settings.review_5 | divided_by: 1.0 %}
+{% assign sum_rate_1 = section.settings.review_1 | times: 1 %}
+{% assign sum_rate_2 = section.settings.review_2 | times: 2 %}
+{% assign sum_rate_3 = section.settings.review_3 | times: 3 %}
+{% assign sum_rate_4 = section.settings.review_4 | times: 4 %}
+{% assign sum_rate_5 = section.settings.review_5 | times: 5 %}
+{% assign avg_rate = sum_rate_1 | plus: sum_rate_2 | plus: sum_rate_3 | plus: sum_rate_4 | plus: sum_rate_5 | divided_by: sum_rate | round: 1 %}
+{% assign percent_5 = section.settings.review_5 | divided_by: sum_rate | times: 100 | round: 0 %}
+{% assign percent_4 = section.settings.review_4 | divided_by: sum_rate | times: 100 | round: 0 %}
+{% assign percent_3 = section.settings.review_3 | divided_by: sum_rate | times: 100 | round: 0 %}
+{% assign percent_2 = section.settings.review_2 | divided_by: sum_rate | times: 100 | round: 0 %}
+{% assign percent_1 = section.settings.review_1 | divided_by: sum_rate | times: 100 | round: 0 %}
 
 <div class="{{section.id}} single-product single-product-layout-{{section.settings.layout}}">
     <div class="container single-product-wrapper">
@@ -32,10 +46,12 @@
                         </button>
                     {% endfor %}
                 </div>
+                {% assign i = 1 %}
                 {% for image in product.images limit: section.settings.count_product %}
                     <div id="image-{{image.id}}" class="tabcontent">
-                        <img src="{{image.src | image_url}}">
+                        <img id="zoom_0{{i}}" class="zoom-img" src="{{image.src | image_url}}" data-zoom-image="{{image.src | image_url}}" width="411"/>
                     </div>
+                    {% assign i = i | plus: 1 %}
                 {% endfor %}
             </div>
             <div class="product-description-wrapper">
@@ -124,7 +140,60 @@
                                     </div>
                                 {% endif %}
                             {% endfor %}
-                            <a href="{{section.settings.accordion_5_url}}" class="button-wrapper">{{section.settings.accordion_button_5}}</a>
+                            <div class="accordion-button">
+                                <a href="{{section.settings.accordion_5_url}}" class="button">{{section.settings.accordion_button_5}}</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if section.settings.accordion_header_6.size > 0 %}
+                    <div class="accordion-6">
+                        <div class="accordion-header">
+                            {{section.settings.accordion_header_6}}
+                        </div>
+                        <div class="row accordion-content">
+                            <div class="rate-overview">
+                                <div class="avg-rate">
+                                    {{avg_rate}}
+                                </div>
+                                <div class="sum-star">
+                                    <div class="star-wrapper">
+                                        {% assign avg_rate_round = avg_rate | round: 0 %}
+                                        {% for i in (1..5) %}
+                                            <i class="las la-star" style="color: {% if i <= avg_rate_round %}#F5C34B;{% else %}#F3F5F6;{% endif %}"></i>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="sum">{{sum_rate | round: 0}}{% if sum_rate >= 2 %} reviews{% else %} review{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-10 col-xl-7 rate-bar-wrapper">
+                                <div class="rate-star-wrapper">
+                                    <div class="number">5 star</div>
+                                    <div class="rate-bar" style="--percent-rate: {{percent_5}}%;"></div>
+                                    <div class="percent">{% if percent_5 < 10 and percent_5 != 0 %}0{% endif %}{{percent_5}}%</div>
+                                </div>
+                                <div class="rate-star-wrapper">
+                                    <div class="number">4 star</div>
+                                    <div class="rate-bar" style="--percent-rate: {{percent_4}}%;"></div>
+                                    <div class="percent">{% if percent_4 < 10 and percent_4 != 0 %}0{% endif %}{{percent_4}}%</div>
+                                </div>
+                                <div class="rate-star-wrapper">
+                                    <div class="number">3 star</div>
+                                    <div class="rate-bar" style="--percent-rate: {{percent_3}}%;"></div>
+                                    <div class="percent">{% if percent_3 < 10 and percent_3 != 0 %}0{% endif %}{{percent_3}}%</div>
+                                </div>
+                                <div class="rate-star-wrapper">
+                                    <div class="number">2 star</div>
+                                    <div class="rate-bar" style="--percent-rate: {{percent_2}}%;"></div>
+                                    <div class="percent">{% if percent_2 < 10 and percent_2 != 0 %}0{% endif %}{{percent_2}}%</div>
+                                </div>
+                                <div class="rate-star-wrapper">
+                                    <div class="number">1 star</div>
+                                    <div class="rate-bar" style="--percent-rate: {{percent_1}}%;"></div>
+                                    <div class="percent">{% if percent_1 < 10 and percent_1 != 0 %}0{% endif %}{{percent_1}}%</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 {% endif %}
@@ -145,6 +214,8 @@
 
 <script>
     document.getElementById("defaultOpen").click();
+    $('#zoom_01, #zoom_02, #zoom_03, #zoom_04, #zoom_05').ezPlus();
+
 </script>
 
 {% schema %}
@@ -268,13 +339,50 @@
         {
             "type": "text",
             "id": "accordion_button_5",
-            "label": "Accordion Text Button",
+            "label": "Accordion 5 Text Button",
             "default": "Explore all questions"
         },
         {
             "type": "url",
             "id": "accordion_5_url",
             "label": "Accordion 5 URL"
+        },
+        {
+            "type": "text",
+            "id": "accordion_header_6",
+            "label": "Accordion header 6",
+            "default": "Customer Reviews",
+            "info": "Use Review Block to display content"
+        },
+        {
+            "type": "number",
+            "id": "review_5",
+            "label": "Total number of reviews - 5*",
+            "default": 35
+        },
+        {
+            "type": "number",
+            "id": "review_4",
+            "label": "Total number of reviews - 4*",
+            "default": 10
+        },
+        {
+            "type": "number",
+            "id": "review_3",
+            "label": "Total number of reviews - 3*",
+            "default": 5
+        },
+        {
+            "type": "number",
+            "id": "review_2",
+            "label": "Total number of reviews - 2*",
+            "default": 2
+        },
+        {
+            "type": "number",
+            "id": "review_1",
+            "label": "Total number of reviews - 1*",
+            "default": 1
         },
         {
             "type": "header",

@@ -101,6 +101,9 @@
 .single-product-layout-1 .single-product-wrapper .detail-info-product .product-description-wrapper .de-active {
   display: none;
 }
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper {
+  padding-bottom: 20px;
+}
 .single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-header {
   color: #041E42;
   font-size: 20px;
@@ -140,6 +143,9 @@
   line-height: 28px;
   margin: 10px 0 30px 0;
 }
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-5 {
+  padding-bottom: 20px;
+}
 .single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-5 .qna-item {
   margin-top: 1rem;
 }
@@ -171,5 +177,112 @@
 .single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-5 .qna-item .answer-wrapper .a-info {
   color: #626974;
   font-size: 14px;
+  line-height: 28px;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-5 .accordion-button {
+  text-align: center;
+  margin-top: 30px;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-5 .accordion-button .button {
+  padding: 15px 45px;
+  border: 1px solid #F5C34B;
+  background-color: #ffffff;
+  color: #041E42;
+  user-select: none;
+  border-radius: 6px;
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-5 .accordion-button .button::before {
+  content: "";
+  background-color: #E8B336;
+  height: 100%;
+  left: -100%;
+  position: absolute;
+  top: 0;
+  width: 0;
+  z-index: -1;
+  transform: skew(50deg);
+  transition: width 0.6s;
+  transform-origin: top left;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-5 .accordion-button .button:hover::before {
+  height: 100%;
+  width: 200%;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-6 .accordion-content {
+  margin: 0;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-6 .rate-overview {
+  display: flex;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  padding: 0;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-6 .rate-overview .avg-rate {
+  font-size: 60px;
+  font-weight: 500;
+  color: #041E42;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-6 .rate-overview .sum-star {
+  margin-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-6 .rate-overview .sum-star .star-wrapper i {
+  font-size: 14px;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-6 .rate-overview .sum-star .star-wrapper i:not(:last-child) {
+  margin-right: 2px;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-6 .rate-overview .sum-star .sum {
+  color: #041E42;
+  font-size: 16px;
+  line-height: 28px;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-6 .rate-bar-wrapper {
+  padding: 0;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-6 .rate-bar-wrapper .rate-star-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 30px;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-6 .rate-bar-wrapper .rate-star-wrapper:not(:last-child) {
+  margin-bottom: 10px;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-6 .rate-bar-wrapper .rate-star-wrapper .number {
+  color: #041E42;
+  font-size: 16px;
+  line-height: 28px;
+  margin-right: 0.25rem;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-6 .rate-bar-wrapper .rate-star-wrapper .rate-bar {
+  width: 300px;
+  height: 6px;
+  background-color: #F3F5F6;
+  position: relative;
+  border-radius: 6px;
+  margin: 0 1rem;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-6 .rate-bar-wrapper .rate-star-wrapper .rate-bar::before {
+  position: absolute;
+  content: "";
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: var(--percent-rate);
+  background-color: #F5C34B;
+  border-radius: 6px;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .accordion-wrapper .accordion-6 .rate-bar-wrapper .rate-star-wrapper .percent {
+  font-size: 16px;
+  color: #041E42;
   line-height: 28px;
 }

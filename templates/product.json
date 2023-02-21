@@ -134,21 +134,26 @@
         "dfc60424-ea1a-4934-a327-dacbdc123c2f": {
           "type": "table_list_info",
           "settings": {
-            "column_1": "Brand",
-            "column_2": "Apple",
-            "size": 16,
-            "ck_header": true,
-            "row_color": "#cecece"
+            "title": "Column 1",
+            "content": "Column 2",
+            "ck_header": true
           }
         },
         "74363158-1cc2-4979-a211-eeab082ec596": {
           "type": "table_list_info",
           "settings": {
-            "column_1": "Model Name",
-            "column_2": "MacBook Pro",
-            "size": 16,
-            "ck_header": false,
-            "row_color": "#cecece"
+            "title": "Column 1",
+            "content": "Column 2",
+            "ck_header": false
+          }
+        },
+        "5e47cbfc-5ffb-4353-b875-c922edf8fba5": {
+          "type": "qna",
+          "settings": {
+            "question": "Q: Can dvds be played on apple computers?",
+            "question_info": "Asked by Moba - May 14, 2022 on zenmart.com",
+            "answer": "A: If you buy a separate CD\/DVD drive.",
+            "answer_info": "Answered by TFN-Store - May 24, 2022"
           }
         }
       },
@@ -164,7 +169,8 @@
         "0306d31e-ac6f-4d4f-b602-77800951ede8",
         "60e62f25-e18b-4ef7-85ca-79baa93385d7",
         "dfc60424-ea1a-4934-a327-dacbdc123c2f",
-        "74363158-1cc2-4979-a211-eeab082ec596"
+        "74363158-1cc2-4979-a211-eeab082ec596",
+        "5e47cbfc-5ffb-4353-b875-c922edf8fba5"
       ],
       "settings": {
         "layout": "1",
@@ -173,7 +179,23 @@
         "count_description": 58,
         "seemore_description": "See More",
         "accordion_header_1": "More Information",
-        "accordion_header_2": "Details & Specs"
+        "accordion_header_2": "Details & Specs",
+        "accordion_header_3": "Shipping and Returns",
+        "accordion_content_3": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla auctor aliquam tortor at suscipit. Etiam accumsan, est id vehicula cursus, eros ligula suscipit massa, sed auctor felis mi eu massa. Sed vulputate nisi nibh, vel maximus velit auctor nec. Integer consectetur elementum turpis, nec fermentum ipsum tempor quis. Praesent a quam congue, egestas erat sit amet, finibus justo. Quisque viverra neque vehicula eros gravida ultricies. Ut lacinia enim nec consequat tincidunt. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus ultricies ornare feugiat. Donec vitae rhoncus sapien, ac aliquet nunc.",
+        "accordion_header_4": "Lorem ipsum",
+        "accordion_content_4": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla auctor aliquam tortor at suscipit. Etiam accumsan, est id vehicula cursus, eros ligula suscipit massa, sed auctor felis mi eu massa. Sed vulputate nisi nibh, vel maximus velit auctor nec. Integer consectetur elementum turpis, nec fermentum ipsum tempor quis. Praesent a quam congue, egestas erat sit amet, finibus justo. Quisque viverra neque vehicula eros gravida ultricies. Ut lacinia enim nec consequat tincidunt. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus ultricies ornare feugiat. Donec vitae rhoncus sapien, ac aliquet nunc.",
+        "accordion_header_5": "Questions and Answers",
+        "accordion_button_5": "Explore all questions",
+        "accordion_5_url": "",
+        "accordion_header_6": "Customer Reviews",
+        "review_5": 35,
+        "review_4": 10,
+        "review_3": 5,
+        "review_2": 2,
+        "review_1": 1,
+        "table_align": "left",
+        "table_size": 16,
+        "row_color": "#f1f1f1"
       }
     }
   },

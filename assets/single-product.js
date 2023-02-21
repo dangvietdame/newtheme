@@ -9,6 +9,6 @@ jQuery(document).ready(function($) {
 
     //Accordion toggle
     $('.single-product-layout-1 .accordion-header').click(function(){
-        $(this).siblings('.accordion-content').slideToggle('300');
+        $(this).siblings('.accordion-content').slideToggle('fast');
     });
 })
