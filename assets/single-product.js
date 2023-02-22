@@ -11,11 +11,5 @@ jQuery(document).ready(function($) {
     $('.single-product-layout-1 .accordion-header').click(function(){
         $(this).siblings('.accordion-content').slideToggle('fast');
     });
-
-    $("#demo").ezPlus({
-        gallery:'gallery_demo',
-        cursor:'pointer',
-        galleryActiveClass:"active",
-        imageCrossfade:true
-    });        
+          
 })
