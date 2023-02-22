@@ -28,13 +28,12 @@
     {{ 'style.css' | asset_url | stylesheet_tag }}
     {{ 'base.css' | asset_url | stylesheet_tag }}
     {{ 'scripts.js' | asset_url | script_tag }}
-    
     {{ content_for_header }}
 </head>
 <body>
     <div class="container-wrapper">
         <div class="sidebar-menu">
-            {% comment %} {% section 'sidebar-menu' %} {% endcomment %}
+            {% section 'sidebar-menu' %}
         </div>
         <div class="container-inner">
             <div class="menu-overlay"></div>

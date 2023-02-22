@@ -42,6 +42,18 @@
   margin: auto;
   animation: fadeEffect 1s;
 }
+.single-product-layout-1 .single-product-wrapper .detail-info-product .image-wrapper #gallery_demo #img_01 {
+  width: 80px;
+  height: 80px;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .image-wrapper #gallery_demo a {
+  height: fit-content;
+  width: fit-content;
+  display: block;
+}
+.single-product-layout-1 .single-product-wrapper .detail-info-product .image-wrapper .zoomWrapper #demo {
+  width: auto;
+}
 .single-product-layout-1 .single-product-wrapper .detail-info-product .product-description-wrapper {
   padding-top: 50px;
   color: #041E42;

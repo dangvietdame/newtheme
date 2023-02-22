@@ -1,3 +1,17 @@
+// jscs:disable
+/* jshint -W071, -W074 */
+// jscs:enable
+/* globals jQuery */
+/*
+ * jQuery ezPlus 1.2.5
+ * Demo's and documentation:
+ * http://igorlino.github.io/elevatezoom-plus/
+ *
+ * licensed under MIT license.
+ * http://en.wikipedia.org/wiki/MIT_License
+ *
+ */
+
 if (typeof Object.create !== 'function') {
     Object.create = function (obj) {
         function F() {
@@ -8,18 +22,17 @@ if (typeof Object.create !== 'function') {
     };
 }
 
-(function ($, window, document, undefined) {
+(function ($, window, document) {
     var EZP = {
         init: function (options, elem) {
             var self = this;
-            var $galleries;
 
             self.elem = elem;
             self.$elem = $(elem);
 
-            self.imageSrc = self.$elem.data('zoom-image') ? self.$elem.data('zoom-image') : self.$elem.attr('src');
-
             self.options = $.extend({}, $.fn.ezPlus.options, self.responsiveConfig(options || {}));
+
+            self.imageSrc = self.$elem.attr('data-'+self.options.attrImageZoomSrc) ? self.$elem.attr('data-'+self.options.attrImageZoomSrc) : self.$elem.attr('src');
 
             if (!self.options.enabled) {
                 return;
@@ -27,12 +40,22 @@ if (typeof Object.create !== 'function') {
 
             //TINT OVERRIDE SETTINGS
             if (self.options.tint) {
-                self.options.lensColour = 'none'; //colour of the lens background
+                self.options.lensColour = 'transparent'; //colour of the lens background
                 self.options.lensOpacity = '1'; //opacity of the lens
             }
             //INNER OVERRIDE SETTINGS
             if (self.options.zoomType === 'inner') {
                 self.options.showLens = false;
+            }
+
+            // LENS OVERRIDE SETTINGS
+            if (self.options.zoomType === 'lens') {
+                self.options.zoomWindowWidth = 0;
+            }
+
+            //UUID WHEN MISSING IDENTIFIER
+            if (self.options.zoomId === -1) {
+                self.options.zoomId = generateUUID();
             }
 
             //Remove alt on hover
@@ -44,12 +67,14 @@ if (typeof Object.create !== 'function') {
             self.refresh(1);
 
             //Create the image swap from the gallery
-            $galleries = $(self.options.gallery ? ('#' + self.options.gallery) : self.options.gallerySelector);
-            $galleries.on('click.zoom', self.options.galleryItem, function (e) {
+            var galleryEvent = self.options.galleryEvent + '.ezpspace';
+            galleryEvent += self.options.touchEnabled ? ' touchend.ezpspace' : '';
+            self.$galleries = $(self.options.gallery ? ('#' + self.options.gallery) : self.options.gallerySelector);
+            self.$galleries.on(galleryEvent, self.options.galleryItem, function (e) {
 
                 //Set a class on the currently active gallery image
                 if (self.options.galleryActiveClass) {
-                    $(self.options.galleryItem, $galleries).removeClass(self.options.galleryActiveClass);
+                    $(self.options.galleryItem, self.$galleries).removeClass(self.options.galleryActiveClass);
                     $(this).addClass(self.options.galleryActiveClass);
                 }
                 //stop any link on the a tag from working
@@ -58,8 +83,8 @@ if (typeof Object.create !== 'function') {
                 }
 
                 //call the swap image function
-                if ($(this).data('zoom-image')) {
-                    self.zoomImagePre = $(this).data('zoom-image');
+                if ($(this).data(self.options.attrImageZoomSrc)) {
+                    self.zoomImagePre = $(this).data(self.options.attrImageZoomSrc);
                 }
                 else {
                     self.zoomImagePre = $(this).data('image');
@@ -69,23 +94,40 @@ if (typeof Object.create !== 'function') {
                     return false;
                 }
             });
+            function generateUUID() {
+                var d = new Date().getTime();
+                var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                    var r = (d + Math.random() * 16) % 16 | 0; // jshint ignore:line
+                    d = Math.floor(d / 16); // jshint ignore:line
+                    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16); // jshint ignore:line
+                });
+                return uuid;
+            }
         },
         refresh: function (length) {
             var self = this;
 
             setTimeout(function () {
-                self.fetch(self.imageSrc);
+                self.fetch(self.imageSrc, self.$elem, self.options.minZoomLevel);
 
             }, length || self.options.refresh);
         },
-        fetch: function (imgsrc) {
+        fetch: function (imgsrc, element, minZoom) {
             //get the image
             var self = this;
             var newImg = new Image();
             newImg.onload = function () {
                 //set the large image dimensions - used to calculte ratio's
-                self.largeWidth = newImg.width;
-                self.largeHeight = newImg.height;
+                if (newImg.width / element.width() <= minZoom) {
+                    self.largeWidth = element.width() * minZoom;
+                } else {
+                    self.largeWidth = newImg.width;
+                }
+                if (newImg.height / element.height() <= minZoom) {
+                    self.largeHeight = element.height() * minZoom;
+                } else {
+                    self.largeHeight = newImg.height;
+                }
                 //once image is loaded start the calls
                 self.startZoom();
                 self.currentImage = self.imageSrc;
@@ -114,8 +156,18 @@ if (typeof Object.create !== 'function') {
 
             //CrossFade Wrapper
             if (self.options.imageCrossfade) {
-                self.zoomWrap = self.$elem.wrap('<div style="height:' + self.nzHeight + 'px;width:' + self.nzWidth + 'px;" class="zoomWrapper" />');
-                self.$elem.css('position', 'absolute');
+                var elementZoomWrapper = $('<div class="zoomWrapper"/>')
+                    .css({
+                        height: self.nzHeight,
+                        width: self.nzWidth
+                    });
+                if(self.$elem.parent().hasClass('zoomWrapper')){
+                    self.$elem.unwrap();
+                }
+                self.zoomWrap = self.$elem.wrap(elementZoomWrapper);
+                self.$elem.css({
+                    position: 'absolute'
+                });
             }
 
             self.zoomLock = 1;
@@ -124,23 +176,25 @@ if (typeof Object.create !== 'function') {
             self.currentZoomLevel = self.options.zoomLevel;
 
             //get offset of the non zoomed image
-            self.nzOffset = self.$elem.offset();
+            self.updateOffset(self);
             //calculate the width ratio of the large/small image
             self.widthRatio = (self.largeWidth / self.currentZoomLevel) / self.nzWidth;
             self.heightRatio = (self.largeHeight / self.currentZoomLevel) / self.nzHeight;
 
             function getWindowZoomStyle() {
-                return 'overflow: hidden;' +
-                    'background-position: 0px 0px;text-align:center;' +
-                    'background-color: ' + String(self.options.zoomWindowBgColour) + ';' +
-                    'width: ' + String(self.options.zoomWindowWidth) + 'px;' +
-                    'height: ' + String(self.options.zoomWindowHeight) + 'px;' +
-                    'float: left;' +
-                    'background-size: ' + self.largeWidth / self.currentZoomLevel + 'px ' + self.largeHeight / self.currentZoomLevel + 'px;' +
-                    'display: none;z-index:100;' +
-                    'border: ' + String(self.options.borderSize) + 'px solid ' + self.options.borderColour + ';' +
-                    'background-repeat: no-repeat;' +
-                    'position: absolute;';
+                return {
+                    display: 'none',
+                    position: 'absolute',
+                    height: self.options.zoomWindowHeight,
+                    width: self.options.zoomWindowWidth,
+                    border: '' + self.options.borderSize + 'px solid ' + self.options.borderColour,
+                    backgroundSize: '' + (self.largeWidth / self.currentZoomLevel) + 'px ' + (self.largeHeight / self.currentZoomLevel) + 'px',
+                    backgroundPosition: '0px 0px',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundColor: '' + self.options.zoomWindowBgColour,
+                    overflow: 'hidden',
+                    zIndex: 100
+                };
             }
 
             //if window zoom
@@ -152,18 +206,23 @@ if (typeof Object.create !== 'function') {
                 //has a border been put on the image? Lets cater for this
                 var borderWidth = self.$elem.css('border-left-width');
 
-                return 'overflow: hidden;' +
-                    'margin-left: ' + String(borderWidth) + ';' +
-                    'margin-top: ' + String(borderWidth) + ';' +
-                    'background-position: 0px 0px;' +
-                    'width: ' + String(self.nzWidth) + 'px;' +
-                    'height: ' + String(self.nzHeight) + 'px;' +
-                    'float: left;' +
-                    'display: none;' +
-                    'cursor:' + (self.options.cursor) + ';' +
-                    'px solid ' + self.options.borderColour + ';' +
-                    'background-repeat: no-repeat;' +
-                    'position: absolute;';
+                if (self.options.scrollZoom)
+                    self.zoomLens = $('<div class="zoomLens"/>');
+
+                return {
+                    display: 'none',
+                    position: 'absolute',
+                    height: self.nzHeight,
+                    width: self.nzWidth,
+                    marginTop: borderWidth,
+                    marginLeft: borderWidth,
+                    border: '' + self.options.borderSize + 'px solid ' + self.options.borderColour,
+                    backgroundPosition: '0px 0px',
+                    backgroundRepeat: 'no-repeat',
+                    cursor: self.options.cursor,
+                    overflow: 'hidden',
+                    zIndex: self.options.zIndex
+                };
             }
 
             //if inner  zoom
@@ -172,34 +231,35 @@ if (typeof Object.create !== 'function') {
             }
 
             function getWindowLensStyle() {
-                var lensHeight, lensWidth;
                 // adjust images less than the window height
 
                 if (self.nzHeight < self.options.zoomWindowHeight / self.heightRatio) {
-                    lensHeight = self.nzHeight;
+                    self.lensHeight = self.nzHeight;
                 }
                 else {
-                    lensHeight = String(self.options.zoomWindowHeight / self.heightRatio);
+                    self.lensHeight = self.options.zoomWindowHeight / self.heightRatio;
                 }
                 if (self.largeWidth < self.options.zoomWindowWidth) {
-                    lensWidth = self.nzWidth;
+                    self.lensWidth = self.nzWidth;
                 }
                 else {
-                    lensWidth = String(self.options.zoomWindowWidth / self.widthRatio);
+                    self.lensWidth = self.options.zoomWindowWidth / self.widthRatio;
                 }
 
-                return 'background-position: 0px 0px;width: ' + String((self.options.zoomWindowWidth) / self.widthRatio) + 'px;' +
-                    'height: ' + String((self.options.zoomWindowHeight) / self.heightRatio) +
-                    'px;float: right;display: none;' +
-                    'overflow: hidden;' +
-                    'z-index: 999;' +
-                    'opacity:' + (self.options.lensOpacity) + ';filter: alpha(opacity = ' + (self.options.lensOpacity * 100) + '); zoom:1;' +
-                    'width:' + lensWidth + 'px;' +
-                    'height:' + lensHeight + 'px;' +
-                    'background-color:' + (self.options.lensColour) + ';' +
-                    'cursor:' + (self.options.cursor) + ';' +
-                    'border: ' + (self.options.lensBorderSize) + 'px' +
-                    ' solid ' + (self.options.lensBorderColour) + ';background-repeat: no-repeat;position: absolute;';
+                return {
+                    display: 'none',
+                    position: 'absolute',
+                    height: self.lensHeight,
+                    width: self.lensWidth,
+                    border: '' + self.options.lensBorderSize + 'px' + ' solid ' + self.options.lensBorderColour,
+                    backgroundPosition: '0px 0px',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundColor: self.options.lensColour,
+                    opacity: self.options.lensOpacity,
+                    cursor: self.options.cursor,
+                    zIndex: 999,
+                    overflow: 'hidden'
+                };
             }
 
             //lens style for window zoom
@@ -208,45 +268,56 @@ if (typeof Object.create !== 'function') {
             }
 
             //tint style
-            self.tintStyle = 'display: block;' +
-                'position: absolute;' +
-                'background-color: ' + self.options.tintColour + ';' +
-                'filter:alpha(opacity=0);' +
-                'opacity: 0;' +
-                'width: ' + self.nzWidth + 'px;' +
-                'height: ' + self.nzHeight + 'px;';
+            self.tintStyle = {
+                display: 'block',
+                position: 'absolute',
+                height: self.nzHeight,
+                width: self.nzWidth,
+                backgroundColor: self.options.tintColour,
+                opacity: 0
+            };
 
             //lens style for lens zoom with optional round for modern browsers
-            self.lensRound = '';
+            self.lensRound = {};
 
             if (self.options.zoomType === 'lens') {
-                self.lensStyle = 'background-position: 0px 0px;' +
-                    'float: left;display: none;' +
-                    'border: ' + String(self.options.borderSize) + 'px solid ' + self.options.borderColour + ';' +
-                    'width:' + String(self.options.lensSize) + 'px;' +
-                    'height:' + String(self.options.lensSize) + 'px;' +
-                    'background-repeat: no-repeat;position: absolute;';
+                self.lensStyle = {
+                    display: 'none',
+                    position: 'absolute',
+                    float: 'left',
+                    height: self.options.lensSize,
+                    width: self.options.lensSize,
+                    border: '' + self.options.borderSize + 'px solid ' + self.options.borderColour,
+                    backgroundPosition: '0px 0px',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundColor: self.options.lensColour,
+                    cursor: self.options.cursor
+                };
             }
 
             //does not round in all browsers
             if (self.options.lensShape === 'round') {
-                self.lensRound = 'border-top-left-radius: ' + String(self.options.lensSize / 2 + self.options.borderSize) + 'px;' +
-                    'border-top-right-radius: ' + String(self.options.lensSize / 2 + self.options.borderSize) + 'px;' +
-                    'border-bottom-left-radius: ' + String(self.options.lensSize / 2 + self.options.borderSize) + 'px;' +
-                    'border-bottom-right-radius: ' + String(self.options.lensSize / 2 + self.options.borderSize) + 'px;';
+                self.lensRound = {
+                    borderRadius: self.options.lensSize / 2 + self.options.borderSize
+                };
             }
 
             //create the div's                                                + ""
             //self.zoomContainer = $('<div/>').addClass('zoomContainer').css({"position":"relative", "height":self.nzHeight, "width":self.nzWidth});
 
-            self.zoomContainer =
-                $('<div class="zoomContainer" style="' +
-                    'position:absolute;' +
-                    'left:' + self.nzOffset.left + 'px;' +
-                    'top:' + self.nzOffset.top + 'px;' +
-                    'height:' + self.nzHeight + 'px;' + '' +
-                    'width:' + self.nzWidth + 'px;' +
-                    'z-index:' + self.options.zIndex + '"></div>');
+            self.zoomContainer = $('<div class="' + self.options.container + '" ' + 'uuid="' + self.options.zoomId + '"/>');
+            self.zoomContainer.css({
+                position: 'absolute',
+                top: self.nzOffset.top,
+                left: self.nzOffset.left,
+                height: self.nzHeight,
+                width: self.nzWidth,
+                zIndex: self.options.zIndex
+            });
+            if (self.$elem.attr('id')) {
+                self.zoomContainer.attr('id', self.$elem.attr('id') + '-' + self.options.container);
+            }
+            $('.' + self.options.container + '[uuid="' + self.options.zoomId + '"]').remove();
             $(self.options.zoomContainerAppendTo).append(self.zoomContainer);
 
             //this will add overflow hidden and contrain the lens on lens mode
@@ -254,15 +325,16 @@ if (typeof Object.create !== 'function') {
                 self.zoomContainer.css('overflow', 'hidden');
             }
             if (self.options.zoomType !== 'inner') {
-                self.zoomLens = $('<div class="zoomLens" style="' + self.lensStyle + self.lensRound + '">&nbsp;</div>')
+                self.zoomLens = $('<div class="zoomLens"/>')
+                    .css($.extend({}, self.lensStyle, self.lensRound))
                     .appendTo(self.zoomContainer)
                     .click(function () {
                         self.$elem.trigger('click');
                     });
 
                 if (self.options.tint) {
-                    self.tintContainer = $('<div/>').addClass('tintContainer');
-                    self.zoomTint = $('<div class="zoomTint" style="' + self.tintStyle + '"></div>');
+                    self.tintContainer = $('<div class="tintContainer"/>');
+                    self.zoomTint = $('<div class="zoomTint"/>').css(self.tintStyle);
 
                     self.zoomLens.wrap(self.tintContainer);
 
@@ -270,91 +342,92 @@ if (typeof Object.create !== 'function') {
 
                     //if tint enabled - set an image to show over the tint
 
-                    self.zoomTintImage = $('<img style="' +
-                        'position: absolute; left: 0px; top: 0px; max-width: none; ' +
-                        'width: ' + self.nzWidth + 'px; ' +
-                        'height: ' + self.nzHeight + 'px;" ' +
-                        'src="' + self.imageSrc + '">')
+                    self.zoomTintImage = $('<img src="' + self.$elem.attr('src') + '">')
+                        .css({
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            height: self.nzHeight,
+                            width: self.nzWidth,
+                            maxWidth: 'none'
+                        })
                         .appendTo(self.zoomLens)
                         .click(function () {
-
                             self.$elem.trigger('click');
                         });
                 }
             }
 
-            var targetZoomContainer = isNaN(self.options.zoomWindowPosition) ? 'body' : self.zoomContainer;
             //create zoom window
-            self.zoomWindow = $('<div style="z-index:999;' +
-                'left:' + (self.windowOffsetLeft) + 'px;' +
-                'top:' + (self.windowOffsetTop) + 'px;' + self.zoomWindowStyle + '" class="zoomWindow">&nbsp;</div>')
+            var targetZoomContainer = isNaN(self.options.zoomWindowPosition) ? 'body' : self.zoomContainer;
+            self.zoomWindow = $('<div class="zoomWindow"/>')
+                .css($.extend({
+                    zIndex: 999,
+                    top: self.windowOffsetTop,
+                    left: self.windowOffsetLeft,
+                }, self.zoomWindowStyle))
                 .appendTo(targetZoomContainer).click(function () {
                     self.$elem.trigger('click');
                 });
-            self.zoomWindowContainer = $('<div/>').addClass('zoomWindowContainer').css('width', self.options.zoomWindowWidth);
+            self.zoomWindowContainer = $('<div class="zoomWindowContainer" />')
+                .css({
+                    width: self.options.zoomWindowWidth
+                });
             self.zoomWindow.wrap(self.zoomWindowContainer);
 
-            //  self.captionStyle = "text-align: left;background-color: black;'+
-            // 'color: white;font-weight: bold;padding: 10px;font-family: sans-serif;font-size: 11px";
-            // self.zoomCaption = $('<div class="ezplus-caption" '+
-            // 'style="'+self.captionStyle+'display: block; width: 280px;">INSERT ALT TAG</div>').appendTo(self.zoomWindow.parent());
-
             if (self.options.zoomType === 'lens') {
-                self.zoomLens.css('background-image', 'url("' + self.imageSrc + '")');
+                self.zoomContainer.css('display', 'none');
+                self.zoomLens.css({
+                    backgroundImage: 'url("' + self.imageSrc + '")'
+                });
             }
             if (self.options.zoomType === 'window') {
-                self.zoomWindow.css('background-image', 'url("' + self.imageSrc + '")');
+                self.zoomWindow.css({
+                    backgroundImage: 'url("' + self.imageSrc + '")'
+                });
             }
             if (self.options.zoomType === 'inner') {
-                self.zoomWindow.css('background-image', 'url("' + self.imageSrc + '")');
+                self.zoomWindow.css({
+                    backgroundImage: 'url("' + self.imageSrc + '")'
+                });
             }
 
             /*-------------------END THE ZOOM WINDOW AND LENS----------------------------------*/
             if (self.options.touchEnabled) {
                 //touch events
-                self.$elem.bind('touchmove', function (e) {
+                self.$elem.on('touchmove.ezpspace', function (e) {
                     e.preventDefault();
                     var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
                     self.setPosition(touch);
                 });
-                self.zoomContainer.bind('touchmove', function (e) {
-                    if (self.options.zoomType === 'inner') {
-                        self.showHideWindow('show');
-
-                    }
+                self.zoomContainer.on('touchmove.ezpspace', function (e) {
+                    self.setElements('show');
                     e.preventDefault();
                     var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
                     self.setPosition(touch);
 
                 });
-                self.zoomContainer.bind('touchend', function (e) {
-                    self.showHideWindow('hide');
-                    if (self.options.showLens) {
-                        self.showHideLens('hide');
-                    }
-                    if (self.options.tint && self.options.zoomType !== 'inner') {
-                        self.showHideTint('hide');
-                    }
-                });
+                self.zoomContainer
+                    .add(self.$elem)
+                    .on('touchend.ezpspace', function (e) {
+                        self.showHideWindow('hide');
+                        if (self.options.showLens) {
+                            self.showHideLens('hide');
+                        }
+                        if (self.options.tint && self.options.zoomType !== 'inner') {
+                            self.showHideTint('hide');
+                        }
+                    });
 
-                self.$elem.bind('touchend', function (e) {
-                    self.showHideWindow('hide');
-                    if (self.options.showLens) {
-                        self.showHideLens('hide');
-                    }
-                    if (self.options.tint && self.options.zoomType !== 'inner') {
-                        self.showHideTint('hide');
-                    }
-                });
                 if (self.options.showLens) {
-                    self.zoomLens.bind('touchmove', function (e) {
+                    self.zoomLens.on('touchmove.ezpspace', function (e) {
 
                         e.preventDefault();
                         var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
                         self.setPosition(touch);
                     });
 
-                    self.zoomLens.bind('touchend', function (e) {
+                    self.zoomLens.on('touchend.ezpspace', function (e) {
                         self.showHideWindow('hide');
                         if (self.options.showLens) {
                             self.showHideLens('hide');
@@ -365,29 +438,18 @@ if (typeof Object.create !== 'function') {
                     });
                 }
             }
-            //Needed to work in IE
-            self.$elem.bind('mousemove', function (e) {
-                if (self.overWindow === false) {
-                    self.setElements('show');
-                }
-                //make sure on orientation change the setposition is not fired
-                if (self.lastX !== e.clientX || self.lastY !== e.clientY) {
-                    self.setPosition(e);
-                    self.currentLoc = e;
-                }
-                self.lastX = e.clientX;
-                self.lastY = e.clientY;
 
-            });
+            // Needed to work in IE
+            self.zoomContainer.on('click.ezpspace touchstart.ezpspace', self.options.onImageClick);
 
-            self.zoomContainer.bind('click', self.options.onImageClick);
-
-            self.zoomContainer.bind('mousemove', function (e) {
-                if (self.overWindow === false) {
-                    self.setElements('show');
-                }
-                mouseMoveZoomHandler(e);
-            });
+            self.zoomContainer
+                .add(self.$elem)
+                .on('mousemove.ezpspace', function (e) {
+                    if (self.overWindow === false) {
+                        self.setElements('show');
+                    }
+                    mouseMoveZoomHandler(e);
+                });
 
             function mouseMoveZoomHandler(e) {
                 //self.overWindow = true;
@@ -413,27 +475,29 @@ if (typeof Object.create !== 'function') {
 
             //register the mouse tracking
             if (elementToTrack) {
-                elementToTrack.bind('mousemove', mouseMoveZoomHandler);
+                elementToTrack.on('mousemove.ezpspace', mouseMoveZoomHandler);
             }
 
             //  lensFadeOut: 500,  zoomTintFadeIn
-            self.zoomContainer.add(self.$elem).mouseenter(function () {
-                if (self.overWindow === false) {
-                    self.setElements('show');
-                }
-            }).mouseleave(function () {
-                if (!self.scrollLock) {
-                    self.setElements('hide');
-                    self.options.onDestroy(self.$elem);
-                }
-            });
+            self.zoomContainer
+                .add(self.$elem)
+                .hover(function () {
+                    if (self.overWindow === false) {
+                        self.setElements('show');
+                    }
+                }, function () {
+                    if (!self.scrollLock) {
+                        self.setElements('hide');
+                        self.options.onDestroy(self.$elem);
+                    }
+                });
             //end ove image
 
             if (self.options.zoomType !== 'inner') {
-                self.zoomWindow.mouseenter(function () {
+                self.zoomWindow.hover(function () {
                     self.overWindow = true;
                     self.setElements('hide');
-                }).mouseleave(function () {
+                }, function () {
                     self.overWindow = false;
                 });
             }
@@ -457,7 +521,8 @@ if (typeof Object.create !== 'function') {
             }
 
             if (self.options.scrollZoom) {
-                self.zoomContainer.add(self.$elem).bind('wheel DOMMouseScroll MozMousePixelScroll', function (e) {
+                //see compatibility of mouse events at https://developer.mozilla.org/en-US/docs/Web/Events/mousewheel
+                self.zoomContainer.add(self.$elem).on('wheel DOMMouseScroll MozMousePixelScroll', function (e) {
                     // in IE there is issue with firing of mouseleave - So check whether still scrolling
                     // and on mouseleave check if scrolllock
                     self.scrollLock = true;
@@ -476,10 +541,16 @@ if (typeof Object.create !== 'function') {
                     e.stopPropagation();
                     e.preventDefault();
 
+                    if (theEvent === 0) {
+                        // fixes last event inversion bug
+                        return false;
+                    }
+                    var nextZoomLevel;
                     if (theEvent / 120 > 0) {
+                        nextZoomLevel = parseFloat(self.currentZoomLevel) - self.options.scrollZoomIncrement;
                         //scrolling up
-                        if (self.currentZoomLevel >= self.minZoomLevel) {
-                            self.changeZoomLevel(self.currentZoomLevel - self.options.scrollZoomIncrement);
+                        if (nextZoomLevel >= parseFloat(self.minZoomLevel)) {
+                            self.changeZoomLevel(nextZoomLevel);
                         }
                     }
                     else {
@@ -487,20 +558,36 @@ if (typeof Object.create !== 'function') {
 
                         //Check if it has to maintain original zoom window aspect ratio or not
                         if ((!self.fullheight && !self.fullwidth) || !self.options.mantainZoomAspectRatio) {
+                            nextZoomLevel = parseFloat(self.currentZoomLevel) + self.options.scrollZoomIncrement;
+
                             if (self.options.maxZoomLevel) {
-                                if (self.currentZoomLevel <= self.options.maxZoomLevel) {
-                                    self.changeZoomLevel(parseFloat(self.currentZoomLevel) + self.options.scrollZoomIncrement);
+                                if (nextZoomLevel <= self.options.maxZoomLevel) {
+                                    self.changeZoomLevel(nextZoomLevel);
                                 }
                             }
                             else {
                                 //andy
-                                self.changeZoomLevel(parseFloat(self.currentZoomLevel) + self.options.scrollZoomIncrement);
+                                self.changeZoomLevel(nextZoomLevel);
                             }
                         }
                     }
                     return false;
                 });
             }
+        },
+        destroy: function () {
+            var self = this;
+            self.$elem.off('.ezpspace');
+            self.$galleries.off('.ezpspace');
+            $(self.zoomContainer).remove();
+            if (self.options.loadingIcon && !!self.spinner && !!self.spinner.length) {
+                self.spinner.remove();
+                delete self.spinner;
+            }
+        },
+        getIdentifier: function () {
+            var self = this;
+            return self.options.zoomId;
         },
         setElements: function (type) {
             var self = this;
@@ -516,6 +603,7 @@ if (typeof Object.create !== 'function') {
                         self.showHideWindow('show');
                     }
                     if (self.options.showLens) {
+                        self.showHideZoomContainer('show');
                         self.showHideLens('show');
                     }
                     if (self.options.tint && self.options.zoomType !== 'inner') {
@@ -532,6 +620,7 @@ if (typeof Object.create !== 'function') {
                     self.showHideWindow('hide');
                 }
                 if (self.options.showLens) {
+                    self.showHideZoomContainer('hide');
                     self.showHideLens('hide');
                 }
                 if (self.options.tint) {
@@ -543,7 +632,7 @@ if (typeof Object.create !== 'function') {
 
             var self = this;
 
-            if (!self.options.zoomEnabled) {
+            if (!self.options.zoomEnabled || e === undefined) {
                 return false;
             }
 
@@ -551,7 +640,7 @@ if (typeof Object.create !== 'function') {
             //this can be caused by other on page elements
             self.nzHeight = self.$elem.height();
             self.nzWidth = self.$elem.width();
-            self.nzOffset = self.$elem.offset();
+            self.updateOffset(self);
 
             if (self.options.tint && self.options.zoomType !== 'inner') {
                 self.zoomTint.css({
@@ -565,16 +654,16 @@ if (typeof Object.create !== 'function') {
                 if (self.options.showLens) {
                     var lensHeight, lensWidth;
                     if (self.nzHeight < self.options.zoomWindowWidth / self.widthRatio) {
-                        lensHeight = self.nzHeight;
+                        self.lensHeight = self.nzHeight;
                     }
                     else {
-                        lensHeight = String((self.options.zoomWindowHeight / self.heightRatio));
+                        self.lensHeight = self.options.zoomWindowHeight / self.heightRatio;
                     }
                     if (self.largeWidth < self.options.zoomWindowWidth) {
-                        lensWidth = self.nzWidth;
+                        self.lensWidth = self.nzWidth;
                     }
                     else {
-                        lensWidth = (self.options.zoomWindowWidth / self.widthRatio);
+                        self.lensWidth = (self.options.zoomWindowWidth / self.widthRatio);
                     }
                     self.widthRatio = self.largeWidth / self.nzWidth;
                     self.heightRatio = self.largeHeight / self.nzHeight;
@@ -582,37 +671,37 @@ if (typeof Object.create !== 'function') {
                         //possibly dont need to keep recalcalculating
                         //if the lens is heigher than the image, then set lens size to image size
                         if (self.nzHeight < self.options.zoomWindowWidth / self.widthRatio) {
-                            lensHeight = self.nzHeight;
+                            self.lensHeight = self.nzHeight;
 
                         }
                         else {
-                            lensHeight = String((self.options.zoomWindowHeight / self.heightRatio));
+                            self.lensHeight = self.options.zoomWindowHeight / self.heightRatio;
                         }
 
                         if (self.nzWidth < self.options.zoomWindowHeight / self.heightRatio) {
-                            lensWidth = self.nzWidth;
+                            self.lensWidth = self.nzWidth;
                         }
                         else {
-                            lensWidth = String((self.options.zoomWindowWidth / self.widthRatio));
+                            self.lensWidth = self.options.zoomWindowWidth / self.widthRatio;
                         }
 
                         self.zoomLens.css({
-                            'width': lensWidth,
-                            'height': lensHeight
+                            width: self.lensWidth,
+                            height: self.lensHeight
                         });
 
                         if (self.options.tint) {
                             self.zoomTintImage.css({
-                                'width': self.nzWidth,
-                                'height': self.nzHeight
+                                width: self.nzWidth,
+                                height: self.nzHeight
                             });
                         }
 
                     }
                     if (self.options.zoomType === 'lens') {
                         self.zoomLens.css({
-                            width: String(self.options.lensSize) + 'px',
-                            height: String(self.options.lensSize) + 'px'
+                            width: self.options.lensSize,
+                            height: self.options.lensSize
                         });
                     }
                     //end responsive image change
@@ -622,10 +711,12 @@ if (typeof Object.create !== 'function') {
             //container fix
             self.zoomContainer.css({
                 top: self.nzOffset.top,
-                left: self.nzOffset.left
+                left: self.nzOffset.left,
+                width: self.nzWidth,  // new code
+                height: self.nzHeight // new code
             });
-            self.mouseLeft = parseInt(e.pageX - self.nzOffset.left);
-            self.mouseTop = parseInt(e.pageY - self.nzOffset.top);
+            self.mouseLeft = parseInt(e.pageX - self.pageOffsetX - self.nzOffset.left);
+            self.mouseTop = parseInt(e.pageY - self.pageOffsetY - self.nzOffset.top);
             //calculate the Location of the Lens
 
             //calculate the bound regions - but only if zoom window
@@ -656,8 +747,8 @@ if (typeof Object.create !== 'function') {
                 if (self.options.showLens) {
                     //		self.showHideLens('show');
                     //set background position of lens
-                    self.lensLeftPos = String(Math.floor(self.mouseLeft - self.zoomLens.width() / 2));
-                    self.lensTopPos = String(Math.floor(self.mouseTop - self.zoomLens.height() / 2));
+                    self.lensLeftPos = Math.floor(self.mouseLeft - self.zoomLens.width() / 2);
+                    self.lensTopPos = Math.floor(self.mouseTop - self.zoomLens.height() / 2);
                 }
                 //adjust the background position if the mouse is in one of the outer regions
 
@@ -692,31 +783,41 @@ if (typeof Object.create !== 'function') {
                 //if lens zoom
                 if (self.options.zoomType === 'lens') {
 
-                    self.windowLeftPos = String(((e.pageX - self.nzOffset.left) * self.widthRatio - self.zoomLens.width() / 2) * (-1));
-                    self.windowTopPos = String(((e.pageY - self.nzOffset.top) * self.heightRatio - self.zoomLens.height() / 2) * (-1));
-                    self.zoomLens.css('background-position', self.windowLeftPos + 'px ' + self.windowTopPos + 'px');
+                    self.windowLeftPos = ((e.pageX - self.pageOffsetX - self.nzOffset.left) * self.widthRatio - self.zoomLens.width() / 2) * -1;
+                    self.windowTopPos = ((e.pageY - self.pageOffsetY - self.nzOffset.top) * self.heightRatio - self.zoomLens.height() / 2) * -1;
+                    self.zoomLens.css({
+                        backgroundPosition: '' + self.windowLeftPos + 'px ' + self.windowTopPos + 'px'
+                    });
 
                     if (self.changeBgSize) {
                         if (self.nzHeight > self.nzWidth) {
                             if (self.options.zoomType === 'lens') {
-                                self.zoomLens.css('background-size',
-                                    self.largeWidth / self.newvalueheight + 'px ' +
-                                    self.largeHeight / self.newvalueheight + 'px');
+                                self.zoomLens.css({
+                                    backgroundSize: '' +
+                                    (self.largeWidth / self.newvalueheight) + 'px ' +
+                                    (self.largeHeight / self.newvalueheight) + 'px'
+                                });
                             }
 
-                            self.zoomWindow.css('background-size',
-                                self.largeWidth / self.newvalueheight + 'px ' +
-                                self.largeHeight / self.newvalueheight + 'px');
+                            self.zoomWindow.css({
+                                backgroundSize: '' +
+                                (self.largeWidth / self.newvalueheight) + 'px ' +
+                                (self.largeHeight / self.newvalueheight) + 'px'
+                            });
                         }
                         else {
                             if (self.options.zoomType === 'lens') {
-                                self.zoomLens.css('background-size',
-                                    self.largeWidth / self.newvaluewidth + 'px ' +
-                                    self.largeHeight / self.newvaluewidth + 'px');
+                                self.zoomLens.css({
+                                    backgroundSize: '' +
+                                    (self.largeWidth / self.newvaluewidth) + 'px ' +
+                                    (self.largeHeight / self.newvaluewidth) + 'px'
+                                });
                             }
-                            self.zoomWindow.css('background-size',
-                                self.largeWidth / self.newvaluewidth + 'px ' +
-                                self.largeHeight / self.newvaluewidth + 'px');
+                            self.zoomWindow.css({
+                                backgroundSize: '' +
+                                (self.largeWidth / self.newvaluewidth) + 'px ' +
+                                (self.largeHeight / self.newvaluewidth) + 'px'
+                            });
                         }
                         self.changeBgSize = false;
                     }
@@ -739,8 +840,8 @@ if (typeof Object.create !== 'function') {
                         self.lensLeftPos = 0;
                     }
                     self.zoomLens.css({
-                        left: self.lensLeftPos + 'px',
-                        top: self.lensTopPos + 'px'
+                        left: self.lensLeftPos,
+                        top: self.lensTopPos
                     });
                 }
 
@@ -787,6 +888,7 @@ if (typeof Object.create !== 'function') {
                     else {
                         self.zoomWindow.hide();
                     }
+                    self.options.onHide(self);
                     self.isWindowActive = false;
                 }
             }
@@ -795,22 +897,26 @@ if (typeof Object.create !== 'function') {
             var self = this;
             if (change === 'show') {
                 if (!self.isLensActive) {
-                    if (self.options.lensFadeIn && self.zoomLens) {
-                        self.zoomLens.stop(true, true, false).fadeIn(self.options.lensFadeIn);
-                    }
-                    else {
-                        self.zoomLens.show();
+                    if (self.zoomLens) {
+                        if (self.options.lensFadeIn) {
+                            self.zoomLens.stop(true, true, false).fadeIn(self.options.lensFadeIn);
+                        }
+                        else {
+                            self.zoomLens.show();
+                        }
                     }
                     self.isLensActive = true;
                 }
             }
             if (change === 'hide') {
                 if (self.isLensActive) {
-                    if (self.options.lensFadeOut) {
-                        self.zoomLens.stop(true, true).fadeOut(self.options.lensFadeOut);
-                    }
-                    else {
-                        self.zoomLens.hide();
+                    if (self.zoomLens) {
+                        if (self.options.lensFadeOut) {
+                            self.zoomLens.stop(true, true).fadeOut(self.options.lensFadeOut);
+                        }
+                        else {
+                            self.zoomLens.hide();
+                        }
                     }
                     self.isLensActive = false;
                 }
@@ -950,8 +1056,12 @@ if (typeof Object.create !== 'function') {
                 }
             } //end isNAN
             else {
-                //WE CAN POSITION IN A CLASS - ASSUME THAT ANY STRING PASSED IS
-                self.externalContainer = $('#' + self.options.zoomWindowPosition);
+                // For BC purposes, treat passed element as ID if element not found
+                self.externalContainer = $(self.options.zoomWindowPosition);
+                if (!self.externalContainer.length) {
+                    self.externalContainer = $('#' + self.options.zoomWindowPosition);
+                }
+
                 self.externalContainerWidth = self.externalContainer.width();
                 self.externalContainerHeight = self.externalContainer.height();
                 self.externalContainerOffset = self.externalContainer.offset();
@@ -977,8 +1087,8 @@ if (typeof Object.create !== 'function') {
 
             }
 
-            self.windowLeftPos = String(((e.pageX - self.nzOffset.left) * self.widthRatio - self.zoomWindow.width() / 2) * (-1));
-            self.windowTopPos = String(((e.pageY - self.nzOffset.top) * self.heightRatio - self.zoomWindow.height() / 2) * (-1));
+            self.windowLeftPos = ((e.pageX - self.pageOffsetX - self.nzOffset.left) * self.widthRatio - self.zoomWindow.width() / 2) * -1;
+            self.windowTopPos = ((e.pageY - self.pageOffsetY - self.nzOffset.top) * self.heightRatio - self.zoomWindow.height() / 2) * -1;
             if (self.Etoppos) {
                 self.windowTopPos = 0;
             }
@@ -1014,14 +1124,14 @@ if (typeof Object.create !== 'function') {
                 }
                 // adjust images less than the window height
 
-                if (self.options.zoomType === 'window') {
-                    if (self.largeHeight < self.options.zoomWindowHeight) {
-                        self.windowTopPos = 0;
-                    }
-                    if (self.largeWidth < self.options.zoomWindowWidth) {
-                        self.windowLeftPos = 0;
-                    }
-                }
+                // if (self.options.zoomType === 'window') {
+                //     if (self.largeHeight < self.options.zoomWindowHeight) {
+                //         self.windowTopPos = 0;
+                //     }
+                //     if (self.largeWidth < self.options.zoomWindowWidth) {
+                //         self.windowLeftPos = 0;
+                //     }
+                // }
                 //set the zoomwindow background position
                 if (self.options.easing) {
 
@@ -1038,6 +1148,11 @@ if (typeof Object.create !== 'function') {
                     if (!self.yp) {
                         self.yp = 0;
                     }
+                    var interval = 16;
+                    var easingInterval = parseInt(self.options.easing);
+                    if (typeof easingInterval === 'number' && isFinite(easingInterval) && Math.floor(easingInterval) === easingInterval) {
+                        interval = easingInterval;
+                    }
                     //if loop not already started, then run it
                     if (!self.loop) {
                         self.loop = setInterval(function () {
@@ -1051,29 +1166,37 @@ if (typeof Object.create !== 'function') {
                                 self.xp = self.windowLeftPos;
                                 self.yp = self.windowTopPos;
 
-                                self.xp = ((e.pageX - self.nzOffset.left) * self.widthRatio - self.zoomWindow.width() / 2) * (-1);
-                                self.yp = (((e.pageY - self.nzOffset.top) * self.heightRatio - self.zoomWindow.height() / 2) * (-1));
+                                self.xp = ((e.pageX - self.pageOffsetX - self.nzOffset.left) * self.widthRatio - self.zoomWindow.width() / 2) * (-1);
+                                self.yp = (((e.pageY - self.pageOffsetY - self.nzOffset.top) * self.heightRatio - self.zoomWindow.height() / 2) * (-1));
 
                                 if (self.changeBgSize) {
                                     if (self.nzHeight > self.nzWidth) {
                                         if (self.options.zoomType === 'lens') {
-                                            self.zoomLens.css('background-size',
-                                                self.largeWidth / self.newvalueheight + 'px ' +
-                                                self.largeHeight / self.newvalueheight + 'px');
+                                            self.zoomLens.css({
+                                                backgroundSize: '' +
+                                                    (self.largeWidth / self.newvalueheight) + 'px ' +
+                                                    (self.largeHeight / self.newvalueheight) + 'px'
+                                            });
                                         }
-                                        self.zoomWindow.css('background-size',
-                                            self.largeWidth / self.newvalueheight + 'px ' +
-                                            self.largeHeight / self.newvalueheight + 'px');
+                                        self.zoomWindow.css({
+                                            backgroundSize: '' +
+                                                (self.largeWidth / self.newvalueheight) + 'px ' +
+                                                (self.largeHeight / self.newvalueheight) + 'px'
+                                        });
                                     }
                                     else {
                                         if (self.options.zoomType !== 'lens') {
-                                            self.zoomLens.css('background-size',
-                                                self.largeWidth / self.newvaluewidth + 'px ' +
-                                                self.largeHeight / self.newvalueheight + 'px');
+                                            self.zoomLens.css({
+                                                backgroundSize: '' +
+                                                    (self.largeWidth / self.newvaluewidth) + 'px ' +
+                                                    (self.largeHeight / self.newvalueheight) + 'px'
+                                            });
                                         }
-                                        self.zoomWindow.css('background-size',
-                                            self.largeWidth / self.newvaluewidth + 'px ' +
-                                            self.largeHeight / self.newvaluewidth + 'px');
+                                        self.zoomWindow.css({
+                                            backgroundSize: '' +
+                                                (self.largeWidth / self.newvaluewidth) + 'px ' +
+                                                (self.largeHeight / self.newvaluewidth) + 'px'
+                                        });
                                     }
 
                                     /*
@@ -1095,7 +1218,9 @@ if (typeof Object.create !== 'function') {
                                     self.changeBgSize = false;
                                 }
 
-                                self.zoomWindow.css('background-position', self.windowLeftPos + 'px ' + self.windowTopPos + 'px');
+                                self.zoomWindow.css({
+                                    backgroundPosition: '' + self.windowLeftPos + 'px ' + self.windowTopPos + 'px'
+                                });
                                 self.scrollingLock = false;
                                 self.loop = false;
 
@@ -1103,78 +1228,102 @@ if (typeof Object.create !== 'function') {
                             else if (Math.round(Math.abs(self.xp - self.windowLeftPos) + Math.abs(self.yp - self.windowTopPos)) < 1) {
                                 //stops micro movements
                                 clearInterval(self.loop);
-                                self.zoomWindow.css('background-position', self.windowLeftPos + 'px ' + self.windowTopPos + 'px');
+                                self.zoomWindow.css({
+                                    backgroundPosition: '' + self.windowLeftPos + 'px ' + self.windowTopPos + 'px'
+                                });
                                 self.loop = false;
                             }
                             else {
                                 if (self.changeBgSize) {
                                     if (self.nzHeight > self.nzWidth) {
                                         if (self.options.zoomType === 'lens') {
-                                            self.zoomLens.css('background-size',
-                                                self.largeWidth / self.newvalueheight + 'px ' +
-                                                self.largeHeight / self.newvalueheight + 'px');
+                                            self.zoomLens.css({
+                                                backgroundSize: '' +
+                                                (self.largeWidth / self.newvalueheight) + 'px ' +
+                                                (self.largeHeight / self.newvalueheight) + 'px'
+                                            });
                                         }
-                                        self.zoomWindow.css('background-size',
-                                            self.largeWidth / self.newvalueheight + 'px ' +
-                                            self.largeHeight / self.newvalueheight + 'px');
+                                        self.zoomWindow.css({
+                                            backgroundSize: '' +
+                                            (self.largeWidth / self.newvalueheight) + 'px ' +
+                                            (self.largeHeight / self.newvalueheight) + 'px'
+                                        });
                                     }
                                     else {
                                         if (self.options.zoomType !== 'lens') {
-                                            self.zoomLens.css('background-size',
-                                                self.largeWidth / self.newvaluewidth + 'px ' +
-                                                self.largeHeight / self.newvaluewidth + 'px');
+                                            self.zoomLens.css({
+                                                backgroundSize: '' +
+                                                (self.largeWidth / self.newvaluewidth) + 'px ' +
+                                                (self.largeHeight / self.newvaluewidth) + 'px'
+                                            });
                                         }
-                                        self.zoomWindow.css('background-size',
-                                            self.largeWidth / self.newvaluewidth + 'px ' +
-                                            self.largeHeight / self.newvaluewidth + 'px');
+                                        self.zoomWindow.css({
+                                            backgroundSize: '' +
+                                            (self.largeWidth / self.newvaluewidth) + 'px ' +
+                                            (self.largeHeight / self.newvaluewidth) + 'px'
+                                        });
                                     }
                                     self.changeBgSize = false;
                                 }
 
-                                self.zoomWindow.css('background-position', self.xp + 'px ' + self.yp + 'px');
+                                self.zoomWindow.css({
+                                    backgroundPosition: '' + self.xp + 'px ' + self.yp + 'px'
+                                });
                             }
-                        }, 16);
+                        }, interval);
                     }
                 }
                 else {
                     if (self.changeBgSize) {
                         if (self.nzHeight > self.nzWidth) {
                             if (self.options.zoomType === 'lens') {
-                                self.zoomLens.css('background-size',
-                                    self.largeWidth / self.newvalueheight + 'px ' +
-                                    self.largeHeight / self.newvalueheight + 'px');
+                                self.zoomLens.css({
+                                    backgroundSize: '' +
+                                    (self.largeWidth / self.newvalueheight) + 'px ' +
+                                    (self.largeHeight / self.newvalueheight) + 'px'
+                                });
                             }
 
-                            self.zoomWindow.css('background-size',
-                                self.largeWidth / self.newvalueheight + 'px ' +
-                                self.largeHeight / self.newvalueheight + 'px');
+                            self.zoomWindow.css({
+                                backgroundSize: '' +
+                                (self.largeWidth / self.newvalueheight) + 'px ' +
+                                (self.largeHeight / self.newvalueheight) + 'px'
+                            });
                         }
                         else {
                             if (self.options.zoomType === 'lens') {
-                                self.zoomLens.css('background-size',
-                                    self.largeWidth / self.newvaluewidth + 'px ' +
-                                    self.largeHeight / self.newvaluewidth + 'px');
+                                self.zoomLens.css({
+                                    backgroundSize: '' +
+                                    (self.largeWidth / self.newvaluewidth) + 'px ' +
+                                    (self.largeHeight / self.newvaluewidth) + 'px'
+                                });
                             }
                             if ((self.largeHeight / self.newvaluewidth) < self.options.zoomWindowHeight) {
 
-                                self.zoomWindow.css('background-size',
-                                    self.largeWidth / self.newvaluewidth + 'px ' +
-                                    self.largeHeight / self.newvaluewidth + 'px');
+                                self.zoomWindow.css({
+                                    backgroundSize: '' +
+                                    (self.largeWidth / self.newvaluewidth) + 'px ' +
+                                    (self.largeHeight / self.newvaluewidth) + 'px'
+                                });
                             }
                             else {
 
-                                self.zoomWindow.css('background-size',
-                                    self.largeWidth / self.newvalueheight + 'px ' +
-                                    self.largeHeight / self.newvalueheight + 'px');
+                                self.zoomWindow.css({
+                                    backgroundSize: '' +
+                                    (self.largeWidth / self.newvalueheight) + 'px ' +
+                                    (self.largeHeight / self.newvalueheight) + 'px'
+                                });
                             }
 
                         }
                         self.changeBgSize = false;
                     }
 
-                    self.zoomWindow.css('background-position',
+                    self.zoomWindow.css({
+                        backgroundPosition: '' +
                         self.windowLeftPos + 'px ' +
-                        self.windowTopPos + 'px');
+                        self.windowTopPos + 'px'
+                    });
                 }
             }
         },
@@ -1183,9 +1332,9 @@ if (typeof Object.create !== 'function') {
             var self = this;
             var zoomLensWidth = self.zoomLens.width();
             var zoomLensHeight = self.zoomLens.height();
-            self.nzOffset = self.$elem.offset();
-            self.tintpos = String(((e.pageX - self.nzOffset.left) - (zoomLensWidth / 2)) * (-1));
-            self.tintposy = String(((e.pageY - self.nzOffset.top) - zoomLensHeight / 2) * (-1));
+            self.updateOffset(self);
+            self.tintpos = ((e.pageX - self.pageOffsetX - self.nzOffset.left) - (zoomLensWidth / 2)) * -1;
+            self.tintposy = ((e.pageY - self.pageOffsetY - self.nzOffset.top) - zoomLensHeight / 2) * -1;
             if (self.Etoppos) {
                 self.tintposy = 0;
             }
@@ -1209,8 +1358,8 @@ if (typeof Object.create !== 'function') {
 
                 }
                 self.zoomTintImage.css({
-                    'left': self.tintpos + 'px',
-                    'top': self.tintposy + 'px'
+                    left: self.tintpos,
+                    top: self.tintposy
                 });
             }
         },
@@ -1219,14 +1368,23 @@ if (typeof Object.create !== 'function') {
             var self = this;
             var newImg = new Image();
 
-            if (self.options.loadingIcon) {
-                self.spinner = $('<div style="' +
-                    'background: url(\'' + self.options.loadingIcon + '\') no-repeat center;' +
-                    'height:' + self.nzHeight + 'px;' +
-                    'width:' + self.nzWidth + 'px;' +
-                    'z-index: 2000;position: absolute; ' +
-                    'background-position: center center;"></div>');
+            if (self.options.loadingIcon && !self.spinner) {
+                var styleAttr = {
+                    background: 'url("' + self.options.loadingIcon + '") no-repeat',
+                    height: self.nzHeight,
+                    width: self.nzWidth,
+                    zIndex: 2000,
+                    position: 'absolute',
+                    backgroundPosition: 'center center',
+                };
+                if (self.options.zoomType === 'inner') {
+                    styleAttr.setProperty('top', 0);
+                }
+                self.spinner = $('<div class="ezp-spinner"></div>')
+                  .css(styleAttr);
                 self.$elem.after(self.spinner);
+            } else if (self.spinner) {
+                self.spinner.show();
             }
 
             self.options.onImageSwap(self.$elem);
@@ -1235,7 +1393,9 @@ if (typeof Object.create !== 'function') {
                 self.largeWidth = newImg.width;
                 self.largeHeight = newImg.height;
                 self.zoomImage = largeimage;
-                self.zoomWindow.css('background-size', self.largeWidth + 'px ' + self.largeHeight + 'px');
+                self.zoomWindow.css({
+                    backgroundSize: '' + self.largeWidth + 'px ' + self.largeHeight + 'px'
+                });
 
                 self.swapAction(smallimage, largeimage);
                 return;
@@ -1436,11 +1596,11 @@ if (typeof Object.create !== 'function') {
 
         doneCallback: function () {
             var self = this;
-            if (self.options.loadingIcon) {
+            if (self.options.loadingIcon && !!self.spinner && !!self.spinner.length) {
                 self.spinner.hide();
             }
 
-            self.nzOffset = self.$elem.offset();
+            self.updateOffset(self);
             self.nzWidth = self.$elem.width();
             self.nzHeight = self.$elem.height();
 
@@ -1454,27 +1614,26 @@ if (typeof Object.create !== 'function') {
             //NEED TO ADD THE LENS SIZE FOR ROUND
             // adjust images less than the window height
             if (self.options.zoomType === 'window') {
-                var lensHeight, lensWidth;
 
                 if (self.nzHeight < self.options.zoomWindowHeight / self.heightRatio) {
-                    lensHeight = self.nzHeight;
+                    self.lensHeight = self.nzHeight;
 
                 }
                 else {
-                    lensHeight = String((self.options.zoomWindowHeight / self.heightRatio));
+                    self.lensHeight = self.options.zoomWindowHeight / self.heightRatio;
                 }
 
                 if (self.nzWidth < self.options.zoomWindowWidth) {
-                    lensWidth = self.nzWidth;
+                    self.lensWidth = self.nzWidth;
                 }
                 else {
-                    lensWidth = (self.options.zoomWindowWidth / self.widthRatio);
+                    self.lensWidth = self.options.zoomWindowWidth / self.widthRatio;
                 }
 
                 if (self.zoomLens) {
                     self.zoomLens.css({
-                        'width': lensWidth,
-                        'height': lensHeight
+                        'width': self.lensWidth,
+                        'height': self.lensHeight
                     });
                 }
             }
@@ -1493,8 +1652,8 @@ if (typeof Object.create !== 'function') {
                 $('#' + self.options.gallery + ' a').each(function () {
 
                     var imgSrc = '';
-                    if ($(this).data('zoom-image')) {
-                        imgSrc = $(this).data('zoom-image');
+                    if ($(this).data(self.options.attrImageZoomSrc)) {
+                        imgSrc = $(this).data(self.options.attrImageZoomSrc);
                     }
                     else if ($(this).data('image')) {
                         imgSrc = $(this).data('image');
@@ -1663,7 +1822,9 @@ if (typeof Object.create !== 'function') {
                     self.currentZoomLevel = self.newvalueheight;
                     if (self.options.zoomType !== 'lens' && self.options.zoomType !== 'inner') {
                         self.changeBgSize = true;
-                        self.zoomLens.css('height', String(self.options.zoomWindowHeight / self.heightRatio) + 'px');
+                        self.zoomLens.css({
+                            height: self.options.zoomWindowHeight / self.heightRatio
+                        });
                     }
                     if (self.options.zoomType === 'lens' || self.options.zoomType === 'inner') {
                         self.changeBgSize = true;
@@ -1680,7 +1841,9 @@ if (typeof Object.create !== 'function') {
                     if (self.options.zoomType !== 'lens' && self.options.zoomType !== 'inner') {
                         self.changeBgSize = true;
 
-                        self.zoomLens.css('width', String(self.options.zoomWindowWidth / self.widthRatio) + 'px');
+                        self.zoomLens.css({
+                            width: self.options.zoomWindowWidth / self.widthRatio
+                        });
                     }
                     if (self.options.zoomType === 'lens' || self.options.zoomType === 'inner') {
                         self.changeBgSize = true;
@@ -1693,7 +1856,7 @@ if (typeof Object.create !== 'function') {
                     if (self.nzWidth > self.nzHeight) {
                         self.currentZoomLevel = self.newvaluewidth;
                     }
-                    if (self.nzHeight > self.nzWidth) {
+                    else if (self.nzHeight >= self.nzWidth) {
                         self.currentZoomLevel = self.newvaluewidth;
                     }
                 }
@@ -1714,6 +1877,31 @@ if (typeof Object.create !== 'function') {
             }
             if (self.zoomTint) {
                 self.zoomTint.hide();
+            }
+        },
+        updateOffset: function (self) {
+            if (self.options.zoomContainerAppendTo !== 'body') {
+                self.nzOffset = self.$elem.offset();
+                var appendedPosition = $(self.options.zoomContainerAppendTo).offset();
+                self.nzOffset.top = self.$elem.offset().top - appendedPosition.top;
+                self.nzOffset.left = self.$elem.offset().left - appendedPosition.left;
+
+                // NOTE: When initialising ezPlus on an element
+                // present inside a dialog the positions will
+                // not be correct unless the dialog occupies the
+                // entire viewport. These page offsets will help
+                // zoom lens and zoom window to be positioned
+                // correctly
+
+                // Update page offsets
+                self.pageOffsetX = appendedPosition.left;
+                self.pageOffsetY = appendedPosition.top;
+            } else {
+                self.nzOffset = self.$elem.offset();
+
+                // Update page offsets
+                self.pageOffsetX = 0;
+                self.pageOffsetY = 0;
             }
         },
 
@@ -1762,6 +1950,8 @@ if (typeof Object.create !== 'function') {
     };
 
     $.fn.ezPlus.options = {
+        container: 'ZoomContainer',
+        attrImageZoomSrc: 'zoom-image', // attribute to plugin use for zoom
         borderColour: '#888',
         borderSize: 4,
         constrainSize: false,  //in pixels the dimensions you want to constrain on
@@ -1777,6 +1967,7 @@ if (typeof Object.create !== 'function') {
         galleryActiveClass: 'zoomGalleryActive',
         gallerySelector: false,
         galleryItem: 'a',
+        galleryEvent: 'click',
 
         imageCrossfade: false,
 
@@ -1798,7 +1989,7 @@ if (typeof Object.create !== 'function') {
         // allow to continue zooming out, so it keeps retrocompatibility.
         mantainZoomAspectRatio: false,
         maxZoomLevel: false,
-        minZoomLevel: false,
+        minZoomLevel: 2,
 
         onComplete: $.noop,
         onDestroy: $.noop,
@@ -1806,6 +1997,7 @@ if (typeof Object.create !== 'function') {
         onImageSwap: $.noop,
         onImageSwapComplete: $.noop,
         onShow: $.noop,
+        onHide: $.noop,
         onZoomedImageLoaded: $.noop,
 
         preloading: 1, //by default, load all the images, if 0, then only load images after activated (PLACEHOLDER FOR NEXT VERSION)
@@ -1821,6 +2013,7 @@ if (typeof Object.create !== 'function') {
 
         zoomActivation: 'hover', // Can also be click (PLACEHOLDER FOR NEXT VERSION)
         zoomContainerAppendTo: 'body', //zoom container parent selector
+        zoomId: -1, // identifier for the zoom container
         zoomLevel: 1, //default zoom level of image
         zoomTintFadeIn: false,
         zoomTintFadeOut: false,
@@ -1832,10 +2025,10 @@ if (typeof Object.create !== 'function') {
         zoomWindowHeight: 400,
         zoomWindowOffsetX: 0,
         zoomWindowOffsetY: 0,
-        zoomWindowPosition: 1,
+        zoomWindowPosition: 1, //Possible values: 1-16, but we can also position with a selector string.
         zoomWindowWidth: 400,
         zoomEnabled: true, //false disables zoomwindow from showing
         zIndex: 999
     };
 
-})(jQuery, window, document);
+})(window.jQuery, window, document);
