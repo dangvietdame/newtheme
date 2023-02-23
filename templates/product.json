@@ -28,7 +28,7 @@
             "size": 16,
             "weight": "500",
             "marked": false,
-            "margin_top": 20,
+            "margin_top": 0,
             "margin_bottom": 16
           }
         },

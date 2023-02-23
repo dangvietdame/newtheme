@@ -10,6 +10,8 @@ jQuery(document).ready(function($) {
     //Accordion toggle
     $('.single-product-layout-1 .accordion-header').click(function(){
         $(this).siblings('.accordion-content').slideToggle('fast');
+        $(this).children('.icon-down').toggleClass('de-active');
+        $(this).children('.icon-up').toggleClass('de-active');
     });
           
 })

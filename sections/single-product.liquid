@@ -31,176 +31,198 @@
             {{ product.type | link_to_type }}
             <a href="{{product.url}}">{{product.title | downcase}}</a>
         </div>
-        <div class="detail-info-product col-xl-7">
-            <div class="image-wrapper img-zoom-container">
-                <div class="tab">
-                    {% for image in product.images limit: 1 %}
-                        <button id="defaultOpen" class="tablinks" onclick="openimage(event, 'image-{{image.id}}')">
-                            <img src="{{image.src | image_url}}">
-                        </button>
-                    {% endfor %}
-                    {% for image in product.images offset: 1 limit: sub_count_product %}
-                        <button class="tablinks" onclick="openimage(event, 'image-{{image.id}}')">
-                            <img src="{{image.src | image_url}}">
-                        </button>
-                    {% endfor %}
-                </div>
-                {% for image in product.images limit: section.settings.count_product %}
-                    <div id="image-{{image.id}}" class="tabcontent">
-                        <img id="myimage" src="{{image.src | image_url}}"/>
-                    </div>
-                {% endfor %}
-                <div id="myresult" class="img-zoom-result"></div>
-            </div>
-
-            {% comment %} <div class="img-zoom-container">
-                <img id="myimage" src="{{product.featured_image | image_url}}" width="300" height="240">
-                <div id="myresult" class="img-zoom-result"></div>
-              </div> {% endcomment %}
-
-            <div class="product-description-wrapper">
-                <div class="title">{{section.settings.description_header}}</div>
-                <span class="pre-description">{{pre_product_description}}</span>
-                <span class="bread-description">...</span>
-                <span class="sur-description">{{sur_product_description}}</span>
-                <div class="seemore">{{section.settings.seemore_description}}
-                    {% render "icon-dropdown"%}
-                    {% render "icon-dropdown-up"%}
-                </div>
-            </div>
-            <div class="accordion-wrapper">
-                {% if section.settings.accordion_header_1.size > 0 %}
-                <div class="accordion-1">
-                    <div class="accordion-header">
-                        {{section.settings.accordion_header_1}}
-                    </div>
-                    <ul class="accordion-content">
-                        {% for block in section.blocks %}
-                            {% if block.type == "unorder_list_info" %}
-                                <li class="item" {{block.shopify_attributes}} style="font-size: {{block.settings.size}}px; font-weight: {{block.settings.weight}}; margin-top: {{block.settings.margin_top}}px; margin-bottom: {{block.settings.margin_bottom}}px;{% if block.settings.marked %}list-style-type: disc; {% endif %}">
-                                    {{block.settings.text}}
-                                </li>
-                            {% endif %}
+        <div class="row">
+            <div class="detail-info-product col-xl-7">
+                <div class="image-wrapper">
+                    <div class="tab">
+                        {% for image in product.images limit: 1 %}
+                            <button id="defaultOpen" class="tablinks" onclick="openimage(event, 'image-{{image.id}}')">
+                                <img src="{{image.src | image_url}}">
+                            </button>
                         {% endfor %}
-                    </ul>
-                </div>
-                {% endif %}
-                {% if section.settings.accordion_header_2.size > 0 %}
-                <div class="accordion-2">
-                    <div class="accordion-header">
-                        {{section.settings.accordion_header_2}}
+                        {% for image in product.images offset: 1 limit: sub_count_product %}
+                            <button class="tablinks" onclick="openimage(event, 'image-{{image.id}}')">
+                                <img src="{{image.src | image_url}}">
+                            </button>
+                        {% endfor %}
                     </div>
-                    <div class="accordion-content">
-                        <ul class="accordion-table">
+                    {% for image in product.images limit: section.settings.count_product %}
+                        <div id="image-{{image.id}}" class="tabcontent">
+                            <img id="myimage" src="{{image.src | image_url}}"/>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="product-description-wrapper">
+                    <div class="title">{{section.settings.description_header}}</div>
+                    <span class="pre-description">{{pre_product_description}}</span>
+                    <span class="bread-description">...</span>
+                    <span class="sur-description">{{sur_product_description}}</span>
+                    <div class="seemore">{{section.settings.seemore_description}}
+                        {% render "icon-dropdown"%}
+                        {% render "icon-dropdown-up"%}
+                    </div>
+                </div>
+                <div class="accordion-wrapper">
+                    {% if section.settings.accordion_header_1.size > 0 %}
+                    <div class="accordion-1">
+                        <div class="accordion-header">
+                            {{section.settings.accordion_header_1}}
+                            <i class="las la-angle-down icon-down"></i>
+                            <i class="las la-angle-up icon-up de-active"></i>
+                        </div>
+                        <ul class="accordion-content">
                             {% for block in section.blocks %}
-                                {% if block.type == "table_list_info" %}
-                                    <li class="row item" {% if block.settings.ck_header %}style="font-weight: 500;"{% endif %} {{block.shopify_attributes}}>
-                                        <div class="col-md-6">{{block.settings.title}}</div>
-                                        <div class="col-md-6">{{block.settings.content}}</div>
+                                {% if block.type == "unorder_list_info" %}
+                                    <li class="item" {{block.shopify_attributes}} style="font-size: {{block.settings.size}}px; font-weight: {{block.settings.weight}}; margin-top: {{block.settings.margin_top}}px; margin-bottom: {{block.settings.margin_bottom}}px;{% if block.settings.marked %}list-style-type: disc; {% endif %}">
+                                        {{block.settings.text}}
                                     </li>
                                 {% endif %}
                             {% endfor %}
                         </ul>
                     </div>
-                </div>
-                {% endif %}
-                {% if section.settings.accordion_header_3.size > 0 %}
-                <div class="accordion-3">
-                    <div class="accordion-header">
-                        {{section.settings.accordion_header_3}}
-                    </div>
-                    <div class="accordion-content">
-                        {{section.settings.accordion_content_3}}
-                    </div>
-                </div>
-                {% endif %}
-                {% if section.settings.accordion_header_4.size > 0 %}
-                    <div class="accordion-4">
+                    {% endif %}
+                    {% if section.settings.accordion_header_2.size > 0 %}
+                    <div class="accordion-2">
                         <div class="accordion-header">
-                            {{section.settings.accordion_header_4}}
+                            {{section.settings.accordion_header_2}}
+                            <i class="las la-angle-down icon-down"></i>
+                            <i class="las la-angle-up icon-up de-active"></i>
                         </div>
                         <div class="accordion-content">
-                            {{section.settings.accordion_content_4}}
+                            <ul class="accordion-table">
+                                {% for block in section.blocks %}
+                                    {% if block.type == "table_list_info" %}
+                                        <li class="row item" {% if block.settings.ck_header %}style="font-weight: 500;"{% endif %} {{block.shopify_attributes}}>
+                                            <div class="col-md-6">{{block.settings.title}}</div>
+                                            <div class="col-md-6">{{block.settings.content}}</div>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
                         </div>
                     </div>
-                {% endif %}
-                {% if section.settings.accordion_header_5.size > 0 %}
-                    <div class="accordion-5">
+                    {% endif %}
+                    {% if section.settings.accordion_header_3.size > 0 %}
+                    <div class="accordion-3">
                         <div class="accordion-header">
-                            {{section.settings.accordion_header_5}}
+                            {{section.settings.accordion_header_3}}
+                            <i class="las la-angle-down icon-down"></i>
+                            <i class="las la-angle-up icon-up de-active"></i>
                         </div>
                         <div class="accordion-content">
-                            {% for block in section.blocks %}
-                                {% if block.type == "qna" %}
-                                    <div class="qna-item" {{block.shopify_attributes}}>
-                                        <div class="question-wrapper">
-                                            <div class="q-content">{{block.settings.question}}</div>
-                                            <div class="q-info">{{block.settings.question_info}}</div>
-                                        </div>
-                                        <div class="answer-wrapper">
-                                            <div class="a-content">{{block.settings.answer}}</div>
-                                            <div class="a-info">{{block.settings.answer_info}}</div>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
-                            <div class="accordion-button">
-                                <a href="{{section.settings.accordion_5_url}}" class="button">{{section.settings.accordion_button_5}}</a>
-                            </div>
+                            {{section.settings.accordion_content_3}}
                         </div>
                     </div>
-                {% endif %}
-                {% if section.settings.accordion_header_6.size > 0 %}
-                    <div class="accordion-6">
-                        <div class="accordion-header">
-                            {{section.settings.accordion_header_6}}
-                        </div>
-                        <div class="row accordion-content">
-                            <div class="rate-overview">
-                                <div class="avg-rate">
-                                    {{avg_rate}}
-                                </div>
-                                <div class="sum-star">
-                                    <div class="star-wrapper">
-                                        {% assign avg_rate_round = avg_rate | round: 0 %}
-                                        {% for i in (1..5) %}
-                                            <i class="las la-star" style="color: {% if i <= avg_rate_round %}#F5C34B;{% else %}#F3F5F6;{% endif %}"></i>
-                                        {% endfor %}
-                                    </div>
-                                    <div class="sum">{{sum_rate | round: 0}}{% if sum_rate >= 2 %} reviews{% else %} review{% endif %}
-                                    </div>
-                                </div>
+                    {% endif %}
+                    {% if section.settings.accordion_header_4.size > 0 %}
+                        <div class="accordion-4">
+                            <div class="accordion-header">
+                                {{section.settings.accordion_header_4}}
+                                <i class="las la-angle-down icon-down"></i>
+                                <i class="las la-angle-up icon-up de-active"></i>
                             </div>
-                            <div class="col-lg-10 col-xl-7 rate-bar-wrapper">
-                                <div class="rate-star-wrapper">
-                                    <div class="number">5 star</div>
-                                    <div class="rate-bar" style="--percent-rate: {{percent_5}}%;"></div>
-                                    <div class="percent">{% if percent_5 < 10 and percent_5 != 0 %}0{% endif %}{{percent_5}}%</div>
-                                </div>
-                                <div class="rate-star-wrapper">
-                                    <div class="number">4 star</div>
-                                    <div class="rate-bar" style="--percent-rate: {{percent_4}}%;"></div>
-                                    <div class="percent">{% if percent_4 < 10 and percent_4 != 0 %}0{% endif %}{{percent_4}}%</div>
-                                </div>
-                                <div class="rate-star-wrapper">
-                                    <div class="number">3 star</div>
-                                    <div class="rate-bar" style="--percent-rate: {{percent_3}}%;"></div>
-                                    <div class="percent">{% if percent_3 < 10 and percent_3 != 0 %}0{% endif %}{{percent_3}}%</div>
-                                </div>
-                                <div class="rate-star-wrapper">
-                                    <div class="number">2 star</div>
-                                    <div class="rate-bar" style="--percent-rate: {{percent_2}}%;"></div>
-                                    <div class="percent">{% if percent_2 < 10 and percent_2 != 0 %}0{% endif %}{{percent_2}}%</div>
-                                </div>
-                                <div class="rate-star-wrapper">
-                                    <div class="number">1 star</div>
-                                    <div class="rate-bar" style="--percent-rate: {{percent_1}}%;"></div>
-                                    <div class="percent">{% if percent_1 < 10 and percent_1 != 0 %}0{% endif %}{{percent_1}}%</div>
+                            <div class="accordion-content">
+                                {{section.settings.accordion_content_4}}
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if section.settings.accordion_header_5.size > 0 %}
+                        <div class="accordion-5">
+                            <div class="accordion-header">
+                                {{section.settings.accordion_header_5}}
+                                <i class="las la-angle-down icon-down"></i>
+                                <i class="las la-angle-up icon-up de-active"></i>
+                            </div>
+                            <div class="accordion-content">
+                                {% for block in section.blocks %}
+                                    {% if block.type == "qna" %}
+                                        <div class="qna-item" {{block.shopify_attributes}}>
+                                            <div class="question-wrapper">
+                                                <div class="q-content">{{block.settings.question}}</div>
+                                                <div class="q-info">{{block.settings.question_info}}</div>
+                                            </div>
+                                            <div class="answer-wrapper">
+                                                <div class="a-content">{{block.settings.answer}}</div>
+                                                <div class="a-info">{{block.settings.answer_info}}</div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                                <div class="accordion-button">
+                                    <a href="{{section.settings.accordion_5_url}}" class="button">{{section.settings.accordion_button_5}}</a>
                                 </div>
                             </div>
                         </div>
+                    {% endif %}
+                    {% if section.settings.accordion_header_6.size > 0 %}
+                        <div class="accordion-6">
+                            <div class="accordion-header">
+                                {{section.settings.accordion_header_6}}
+                                <i class="las la-angle-down icon-down"></i>
+                                <i class="las la-angle-up icon-up de-active"></i>
+                            </div>
+                            <div class="row accordion-content">
+                                <div class="rate-overview">
+                                    <div class="avg-rate">
+                                        {{avg_rate}}
+                                    </div>
+                                    <div class="sum-star">
+                                        <div class="star-wrapper">
+                                            {% assign avg_rate_round = avg_rate | round: 0 %}
+                                            {% for i in (1..5) %}
+                                                <i class="las la-star" style="color: {% if i <= avg_rate_round %}#F5C34B;{% else %}#F3F5F6;{% endif %}"></i>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="sum">{{sum_rate | round: 0}}{% if sum_rate >= 2 %} reviews{% else %} review{% endif %}</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-10 col-xl-7 rate-bar-wrapper">
+                                    <div class="rate-star-wrapper">
+                                        <div class="number">5 star</div>
+                                        <div class="rate-bar" style="--percent-rate: {{percent_5}}%;"></div>
+                                        <div class="percent">{% if percent_5 < 10 and percent_5 != 0 %}0{% endif %}{{percent_5}}%</div>
+                                    </div>
+                                    <div class="rate-star-wrapper">
+                                        <div class="number">4 star</div>
+                                        <div class="rate-bar" style="--percent-rate: {{percent_4}}%;"></div>
+                                        <div class="percent">{% if percent_4 < 10 and percent_4 != 0 %}0{% endif %}{{percent_4}}%</div>
+                                    </div>
+                                    <div class="rate-star-wrapper">
+                                        <div class="number">3 star</div>
+                                        <div class="rate-bar" style="--percent-rate: {{percent_3}}%;"></div>
+                                        <div class="percent">{% if percent_3 < 10 and percent_3 != 0 %}0{% endif %}{{percent_3}}%</div>
+                                    </div>
+                                    <div class="rate-star-wrapper">
+                                        <div class="number">2 star</div>
+                                        <div class="rate-bar" style="--percent-rate: {{percent_2}}%;"></div>
+                                        <div class="percent">{% if percent_2 < 10 and percent_2 != 0 %}0{% endif %}{{percent_2}}%</div>
+                                    </div>
+                                    <div class="rate-star-wrapper">
+                                        <div class="number">1 star</div>
+                                        <div class="rate-bar" style="--percent-rate: {{percent_1}}%;"></div>
+                                        <div class="percent">{% if percent_1 < 10 and percent_1 != 0 %}0{% endif %}{{percent_1}}%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-xl-4 offset-xl-1 product-function-container">
+                <div class="vendor-star-rate-wrapper">
+                    <div class="vendor">{{product.vendor | upcase}}</div>
+                    <div class="star-rate">
+                        {% for i in (1..5) %}
+                            <i class="las la-star" style="color: {% if i <= avg_rate_round %}#F5C34B;{% else %}#F3F5F6;{% endif %}"></i>
+                        {% endfor %}
                     </div>
-                {% endif %}
+                    <div class="reviews">
+                        {{sum_rate | round: 0}}{% if sum_rate >= 2 %} reviews{% else %} review{% endif %}
+                    </div>
+                </div>
+                <div class="product-title">{{product.title}}</div>
+                
             </div>
         </div>
     </div>
@@ -218,9 +240,6 @@
 
 <script>
     document.getElementById("defaultOpen").click();
-</script>
-<script>
-    imageZoom("myimage-1", "myresult");
 </script>
 
 {% schema %}
@@ -477,7 +496,7 @@
                 {
                     "type": "range",
                     "id": "margin_top",
-                    "min": 12,
+                    "min": 0,
                     "max": 100,
                     "step": 1,
                     "unit": "px",
@@ -487,7 +506,7 @@
                 {
                     "type": "range",
                     "id": "margin_bottom",
-                    "min": 12,
+                    "min": 0,
                     "max": 100,
                     "step": 1,
                     "unit": "px",
