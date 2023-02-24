@@ -2,27 +2,30 @@
 {{ 'single-product.css' | asset_url | stylesheet_tag }}
 {{ 'single-product.js' | asset_url | script_tag }}
 {{ 'product-image-tab.js' | asset_url | script_tag }}
+{{ 'variant-picker.js' | asset_url | script_tag }}
 
-{% assign sub_count_product = section.settings.count_product | minus: 1 %}
+{% liquid 
+    assign sub_count_product = section.settings.count_product | minus: 1
 
-{% assign product_description_size = product.description.size %}
-{% assign pre_product_description = product.description | strip_html | truncatewords: section.settings.count_description, '' %}
-{% assign pre_product_description_size = pre_product_description.size %}
-{% assign sur_product_description_size = product_description_size | minus: pre_product_description_size %}
-{% assign sur_product_description = product.description | slice: pre_product_description_size, sur_product_description_size %}
+    assign product_description_size = product.description.size
+    assign pre_product_description = product.description | strip_html | truncatewords: section.settings.count_description, ''
+    assign pre_product_description_size = pre_product_description.size
+    assign sur_product_description_size = product_description_size | minus: pre_product_description_size
+    assign sur_product_description = product.description | slice: pre_product_description_size, sur_product_description_size
 
-{% assign sum_rate = section.settings.review_1 | plus: section.settings.review_2 | plus: section.settings.review_3 | plus: section.settings.review_4 | plus: section.settings.review_5 | divided_by: 1.0 %}
-{% assign sum_rate_1 = section.settings.review_1 | times: 1 %}
-{% assign sum_rate_2 = section.settings.review_2 | times: 2 %}
-{% assign sum_rate_3 = section.settings.review_3 | times: 3 %}
-{% assign sum_rate_4 = section.settings.review_4 | times: 4 %}
-{% assign sum_rate_5 = section.settings.review_5 | times: 5 %}
-{% assign avg_rate = sum_rate_1 | plus: sum_rate_2 | plus: sum_rate_3 | plus: sum_rate_4 | plus: sum_rate_5 | divided_by: sum_rate | round: 1 %}
-{% assign percent_5 = section.settings.review_5 | divided_by: sum_rate | times: 100 | round: 0 %}
-{% assign percent_4 = section.settings.review_4 | divided_by: sum_rate | times: 100 | round: 0 %}
-{% assign percent_3 = section.settings.review_3 | divided_by: sum_rate | times: 100 | round: 0 %}
-{% assign percent_2 = section.settings.review_2 | divided_by: sum_rate | times: 100 | round: 0 %}
-{% assign percent_1 = section.settings.review_1 | divided_by: sum_rate | times: 100 | round: 0 %}
+    assign sum_rate = section.settings.review_1 | plus: section.settings.review_2 | plus: section.settings.review_3 | plus: section.settings.review_4 | plus: section.settings.review_5 | divided_by: 1.0
+    assign sum_rate_1 = section.settings.review_1 | times: 1
+    assign sum_rate_2 = section.settings.review_2 | times: 2
+    assign sum_rate_3 = section.settings.review_3 | times: 3
+    assign sum_rate_4 = section.settings.review_4 | times: 4
+    assign sum_rate_5 = section.settings.review_5 | times: 5
+    assign avg_rate = sum_rate_1 | plus: sum_rate_2 | plus: sum_rate_3 | plus: sum_rate_4 | plus: sum_rate_5 | divided_by: sum_rate | round: 1
+    assign percent_5 = section.settings.review_5 | divided_by: sum_rate | times: 100 | round: 0
+    assign percent_4 = section.settings.review_4 | divided_by: sum_rate | times: 100 | round: 0
+    assign percent_3 = section.settings.review_3 | divided_by: sum_rate | times: 100 | round: 0
+    assign percent_2 = section.settings.review_2 | divided_by: sum_rate | times: 100 | round: 0
+    assign percent_1 = section.settings.review_1 | divided_by: sum_rate | times: 100 | round: 0 
+%}
 
 <div class="{{section.id}} single-product single-product-layout-{{section.settings.layout}}">
     <div class="container single-product-wrapper">
@@ -222,8 +225,50 @@
                     </div>
                 </div>
                 <div class="product-title">{{product.title}}</div>
-                
+
+                {% comment %} Price {% endcomment %}
+                <div class="price-container" id="price-{{ section.id }}" role="status">
+                    {%- render 'price', product: product, sold_out: section.settings.sold_out -%}
+                </div>
+    
+                {% comment %} Variants picker {% endcomment %}
+                {% assign picker_type = 'button'%}
+                {%- unless product.has_only_default_variant -%}
+                   {%- if picker_type == 'button' -%}
+                      <variant-radios
+                        class="no-js-hidden"
+                        data-section="{{ section.id }}"
+                        data-url="{{ product.url }}"
+                        {{ block.shopify_attributes }}
+                      >
+                        {%- for option in product.options_with_values -%}
+                          <fieldset class="js product-form__input">
+                            <legend class="form__label">{{ option.name }}</legend>
+                            {%- for value in option.values -%}
+                              <input
+                                type="radio"
+                                id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+                                name="{{ option.name }}"
+                                value="{{ value | escape }}"
+                                form="{{ product_form_id }}"
+                                {% if option.selected_value == value %}
+                                  checked
+                                {% endif %}
+                              >
+                              <label for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}">
+                                {{ value }}
+                              </label>
+                            {%- endfor -%}
+                          </fieldset>
+                        {%- endfor -%}
+                        <script type="application/json">
+                          {{ product.variants | json }}
+                        </script>
+                      </variant-radios>
+                    {%- endif -%}
+                {%- endunless -%}
             </div>
+
         </div>
     </div>
 </div>
@@ -448,6 +493,16 @@
             "id": "row_color",
             "label": "Row color interleaved",
             "default": "#f1f1f1"
+        },
+        {
+            "type": "header",
+            "content": "Product Price"
+        },
+        {
+            "type": "text",
+            "id": "sold_out",
+            "label": "Sold Out Text",
+            "default": "Sold Out"
         }
     ],
     "blocks": [

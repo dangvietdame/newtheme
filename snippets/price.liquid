@@ -1,0 +1,16 @@
+{% assign target = product.selected_or_first_available_variant %}
+<div class="price-wrapper">
+    <div class="price">
+        {{target.price | money}}
+    </div>
+    {% if target.compare_at_price.size > 0 %}
+        <div class="compare-price">
+            {{target.compare_at_price | money}}
+        </div>
+    {% endif %}
+    {% unless target.available %}
+        {% if sold_out.size > 0 %}
+            <div class="sold-out">{{sold_out}}</div>
+        {% endif %}
+    {% endunless %}
+</div>

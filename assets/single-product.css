@@ -315,3 +315,32 @@
   padding-bottom: 15px;
   border-bottom: 2px solid #EAEAEA;
 }
+.single-product-layout-1 .single-product-wrapper .product-function-container .price-container {
+  margin: 20px 0 25px 0;
+}
+.single-product-layout-1 .single-product-wrapper .product-function-container .price-container .price-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.single-product-layout-1 .single-product-wrapper .product-function-container .price-container .price-wrapper .price {
+  color: #041E42;
+  font-weight: 500;
+  font-size: 26px;
+  margin-right: 10px;
+}
+.single-product-layout-1 .single-product-wrapper .product-function-container .price-container .price-wrapper .compare-price {
+  color: #626974;
+  font-size: 16px;
+  text-decoration: line-through;
+  text-decoration-color: red;
+}
+.single-product-layout-1 .single-product-wrapper .product-function-container .price-container .price-wrapper .sold-out {
+  position: absolute;
+  right: 0;
+  padding: 6px 20px;
+  background-color: #626974;
+  color: #fff;
+  border-radius: 4px;
+  user-select: none;
+}
