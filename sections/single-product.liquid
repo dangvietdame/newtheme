@@ -3,6 +3,7 @@
 {{ 'single-product.js' | asset_url | script_tag }}
 {{ 'product-image-tab.js' | asset_url | script_tag }}
 {{ 'variant-picker.js' | asset_url | script_tag }}
+{{ 'other-single-product.js' | asset_url | script_tag }}
 
 {% liquid 
     assign sub_count_product = section.settings.count_product | minus: 1
@@ -267,6 +268,26 @@
                       </variant-radios>
                     {%- endif -%}
                 {%- endunless -%}
+
+                <quantity-input class="quantity">
+                    <button class="quantity-minus" type="button">
+                        <i class="las la-minus"></i>   
+                    </button>
+                    <input class="quantity-input" type="number" name="quantity" id="Quantity-{{ section.id }}"
+                        data-cart-quantity="{{ cart_qty }}" data-min="{{ product.selected_or_first_available_variant.quantity_rule.min }}"
+                        min="{{ product.selected_or_first_available_variant.quantity_rule.min }}"
+                        {% if product.selected_or_first_available_variant.quantity_rule.max != null %}
+                            data-max="{{ product.selected_or_first_available_variant.quantity_rule.max }}"
+                            max="{{ product.selected_or_first_available_variant.quantity_rule.max }}"
+                        {% endif %}
+                        step="{{ product.selected_or_first_available_variant.quantity_rule.increment }}"
+                        value="{{ product.selected_or_first_available_variant.quantity_rule.min }}" form="{{ product_form_id }}"
+                    />
+                    <button class="quantity-plus" type="button">
+                      <i class="las la-plus"></i>
+                    </button>
+                </quantity-input>
+                
             </div>
 
         </div>
