@@ -1,10 +1,10 @@
 {
     "sections": {
-      "text-1": {
-        "type": "text_section"
+      "cart-1": {
+        "type": "cart"
       }
     },
     "order": [
-      "text-1"
+      "cart-1"
     ]
 }

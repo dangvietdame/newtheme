@@ -13,5 +13,10 @@ jQuery(document).ready(function($) {
         $(this).children('.icon-down').toggleClass('de-active');
         $(this).children('.icon-up').toggleClass('de-active');
     });
-          
+    
+    $('.variant-picker .product-form-input input').click(function(){
+        $(this).parent().addClass('checked');
+        $(this).parent().siblings().removeClass('checked');
+
+    });
 })

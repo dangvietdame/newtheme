@@ -1,0 +1,5 @@
+<div>Product Count: {{cart.item_count}}</div>
+{% for item in cart.items %}
+    <div>{{item.title}}</div>
+    <div>{{item.quantity}}</div>
+{% endfor %}

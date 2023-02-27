@@ -14,4 +14,31 @@ $(document).ready(function() {
         $input.change();
         return false;
     });
+
+    $('.add-to-cart').click(function(){ 
+        console.log(currentVariant.id)
+        // addItemToCart( '44502547988775', 1)
+    });
+    
+    function addItemToCart(variant_id, qty) {
+    data = {
+        "id": variant_id,
+        "quantity": qty
+    }
+    
+    jQuery.ajax({
+        type: 'POST',
+        url: '/cart/add.js',
+        data: data,
+        dataType: 'json',
+        success: function() { 
+        document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
+            bubbles: true  //this code is for prestige theme, is to refresh the cart
+        }));
+        }
+    });
+    document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
+        bubbles: true    // same code for prestige theme   
+        }));
+    }
 });
