@@ -390,6 +390,7 @@
 }
 .single-product-layout-1 .single-product-wrapper .product-function-container .quantity-addcart .quantity {
   position: relative;
+  display: inline-block;
 }
 .single-product-layout-1 .single-product-wrapper .product-function-container .quantity-addcart .quantity button {
   position: absolute;
