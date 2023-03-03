@@ -17,5 +17,18 @@ $(document).ready(function() {
 });
 
 var selectCallback = function(variant, selector) {
-    document.getElementById('demo').innerHTML = Shopify.formatMoney(variant.price, '')
+    document.getElementById('product-price').innerHTML = Shopify.formatMoney(variant.price, '');
+    if (variant.compare_at_price > 0){
+        document.getElementById('compare-price').innerHTML = Shopify.formatMoney(variant.compare_at_price, '');
+    }
+    else {
+        document.getElementById('compare-price').innerHTML = '';
+    }
+    if (variant.available == false){
+        document.getElementById('variant-available').innerHTML = 'Sold Out';
+    }
+    else{
+        document.getElementById('variant-available').innerHTML = '';
+
+    }
 }  

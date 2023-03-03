@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+
     //See more Description toggle
     $('.single-product-layout-1 .product-description-wrapper .seemore').click(function(){
         $(this).siblings('.sur-description').toggleClass('active');
@@ -19,4 +20,5 @@ jQuery(document).ready(function($) {
         $(this).parent().siblings().removeClass('checked');
 
     });
+
 })
