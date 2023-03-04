@@ -24,7 +24,8 @@
 
     {{ 'line-awesome.min.css' | asset_url | stylesheet_tag }}
     {{ 'bootstrap-grid.min.css' | asset_url | stylesheet_tag }}
-    {{ 'jquery.min.js' | asset_url | script_tag }}
+    {% comment %} {{ 'jquery.min.js' | asset_url | script_tag }} {% endcomment %}
+    {{ 'jquery.min.js' | asset_url | script_tag | remove: ' type="text/javascript"' }}
     {{ 'axios.min.js' | asset_url | script_tag }}
     {% comment %} {{ 'liquid-ajax-cart.js' | asset_url | script_tag }} {% endcomment %}
     {{ 'style.css' | asset_url | stylesheet_tag }}
@@ -42,6 +43,90 @@
             {% section 'header' %}
             {{ content_for_layout }}
             {% section 'footer' %}
+
+            <script>
+                var theme = {},
+                    shop_url = '{{ shop.url }}',
+                    money_format = '{{ shop.money_format }}',
+                    color_with_border = '{{ settings.shopby_color_filter_border }}',
+                    colors_value = '{{ ',' | append: settings.product_colors | strip_newlines | downcase | append: ',' }}',
+                    texture_obj = function () {
+                        {%- assign str = '{' -%}
+                        {%- for i in (1..100) -%}
+                        {%- assign key = 'filter_color' | append:i -%}
+                        {%- unless settings[key] == blank -%}
+                        {%- assign image = 'filter_color' | append:i | append:'.png' -%}
+                        {%- assign image = image | asset_url -%}
+                        {%- if str.size > 1 -%}{%- assign str = str | append: ',' -%}{%- endif -%}
+                        {%- assign str = str | append:'"' | append: settings[key] | append:'"' | append: ':' | append:'"' | append: image | append:'"' -%}
+                        {%- endunless -%}
+                        {%- endfor -%}
+                        {%- assign str = str | append: '}' -%}
+                        return JSON.parse('{{ str }}');
+                    }
+                texture_obj = texture_obj();
+            
+                var spyro_app = {
+                    url: '{{ shop.metafields.ollistsapp.appurl }}',
+                    loader_text: '{{ "wishlist.buttons_text.tooltop_load_text" | t }}',
+                    main_info: {
+                        customerid: '{{ customer.id }}',
+                        iid: '{{ shop.metafields.ollistsapp.iid }}',
+                        shop: '{{ shop.permanent_domain }}',
+                        domain: '{{ shop.domain }}',
+                    }
+                };
+            
+                var set_day = '{{ "general.countdown.day" | t }}',
+                    set_hour = '{{ "general.countdown.hour" | t }}',
+                    set_minute = '{{ "general.countdown.minute" | t }}',
+                    set_second = '{{ "general.countdown.second" | t }}';
+            
+                var addtocart_text = '{{ "products.general.add_to_cart_html" | t }}',
+                    unavailable_text = '{{ "products.general.unavailable_html" | t }}',
+                    addedhtml_text = '{{ "products.general.added_html" | t }}',
+                    errorhtml_text = '{{ "products.general.error_html" | t }}',
+                    wait_text = '{{ "products.general.wait_html" | t }}';
+            
+                var demo_rtl_string = '{{ "style-rtl.css" | asset_url | stylesheet_tag }}';
+                var small_image = '{{ 'dummy.png' | asset_url }}';
+            
+                {% if settings.terms_cond_checkbox_show %}
+            
+                var $buyinoneclick = $('.buyinoneclick');
+                if ($buyinoneclick.length) {
+                    $buyinoneclick.first().bind('DOMNodeInserted', function () {
+                        setTimeout(function () {
+                            var $shopifypaymentbutton = $('.buyinoneclick').find(".shopify-payment-button__button");
+                            if ($shopifypaymentbutton.length) {
+                                $buyinoneclick.hide();
+                                setTimeout(function () {
+                                    $(".shopify-payment-button__button").attr('disabled', true);
+                                    $buyinoneclick.fadeIn()
+                                }, 300);
+                            }
+                        }, 0);
+                    });
+                }
+            
+                $('body').on('click', '.term-conditions-checkbox-js input', function (e) {
+                    var _ = $(this).closest('.term-conditions-checkbox-js').parent().parent(),
+                        a = _.find('a[href="\/checkout"]'),
+                        b = _.find('button[name=checkout]'),
+                        b2 = _.find('.buyinoneclick button'),
+                        text = '{{ settings.terms_cond_checkbox_texterr }}';
+                    if ($(this).is(':checked')) {
+                        a.length && a.removeClass('disabled');
+                        b.length && b.removeAttr('disabled');
+                        b2.length && b2.removeAttr('disabled');
+                    } else {
+                        a.length && a.addClass('disabled');
+                        b.length && b.attr('disabled', true);
+                        b2.length && b2.attr('disabled', true);
+                    }
+                });
+                {% endif %}
+            </script>
         </div>
     </div>
 </body>

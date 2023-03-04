@@ -1,0 +1,618 @@
+{{ 'animation.css' | asset_url | stylesheet_tag }}
+{{ 'single-product.css' | asset_url | stylesheet_tag }}
+{{ 'single-product.js' | asset_url | script_tag }}
+{{ 'product-image-tab.js' | asset_url | script_tag }}
+{{ 'other-single-product.js' | asset_url | script_tag }}
+
+{% liquid 
+    assign sub_count_product = section.settings.count_product | minus: 1
+
+    assign product_description_size = product.description.size
+    assign pre_product_description = product.description | strip_html | truncatewords: section.settings.count_description, ''
+    assign pre_product_description_size = pre_product_description.size
+    assign sur_product_description_size = product_description_size | minus: pre_product_description_size
+    assign sur_product_description = product.description | slice: pre_product_description_size, sur_product_description_size
+
+    assign sum_rate = section.settings.review_1 | plus: section.settings.review_2 | plus: section.settings.review_3 | plus: section.settings.review_4 | plus: section.settings.review_5 | divided_by: 1.0
+    assign sum_rate_1 = section.settings.review_1 | times: 1
+    assign sum_rate_2 = section.settings.review_2 | times: 2
+    assign sum_rate_3 = section.settings.review_3 | times: 3
+    assign sum_rate_4 = section.settings.review_4 | times: 4
+    assign sum_rate_5 = section.settings.review_5 | times: 5
+    assign avg_rate = sum_rate_1 | plus: sum_rate_2 | plus: sum_rate_3 | plus: sum_rate_4 | plus: sum_rate_5 | divided_by: sum_rate | round: 1
+    assign percent_5 = section.settings.review_5 | divided_by: sum_rate | times: 100 | round: 0
+    assign percent_4 = section.settings.review_4 | divided_by: sum_rate | times: 100 | round: 0
+    assign percent_3 = section.settings.review_3 | divided_by: sum_rate | times: 100 | round: 0
+    assign percent_2 = section.settings.review_2 | divided_by: sum_rate | times: 100 | round: 0
+    assign percent_1 = section.settings.review_1 | divided_by: sum_rate | times: 100 | round: 0 
+%}
+
+<div class="{{section.id}} single-product single-product-layout-{{section.settings.layout}}">
+    <div class="container single-product-wrapper">
+        <div class="product-address-url">
+            <a href="{{routes.root_url}}">Home</a>
+            {{ product.type | link_to_type }}
+            <a href="{{product.url}}">{{product.title | downcase}}</a>
+        </div>
+        <div class="row">
+            <div class="detail-info-product col-xl-7">
+                <div class="image-wrapper">
+                    <div class="tab">
+                        {% for image in product.images limit: 1 %}
+                            <button id="defaultOpen" class="tablinks" onclick="openimage(event, 'image-{{image.id}}')">
+                                <img src="{{image.src | image_url}}">
+                            </button>
+                        {% endfor %}
+                        {% for image in product.images offset: 1 limit: sub_count_product %}
+                            <button class="tablinks" onclick="openimage(event, 'image-{{image.id}}')">
+                                <img src="{{image.src | image_url}}">
+                            </button>
+                        {% endfor %}
+                    </div>
+                    {% for image in product.images limit: section.settings.count_product %}
+                        <div id="image-{{image.id}}" class="tabcontent">
+                            <img id="myimage" src="{{image.src | image_url}}"/>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="product-description-wrapper">
+                    <div class="title">{{section.settings.description_header}}</div>
+                    <span class="pre-description">{{pre_product_description}}</span>
+                    <span class="bread-description">...</span>
+                    <span class="sur-description">{{sur_product_description}}</span>
+                    <div class="seemore">{{section.settings.seemore_description}}
+                        {% render "icon-dropdown"%}
+                        {% render "icon-dropdown-up"%}
+                    </div>
+                </div>
+                <div class="accordion-wrapper">
+                    {% if section.settings.accordion_header_1.size > 0 %}
+                    <div class="accordion-1">
+                        <div class="accordion-header">
+                            {{section.settings.accordion_header_1}}
+                            <i class="las la-angle-down icon-down"></i>
+                            <i class="las la-angle-up icon-up de-active"></i>
+                        </div>
+                        <ul class="accordion-content">
+                            {% for block in section.blocks %}
+                                {% if block.type == "unorder_list_info" %}
+                                    <li class="item" {{block.shopify_attributes}} style="font-size: {{block.settings.size}}px; font-weight: {{block.settings.weight}}; margin-top: {{block.settings.margin_top}}px; margin-bottom: {{block.settings.margin_bottom}}px;{% if block.settings.marked %}list-style-type: disc; {% endif %}">
+                                        {{block.settings.text}}
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    {% if section.settings.accordion_header_2.size > 0 %}
+                    <div class="accordion-2">
+                        <div class="accordion-header">
+                            {{section.settings.accordion_header_2}}
+                            <i class="las la-angle-down icon-down"></i>
+                            <i class="las la-angle-up icon-up de-active"></i>
+                        </div>
+                        <div class="accordion-content">
+                            <ul class="accordion-table">
+                                {% for block in section.blocks %}
+                                    {% if block.type == "table_list_info" %}
+                                        <li class="row item" {% if block.settings.ck_header %}style="font-weight: 500;"{% endif %} {{block.shopify_attributes}}>
+                                            <div class="col-md-6">{{block.settings.title}}</div>
+                                            <div class="col-md-6">{{block.settings.content}}</div>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if section.settings.accordion_header_3.size > 0 %}
+                    <div class="accordion-3">
+                        <div class="accordion-header">
+                            {{section.settings.accordion_header_3}}
+                            <i class="las la-angle-down icon-down"></i>
+                            <i class="las la-angle-up icon-up de-active"></i>
+                        </div>
+                        <div class="accordion-content">
+                            {{section.settings.accordion_content_3}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if section.settings.accordion_header_4.size > 0 %}
+                        <div class="accordion-4">
+                            <div class="accordion-header">
+                                {{section.settings.accordion_header_4}}
+                                <i class="las la-angle-down icon-down"></i>
+                                <i class="las la-angle-up icon-up de-active"></i>
+                            </div>
+                            <div class="accordion-content">
+                                {{section.settings.accordion_content_4}}
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if section.settings.accordion_header_5.size > 0 %}
+                        <div class="accordion-5">
+                            <div class="accordion-header">
+                                {{section.settings.accordion_header_5}}
+                                <i class="las la-angle-down icon-down"></i>
+                                <i class="las la-angle-up icon-up de-active"></i>
+                            </div>
+                            <div class="accordion-content">
+                                {% for block in section.blocks %}
+                                    {% if block.type == "qna" %}
+                                        <div class="qna-item" {{block.shopify_attributes}}>
+                                            <div class="question-wrapper">
+                                                <div class="q-content">{{block.settings.question}}</div>
+                                                <div class="q-info">{{block.settings.question_info}}</div>
+                                            </div>
+                                            <div class="answer-wrapper">
+                                                <div class="a-content">{{block.settings.answer}}</div>
+                                                <div class="a-info">{{block.settings.answer_info}}</div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                                <div class="accordion-button">
+                                    <a href="{{section.settings.accordion_5_url}}" class="button">{{section.settings.accordion_button_5}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if section.settings.accordion_header_6.size > 0 %}
+                        <div class="accordion-6">
+                            <div class="accordion-header">
+                                {{section.settings.accordion_header_6}}
+                                <i class="las la-angle-down icon-down"></i>
+                                <i class="las la-angle-up icon-up de-active"></i>
+                            </div>
+                            <div class="row accordion-content">
+                                <div class="rate-overview">
+                                    <div class="avg-rate">
+                                        {{avg_rate}}
+                                    </div>
+                                    <div class="sum-star">
+                                        <div class="star-wrapper">
+                                            {% assign avg_rate_round = avg_rate | round: 0 %}
+                                            {% for i in (1..5) %}
+                                                <i class="las la-star" style="color: {% if i <= avg_rate_round %}#F5C34B;{% else %}#F3F5F6;{% endif %}"></i>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="sum">{{sum_rate | round: 0}}{% if sum_rate >= 2 %} reviews{% else %} review{% endif %}</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-10 col-xl-7 rate-bar-wrapper">
+                                    <div class="rate-star-wrapper">
+                                        <div class="number">5 star</div>
+                                        <div class="rate-bar" style="--percent-rate: {{percent_5}}%;"></div>
+                                        <div class="percent">{% if percent_5 < 10 and percent_5 != 0 %}0{% endif %}{{percent_5}}%</div>
+                                    </div>
+                                    <div class="rate-star-wrapper">
+                                        <div class="number">4 star</div>
+                                        <div class="rate-bar" style="--percent-rate: {{percent_4}}%;"></div>
+                                        <div class="percent">{% if percent_4 < 10 and percent_4 != 0 %}0{% endif %}{{percent_4}}%</div>
+                                    </div>
+                                    <div class="rate-star-wrapper">
+                                        <div class="number">3 star</div>
+                                        <div class="rate-bar" style="--percent-rate: {{percent_3}}%;"></div>
+                                        <div class="percent">{% if percent_3 < 10 and percent_3 != 0 %}0{% endif %}{{percent_3}}%</div>
+                                    </div>
+                                    <div class="rate-star-wrapper">
+                                        <div class="number">2 star</div>
+                                        <div class="rate-bar" style="--percent-rate: {{percent_2}}%;"></div>
+                                        <div class="percent">{% if percent_2 < 10 and percent_2 != 0 %}0{% endif %}{{percent_2}}%</div>
+                                    </div>
+                                    <div class="rate-star-wrapper">
+                                        <div class="number">1 star</div>
+                                        <div class="rate-bar" style="--percent-rate: {{percent_1}}%;"></div>
+                                        <div class="percent">{% if percent_1 < 10 and percent_1 != 0 %}0{% endif %}{{percent_1}}%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-xl-4 offset-xl-1 product-function-container">
+                <div class="vendor-star-rate-wrapper">
+                    <div class="vendor">{{product.vendor | upcase}}</div>
+                    <div class="star-rate">
+                        {% for i in (1..5) %}
+                            <i class="las la-star" style="color: {% if i <= avg_rate_round %}#F5C34B;{% else %}#F3F5F6;{% endif %}"></i>
+                        {% endfor %}
+                    </div>
+                    <div class="reviews">
+                        {{sum_rate | round: 0}}{% if sum_rate >= 2 %} reviews{% else %} review{% endif %}
+                    </div>
+                </div>
+                <div class="product-title">{{product.title}}</div>
+
+                <div class="price-container">
+                    <div class="product-price" id="product-price">
+                        {{product.selected_or_first_available_variant.price | money}}
+                    </div>
+                    <div class="compare-price" id="compare-price"></div>
+                    <div class="variant-available" id="variant-available"></div>
+                </div>
+
+                <select id="product-select" name="id">
+                    {% for variant in product.variants %}
+                      <option value="{{ variant.id }}"
+                        {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}
+                      >
+                        {{ variant.title }} - {{ variant.price | money }}
+                      </option>
+                    {% endfor %}
+                </select>
+                  
+                
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% style %}
+    .{{section.id}} .accordion-table{
+        text-align: {{section.settings.table_align}};
+        font-size: {{section.settings.table_size}}px;
+    }
+    .{{section.id}} .accordion-table .item:nth-child(even){
+        background-color: {{section.settings.row_color}};
+    }
+{% endstyle %}
+
+<script>
+    document.getElementById("defaultOpen").click();
+
+    new Shopify.OptionSelectors('product-select', {
+        product: {{ product | json }},
+        onVariantSelected: selectCallback,
+        enableHistoryState: true
+    });
+</script>
+
+{% schema %}
+{
+    "name": "Single Product",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Layout"
+        },
+        {
+            "type": "select",
+            "id": "layout",
+            "label": "Layout",
+            "options": [
+              {
+                "value": "1",
+                "label": "Layout 1"
+              },
+              {
+                "value": "2",
+                "label": "Layout 2"
+              },
+              {
+                "value": "3",
+                "label": "Layout 3"
+              },
+              {
+                "value": "4",
+                "label": "Layout 4"
+              },
+              {
+                "value": "5",
+                "label": "Layout 5"
+              }
+            ],
+            "default": "1"
+        },    
+        {
+            "type": "header",
+            "content": "Product Image"
+        },      
+        {
+            "type": "number",
+            "id": "count_product",
+            "label": "Number of image",
+            "default": 3,
+            "info": "Max number of product's image to display"
+        },
+        {
+            "type": "header",
+            "content": "Product Description"
+        },
+        {
+            "type": "text",
+            "id": "description_header",
+            "label": "Description Header",
+            "default": "Overview"
+        },
+        {
+            "type": "number",
+            "id": "count_description",
+            "label": "Number word of Product's Description visible",
+            "default": 50
+        },
+        {
+            "type": "text",
+            "id": "seemore_description",
+            "label": "Show more description Text",
+            "default": "See More"
+        },
+        {
+            "type": "header",
+            "content": "Accordion - Data"
+        },
+        {
+            "type": "text",
+            "id": "accordion_header_1",
+            "label": "Accordion header 1",
+            "default": "More Information",
+            "info": "Use Unorder List Information - Block to display content"
+        },
+        {
+            "type": "text",
+            "id": "accordion_header_2",
+            "label": "Accordion header 2",
+            "default": "Details & Specs",
+            "info": "Use Table List Information - Block to display content"
+        },
+        {
+            "type": "text",
+            "id": "accordion_header_3",
+            "label": "Accordion header 3",
+            "default": "Shipping and Returns"
+        },
+        {
+            "type": "textarea",
+            "id": "accordion_content_3",
+            "label": "Accordion content 3",
+            "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla auctor aliquam tortor at suscipit. Etiam accumsan, est id vehicula cursus, eros ligula suscipit massa, sed auctor felis mi eu massa. Sed vulputate nisi nibh, vel maximus velit auctor nec. Integer consectetur elementum turpis, nec fermentum ipsum tempor quis. Praesent a quam congue, egestas erat sit amet, finibus justo. Quisque viverra neque vehicula eros gravida ultricies. Ut lacinia enim nec consequat tincidunt. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus ultricies ornare feugiat. Donec vitae rhoncus sapien, ac aliquet nunc."
+        },
+        {
+            "type": "text",
+            "id": "accordion_header_4",
+            "label": "Accordion header 4",
+            "default": "Lorem ipsum"
+        },
+        {
+            "type": "textarea",
+            "id": "accordion_content_4",
+            "label": "Accordion content 4",
+            "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla auctor aliquam tortor at suscipit. Etiam accumsan, est id vehicula cursus, eros ligula suscipit massa, sed auctor felis mi eu massa. Sed vulputate nisi nibh, vel maximus velit auctor nec. Integer consectetur elementum turpis, nec fermentum ipsum tempor quis. Praesent a quam congue, egestas erat sit amet, finibus justo. Quisque viverra neque vehicula eros gravida ultricies. Ut lacinia enim nec consequat tincidunt. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus ultricies ornare feugiat. Donec vitae rhoncus sapien, ac aliquet nunc."
+        },
+        {
+            "type": "text",
+            "id": "accordion_header_5",
+            "label": "Accordion header 5",
+            "default": "Questions and Answers",
+            "info": "Use QnA Block to display content"
+        },
+        {
+            "type": "text",
+            "id": "accordion_button_5",
+            "label": "Accordion 5 Text Button",
+            "default": "Explore all questions"
+        },
+        {
+            "type": "url",
+            "id": "accordion_5_url",
+            "label": "Accordion 5 URL"
+        },
+        {
+            "type": "text",
+            "id": "accordion_header_6",
+            "label": "Accordion header 6",
+            "default": "Customer Reviews",
+            "info": "Use Review Block to display content"
+        },
+        {
+            "type": "number",
+            "id": "review_5",
+            "label": "Total number of reviews - 5*",
+            "default": 35
+        },
+        {
+            "type": "number",
+            "id": "review_4",
+            "label": "Total number of reviews - 4*",
+            "default": 10
+        },
+        {
+            "type": "number",
+            "id": "review_3",
+            "label": "Total number of reviews - 3*",
+            "default": 5
+        },
+        {
+            "type": "number",
+            "id": "review_2",
+            "label": "Total number of reviews - 2*",
+            "default": 2
+        },
+        {
+            "type": "number",
+            "id": "review_1",
+            "label": "Total number of reviews - 1*",
+            "default": 1
+        },
+        {
+            "type": "header",
+            "content": "Table data",
+            "info": "Custom Accordion 2 Style"
+        },
+        {
+            "type": "select",
+            "id": "table_align",
+            "label": "Table Alignment",
+            "options": [
+                {
+                    "value": "left",
+                    "label": "Left"
+                },
+                {
+                    "value": "center",
+                    "label": "Center"
+                },
+                {
+                    "value": "right",
+                    "label": "Right"
+                }
+            ],
+            "default": "left"
+        },
+        {
+            "type": "range",
+            "id": "table_size",
+            "min": 12,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Table font Size",
+            "default": 16
+        },
+        {
+            "type": "color",
+            "id": "row_color",
+            "label": "Row color interleaved",
+            "default": "#f1f1f1"
+        },
+        {
+            "type": "header",
+            "content": "Product Price"
+        },
+        {
+            "type": "text",
+            "id": "sold_out",
+            "label": "Sold Out Text",
+            "default": "Sold Out"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "unorder_list_info",
+            "name": "Unorder List Infomation",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "text",
+                    "label": "Text",
+                    "default": "Example Text"
+                },
+                {
+                    "type": "range",
+                    "id": "size",
+                    "min": 12,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px",
+                    "label": "Font Size",
+                    "default": 16
+                },
+                {
+                    "type": "select",
+                    "id": "weight",
+                    "label": "Weight",
+                    "options": [
+                        {
+                        "value": "400",
+                        "label": "Regular"
+                        },
+                        {
+                        "value": "500",
+                        "label": "Bold"
+                        }
+                    ],
+                    "default": "400"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "marked",
+                    "label": "Marked with Bullets",
+                    "default": true
+                },
+                {
+                    "type": "range",
+                    "id": "margin_top",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px",
+                    "label": "Margin Top",
+                    "default": 20
+                },    
+                {
+                    "type": "range",
+                    "id": "margin_bottom",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px",
+                    "label": "Margin Bottom",
+                    "default": 16
+                }                             
+            ]
+        },
+        {
+            "type": "table_list_info",
+            "name": "Table List Infomation",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Column 1 Data",
+                    "default": "Column 1"
+                },
+                {
+                    "type": "text",
+                    "id": "content",
+                    "label": "Column 2 Data",
+                    "default": "Column 2"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "ck_header",
+                    "label": "Table Header",
+                    "default": false
+                }
+            ]
+        },
+        {
+            "type": "qna",
+            "name": "Questions and Answers",
+            "settings": [
+                {
+                    "type": "textarea",
+                    "id": "question",
+                    "label": "Question content",
+                    "default": "Q: Can dvds be played on apple computers?"
+                },
+                {
+                    "type": "textarea",
+                    "id": "question_info",
+                    "label": "Question Information",
+                    "default": "Asked by Moba - May 14, 2022 on zenmart.com"
+                },
+                {
+                    "type": "textarea",
+                    "id": "answer",
+                    "label": "Answer content",
+                    "default": "A: If you buy a separate CD/DVD drive."
+                },
+                {
+                    "type": "textarea",
+                    "id": "answer_info",
+                    "label": "Answer Information",
+                    "default": "Answered by TFN-Store - May 24, 2022"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Single Product"
+        }
+    ]
+}
+{% endschema %}

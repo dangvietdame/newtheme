@@ -15,20 +15,3 @@ $(document).ready(function() {
         return false;
     });
 });
-
-var selectCallback = function(variant, selector) {
-    document.getElementById('product-price').innerHTML = Shopify.formatMoney(variant.price, '');
-    if (variant.compare_at_price > 0){
-        document.getElementById('compare-price').innerHTML = Shopify.formatMoney(variant.compare_at_price, '');
-    }
-    else {
-        document.getElementById('compare-price').innerHTML = '';
-    }
-    if (variant.available == false){
-        document.getElementById('variant-available').innerHTML = 'Sold Out';
-    }
-    else{
-        document.getElementById('variant-available').innerHTML = '';
-
-    }
-}  
