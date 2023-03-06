@@ -7,7 +7,7 @@ class PredictiveSearch extends HTMLElement {
   
       this.input.addEventListener('input', this.debounce((event) => {
         this.onChange(event);
-      }, 300).bind(this));
+      }, 0).bind(this));
     }
   
     onChange() {
