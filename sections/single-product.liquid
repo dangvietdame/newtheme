@@ -1,6 +1,8 @@
 {{ 'animation.css' | asset_url | stylesheet_tag }}
 {{ 'single-product.css' | asset_url | stylesheet_tag }}
+{{ 'nice-select.css' | asset_url | stylesheet_tag }}
 {{ 'option_selection.js' | asset_url | script_tag }}
+{{ 'jquery.nice-select.min.js' | asset_url | script_tag }}
 {{ 'single-product.js' | asset_url | script_tag }}
 {{ 'product-image-tab.js' | asset_url | script_tag }}
 {{ 'other-single-product.js' | asset_url | script_tag }}
@@ -228,24 +230,33 @@
                 <div class="product-title">{{product.title}}</div>
 
                 <div class="price-container">
-                    <div class="product-price" id="product-price">
+                    <div class="product-price" id="single-product-price">
                         {{product.selected_or_first_available_variant.price | money}}
                     </div>
-                    <div class="compare-price" id="compare-price"></div>
-                    <div class="variant-available" id="variant-available"></div>
+                    <div class="compare-price" id="single-product-compare-price"></div>
+                    <div class="variant-available" id="single-product-available" data-available="{{section.settings.sold_out}}"></div>
                 </div>
+                {% form 'product', product, class: 'product-form' %}
+                    <select id="product-select" name="id">
+                        {% for variant in product.variants %}
+                        <option value="{{ variant.id }}" {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}>
+                            {{ variant.title }}
+                        </option>
+                        {% endfor %}
+                    </select>
 
-                <select id="product-select" name="id">
-                    {% for variant in product.variants %}
-                      <option value="{{ variant.id }}"
-                        {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}
-                      >
-                        {{ variant.title }} - {{ variant.price | money }}
-                      </option>
-                    {% endfor %}
-                </select>
-                  
-                
+                    <div class="quantity-addtocart">
+                        <div class="quantity">
+                            <i class="las la-minus minus"></i>
+                            <input type="number" name="quantity" min="1" value="1">
+                            <i class="las la-plus plus"></i>
+                        </div>
+                        <button id="add-to-cart-button" class="add-to-cart-button" type="submit" data-value="{{section.settings.add_to_cart}}" data-sold_out="{{section.settings.not_add_to_cart}}">
+                            {{section.settings.add_to_cart}}
+                        </button>
+                        </div>
+                    {{ form | payment_button }}
+                {% endform %}
             </div>
 
         </div>
@@ -260,6 +271,9 @@
     .{{section.id}} .accordion-table .item:nth-child(even){
         background-color: {{section.settings.row_color}};
     }
+    .{{section.id}} .shopify-payment-button__button{
+        text-transform: {{section.settings.buy_now_style}};
+    }
 {% endstyle %}
 
 <script>
@@ -270,8 +284,8 @@
         onVariantSelected: selectCallback,
         enableHistoryState: true
     });
-</script>
 
+</script>
 {% schema %}
 {
     "name": "Single Product",
@@ -486,8 +500,44 @@
         {
             "type": "text",
             "id": "sold_out",
-            "label": "Sold Out Text",
+            "label": "Sold Out Badge",
             "default": "Sold Out"
+        },
+        {
+            "type": "text",
+            "id": "add_to_cart",
+            "label": "Add to Cart Button when available",
+            "default": "Add To Cart"
+        },
+        {
+            "type": "text",
+            "id": "not_add_to_cart",
+            "label": "Add to Cart Button when not-available",
+            "default": "Sold Out"
+        },
+        {
+            "type": "select",
+            "id": "buy_now_style",
+            "label": "Buy now button Text Style",
+            "options": [
+                {
+                    "value": "capitalize",
+                    "label": "Capitalize"
+                },
+                {
+                    "value": "lowercase",
+                    "label": "Lowercase"
+                },
+                {
+                    "value": "uppercase",
+                    "label": "Uppercase"
+                },
+                {
+                    "value": "none",
+                    "label": "None"
+                }
+            ],
+            "default": "none"
         }
     ],
     "blocks": [
