@@ -1,36 +1,33 @@
 {{ 'animation.css' | asset_url | stylesheet_tag }}
 {{ 'single-product.css' | asset_url | stylesheet_tag }}
-{{ 'nice-select.css' | asset_url | stylesheet_tag }}
 {{ 'option_selection.js' | asset_url | script_tag }}
-{{ 'jquery.nice-select.min.js' | asset_url | script_tag }}
 {{ 'single-product.js' | asset_url | script_tag }}
-{{ 'product-image-tab.js' | asset_url | script_tag }}
 {{ 'other-single-product.js' | asset_url | script_tag }}
 
 {% liquid 
-    assign sub_count_product = section.settings.count_product | minus: 1
-
+    assign item_selected = product.selected_or_first_available_variant
+    assign sec_set = section.settings
     assign product_description_size = product.description.size
-    assign pre_product_description = product.description | strip_html | truncatewords: section.settings.count_description, ''
+    assign pre_product_description = product.description | strip_html | truncatewords: sec_set.count_description, ''
     assign pre_product_description_size = pre_product_description.size
     assign sur_product_description_size = product_description_size | minus: pre_product_description_size
     assign sur_product_description = product.description | slice: pre_product_description_size, sur_product_description_size
 
-    assign sum_rate = section.settings.review_1 | plus: section.settings.review_2 | plus: section.settings.review_3 | plus: section.settings.review_4 | plus: section.settings.review_5 | divided_by: 1.0
-    assign sum_rate_1 = section.settings.review_1 | times: 1
-    assign sum_rate_2 = section.settings.review_2 | times: 2
-    assign sum_rate_3 = section.settings.review_3 | times: 3
-    assign sum_rate_4 = section.settings.review_4 | times: 4
-    assign sum_rate_5 = section.settings.review_5 | times: 5
+    assign sum_rate = sec_set.review_1 | plus: sec_set.review_2 | plus: sec_set.review_3 | plus: sec_set.review_4 | plus: sec_set.review_5 | divided_by: 1.0
+    assign sum_rate_1 = sec_set.review_1 | times: 1
+    assign sum_rate_2 = sec_set.review_2 | times: 2
+    assign sum_rate_3 = sec_set.review_3 | times: 3
+    assign sum_rate_4 = sec_set.review_4 | times: 4
+    assign sum_rate_5 = sec_set.review_5 | times: 5
     assign avg_rate = sum_rate_1 | plus: sum_rate_2 | plus: sum_rate_3 | plus: sum_rate_4 | plus: sum_rate_5 | divided_by: sum_rate | round: 1
-    assign percent_5 = section.settings.review_5 | divided_by: sum_rate | times: 100 | round: 0
-    assign percent_4 = section.settings.review_4 | divided_by: sum_rate | times: 100 | round: 0
-    assign percent_3 = section.settings.review_3 | divided_by: sum_rate | times: 100 | round: 0
-    assign percent_2 = section.settings.review_2 | divided_by: sum_rate | times: 100 | round: 0
-    assign percent_1 = section.settings.review_1 | divided_by: sum_rate | times: 100 | round: 0 
+    assign percent_5 = sec_set.review_5 | divided_by: sum_rate | times: 100 | round: 0
+    assign percent_4 = sec_set.review_4 | divided_by: sum_rate | times: 100 | round: 0
+    assign percent_3 = sec_set.review_3 | divided_by: sum_rate | times: 100 | round: 0
+    assign percent_2 = sec_set.review_2 | divided_by: sum_rate | times: 100 | round: 0
+    assign percent_1 = sec_set.review_1 | divided_by: sum_rate | times: 100 | round: 0 
 %}
 
-<div class="{{section.id}} single-product single-product-layout-{{section.settings.layout}}">
+<div class="{{section.id}} single-product single-product-layout-{{sec_set.layout}}">
     <div class="container single-product-wrapper">
         <div class="product-address-url">
             <a href="{{routes.root_url}}">Home</a>
@@ -40,40 +37,37 @@
         <div class="row">
             <div class="detail-info-product col-xl-7">
                 <div class="image-wrapper">
-                    <div class="tab">
-                        {% for image in product.images limit: 1 %}
-                            <button id="defaultOpen" class="tablinks" onclick="openimage(event, 'image-{{image.id}}')">
-                                <img src="{{image.src | image_url}}">
-                            </button>
-                        {% endfor %}
-                        {% for image in product.images offset: 1 limit: sub_count_product %}
-                            <button class="tablinks" onclick="openimage(event, 'image-{{image.id}}')">
-                                <img src="{{image.src | image_url}}">
-                            </button>
-                        {% endfor %}
+                    <div class="image-display">
+                        {% if item_selected.featured_image %}
+                            {% assign featured_image = item_selected.featured_image %}
+                            <img src="{{item_selected.featured_image | image_url}}">
+                        {%else%}
+                            {% assign featured_image = product.featured_image %}
+                            <img src="{{product.featured_image | image_url}}">
+                        {% endif %}
                     </div>
-                    {% for image in product.images limit: section.settings.count_product %}
-                        <div id="image-{{image.id}}" class="tabcontent">
-                            <img id="myimage" src="{{image.src | image_url}}"/>
-                        </div>
-                    {% endfor %}
+                    <ul class="thumbs">
+                        {% for image in product.images %}
+                            <li class="{% if image == featured_image %}selected{% endif %}"><img src="{{image | image_url}}"></li>
+                        {% endfor %}
+                    </ul>
                 </div>
 
                 <div class="product-description-wrapper">
-                    <div class="title">{{section.settings.description_header}}</div>
+                    <div class="title">{{sec_set.description_header}}</div>
                     <span class="pre-description">{{pre_product_description}}</span>
                     <span class="bread-description">...</span>
                     <span class="sur-description">{{sur_product_description}}</span>
-                    <div class="seemore">{{section.settings.seemore_description}}
+                    <div class="seemore">{{sec_set.seemore_description}}
                         {% render "icon-dropdown"%}
                         {% render "icon-dropdown-up"%}
                     </div>
                 </div>
                 <div class="accordion-wrapper">
-                    {% if section.settings.accordion_header_1.size > 0 %}
+                    {% if sec_set.accordion_header_1.size > 0 %}
                     <div class="accordion-1">
                         <div class="accordion-header">
-                            {{section.settings.accordion_header_1}}
+                            {{sec_set.accordion_header_1}}
                             <i class="las la-angle-down icon-down"></i>
                             <i class="las la-angle-up icon-up de-active"></i>
                         </div>
@@ -88,10 +82,10 @@
                         </ul>
                     </div>
                     {% endif %}
-                    {% if section.settings.accordion_header_2.size > 0 %}
+                    {% if sec_set.accordion_header_2.size > 0 %}
                     <div class="accordion-2">
                         <div class="accordion-header">
-                            {{section.settings.accordion_header_2}}
+                            {{sec_set.accordion_header_2}}
                             <i class="las la-angle-down icon-down"></i>
                             <i class="las la-angle-up icon-up de-active"></i>
                         </div>
@@ -109,34 +103,34 @@
                         </div>
                     </div>
                     {% endif %}
-                    {% if section.settings.accordion_header_3.size > 0 %}
+                    {% if sec_set.accordion_header_3.size > 0 %}
                     <div class="accordion-3">
                         <div class="accordion-header">
-                            {{section.settings.accordion_header_3}}
+                            {{sec_set.accordion_header_3}}
                             <i class="las la-angle-down icon-down"></i>
                             <i class="las la-angle-up icon-up de-active"></i>
                         </div>
                         <div class="accordion-content">
-                            {{section.settings.accordion_content_3}}
+                            {{sec_set.accordion_content_3}}
                         </div>
                     </div>
                     {% endif %}
-                    {% if section.settings.accordion_header_4.size > 0 %}
+                    {% if sec_set.accordion_header_4.size > 0 %}
                         <div class="accordion-4">
                             <div class="accordion-header">
-                                {{section.settings.accordion_header_4}}
+                                {{sec_set.accordion_header_4}}
                                 <i class="las la-angle-down icon-down"></i>
                                 <i class="las la-angle-up icon-up de-active"></i>
                             </div>
                             <div class="accordion-content">
-                                {{section.settings.accordion_content_4}}
+                                {{sec_set.accordion_content_4}}
                             </div>
                         </div>
                     {% endif %}
-                    {% if section.settings.accordion_header_5.size > 0 %}
+                    {% if sec_set.accordion_header_5.size > 0 %}
                         <div class="accordion-5">
                             <div class="accordion-header">
-                                {{section.settings.accordion_header_5}}
+                                {{sec_set.accordion_header_5}}
                                 <i class="las la-angle-down icon-down"></i>
                                 <i class="las la-angle-up icon-up de-active"></i>
                             </div>
@@ -156,15 +150,15 @@
                                     {% endif %}
                                 {% endfor %}
                                 <div class="accordion-button">
-                                    <a href="{{section.settings.accordion_5_url}}" class="button">{{section.settings.accordion_button_5}}</a>
+                                    <a href="{{sec_set.accordion_5_url}}" class="button">{{sec_set.accordion_button_5}}</a>
                                 </div>
                             </div>
                         </div>
                     {% endif %}
-                    {% if section.settings.accordion_header_6.size > 0 %}
+                    {% if sec_set.accordion_header_6.size > 0 %}
                         <div class="accordion-6">
                             <div class="accordion-header">
-                                {{section.settings.accordion_header_6}}
+                                {{sec_set.accordion_header_6}}
                                 <i class="las la-angle-down icon-down"></i>
                                 <i class="las la-angle-up icon-up de-active"></i>
                             </div>
@@ -229,62 +223,129 @@
                 </div>
                 <div class="product-title">{{product.title}}</div>
 
-                <div class="price-container">
+                <div class="price-container" data-money_format="{{shop.money_format}}">
                     <div class="product-price" id="single-product-price">
-                        {{product.selected_or_first_available_variant.price | money}}
+                        {{item_selected.price | money}}
                     </div>
-                    <div class="compare-price" id="single-product-compare-price"></div>
-                    <div class="variant-available" id="single-product-available" data-available="{{section.settings.sold_out}}"></div>
+                    <div class="compare-price" id="single-product-compare-price">{{item_selected.compare_at_price | money}}</div>
+                    <div class="variant-available" id="single-product-available" data-available="{{sec_set.sold_out}}">
+                        {% unless item_selected.available %}{{sec_set.sold_out}}{%endunless%}
+                    </div>
                 </div>
-                {% form 'product', product, class: 'product-form' %}
-                    <select id="product-select" name="id">
-                        {% for variant in product.variants %}
-                        <option value="{{ variant.id }}" {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}>
-                            {{ variant.title }}
-                        </option>
-                        {% endfor %}
-                    </select>
-
-                    <div class="quantity-addtocart">
-                        <div class="quantity">
-                            <i class="las la-minus minus"></i>
-                            <input type="number" name="quantity" min="1" value="1">
-                            <i class="las la-plus plus"></i>
+                {% if sec_set.list_style == 'dropdown' %}
+                    {% form 'product', product, class: 'product-form-dropdown' %}
+                        {% if product.variants.size > 1%}
+                            {{ 'nice-select.css' | asset_url | stylesheet_tag }}
+                            {{ 'jquery.nice-select.min.js' | asset_url | script_tag }}
+                            <select id="product-select" name="id">
+                                {% for variant in product.variants %}
+                                <option value="{{ variant.id }}" {% if variant == item_selected %}selected="selected"{% endif %}>
+                                    {{ variant.title }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        {% endif %}
+                        <div class="quantity-addtocart">
+                            <div class="quantity">
+                                <i class="las la-minus minus"></i>
+                                <input type="number" name="quantity" min="1" value="1">
+                                <i class="las la-plus plus"></i>
+                            </div>
+                            <button id="add-to-cart-button" class="add-to-cart-button" type="submit" data-value="{{sec_set.add_to_cart}}" data-sold_out="{{sec_set.not_add_to_cart}}">
+                                {{sec_set.add_to_cart}}
+                            </button>
                         </div>
-                        <button id="add-to-cart-button" class="add-to-cart-button" type="submit" data-value="{{section.settings.add_to_cart}}" data-sold_out="{{section.settings.not_add_to_cart}}">
-                            {{section.settings.add_to_cart}}
-                        </button>
+                        {{ form | payment_button }}
+                    {% endform %}
+                {% else %}
+                    {{ 'url-parse.min.js' | asset_url | script_tag }}
+                    {% form 'product', product, class: 'product-form-button' %}
+                        <input id="product-id" type="hidden" name="id" value="{{item_selected.id}}">
+                        {% if product.variants.size > 1%}
+                            <div class="product-options">
+                                {% for option in product.options_with_values %}
+                                    <fieldset>
+                                        <legend>{{option.name}}</legend>
+                                        {% for value in option.values %}
+                                            <div>
+                                                <input type="radio" name="{{option.name}}" value="{{value}}" id="{{option.name | handle}}-{{value | handle}}" {%if option.selected_value == value %}checked{%endif%}>
+                                                <label for="{{option.name | handle}}-{{value | handle}}">{{value}}</label>
+                                            </div>  
+                                        {% endfor %}
+                                    </fieldset>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <div class="quantity-addtocart">
+                            <div class="quantity">
+                                <i class="las la-minus minus"></i>
+                                <input type="number" name="quantity" min="1" value="1">
+                                <i class="las la-plus plus"></i>
+                            </div>
+                            <button id="add-to-cart-button" class="add-to-cart-button" type="submit" data-value="{{sec_set.add_to_cart}}" data-sold_out="{{sec_set.not_add_to_cart}}">
+                                {{sec_set.add_to_cart}}
+                            </button>
                         </div>
-                    {{ form | payment_button }}
-                {% endform %}
+                    {% endform %}
+                {% endif %}
             </div>
-
         </div>
     </div>
 </div>
 
 {% style %}
     .{{section.id}} .accordion-table{
-        text-align: {{section.settings.table_align}};
-        font-size: {{section.settings.table_size}}px;
+        text-align: {{sec_set.table_align}};
+        font-size: {{sec_set.table_size}}px;
     }
     .{{section.id}} .accordion-table .item:nth-child(even){
-        background-color: {{section.settings.row_color}};
-    }
-    .{{section.id}} .shopify-payment-button__button{
-        text-transform: {{section.settings.buy_now_style}};
+        background-color: {{sec_set.row_color}};
     }
 {% endstyle %}
 
 <script>
-    document.getElementById("defaultOpen").click();
-
-    new Shopify.OptionSelectors('product-select', {
-        product: {{ product | json }},
-        onVariantSelected: selectCallback,
-        enableHistoryState: true
-    });
-
+    if('{{sec_set.list_style}}'==='dropdown'){
+        new Shopify.OptionSelectors('product-select', {
+            product: {{ product | json }},
+            onVariantSelected: selectCallback,
+            enableHistoryState: true
+        });
+    }
+    else {
+        var product = {{ product | json }};
+        document.querySelectorAll('.product-options input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                var selectedOptions = [];
+                document.querySelectorAll('.product-options input[type="radio"]:checked').forEach(radio => {
+                    selectedOptions.push(radio.value);
+                })
+                var matchedVariant = product.variants.find(variant => {
+                    var pass = true;
+                    for (var i = 0; i < selectedOptions.length; i++){
+                        if(selectedOptions.indexOf(variant.options[i]) === -1){
+                            pass = false;
+                            break;
+                        }
+                    }
+                    return pass;
+                });
+                document.querySelector('#product-id').value = matchedVariant.id;
+                var url = new URLParse(window.location.href, true);
+                url.query.variant = matchedVariant.id;
+                window.history.replaceState(null, null, url.toString());
+                document.querySelector('#single-product-price').textContent = Shopify.formatMoney(matchedVariant.price, '{{shop.money_format}}');
+                document.querySelector('#single-product-compare-price').textContent = matchedVariant.compare_at_price > 0 ? Shopify.formatMoney(matchedVariant.compare_at_price, '{{shop.money_format}}') : '';
+                var available = document.querySelector('#single-product-available').dataset.available;
+                document.querySelector('#single-product-available').textContent = matchedVariant.available == false ? available : '';
+                
+            })
+        });
+        document.querySelector('.thumbs li').forEach(li => {
+            li.addEventListener('click', () => {
+                console.log('abc');
+            })
+        })
+    }
 </script>
 {% schema %}
 {
@@ -322,17 +383,7 @@
             ],
             "default": "1"
         },    
-        {
-            "type": "header",
-            "content": "Product Image"
-        },      
-        {
-            "type": "number",
-            "id": "count_product",
-            "label": "Number of image",
-            "default": 3,
-            "info": "Max number of product's image to display"
-        },
+
         {
             "type": "header",
             "content": "Product Description"
@@ -498,6 +549,22 @@
             "content": "Product Price"
         },
         {
+            "type": "select",
+            "id": "list_style",
+            "label": "List Style",
+            "options": [
+                {
+                    "value": "dropdown",
+                    "label": "Dropdown"
+                },
+                {
+                    "value": "button",
+                    "label": "Button"
+                }
+            ],
+            "default": "dropdown"
+        },
+        {
             "type": "text",
             "id": "sold_out",
             "label": "Sold Out Badge",
@@ -514,30 +581,6 @@
             "id": "not_add_to_cart",
             "label": "Add to Cart Button when not-available",
             "default": "Sold Out"
-        },
-        {
-            "type": "select",
-            "id": "buy_now_style",
-            "label": "Buy now button Text Style",
-            "options": [
-                {
-                    "value": "capitalize",
-                    "label": "Capitalize"
-                },
-                {
-                    "value": "lowercase",
-                    "label": "Lowercase"
-                },
-                {
-                    "value": "uppercase",
-                    "label": "Uppercase"
-                },
-                {
-                    "value": "none",
-                    "label": "None"
-                }
-            ],
-            "default": "none"
         }
     ],
     "blocks": [
