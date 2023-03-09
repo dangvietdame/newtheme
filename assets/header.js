@@ -1,6 +1,6 @@
 jQuery(document).ready(function($) {
     //Active Menu Overlay
-    $('.col-menu .menu-item-1, .col-menu .collections').hover(function(){
+    $('.header-layout1 .col-menu').hover(function(){
         $('.menu-overlay').toggleClass('menu-overlay-active');
     });
     //ALignment megamenu vector X

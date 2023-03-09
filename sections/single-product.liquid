@@ -266,12 +266,14 @@
                                 {% for option in product.options_with_values %}
                                     <fieldset>
                                         <legend>{{option.name}}</legend>
-                                        {% for value in option.values %}
-                                            <div>
-                                                <input type="radio" name="{{option.name}}" value="{{value}}" id="{{option.name | handle}}-{{value | handle}}" {%if option.selected_value == value %}checked{%endif%}>
-                                                <label for="{{option.name | handle}}-{{value | handle}}">{{value}}</label>
-                                            </div>  
-                                        {% endfor %}
+                                        <div class="option-wrapper">
+                                            {% for value in option.values %}
+                                                <div>
+                                                    <input type="radio" name="{{option.name}}" value="{{value}}" id="{{option.name | handle}}-{{value | handle}}" {%if option.selected_value == value %}checked{%endif%}>
+                                                    <label for="{{option.name | handle}}-{{value | handle}}">{{value}}</label>
+                                                </div>  
+                                            {% endfor %}
+                                        </div>
                                     </fieldset>
                                 {% endfor %}
                             </div>
@@ -286,10 +288,7 @@
                                 {% if item_selected.available %}{{sec_set.add_to_cart}}{% else %}{{sec_set.not_add_to_cart}}{% endif %}
                             </button>
                         </div>
-                        {% comment %} {{ form | payment_button }} {% endcomment %}
-                        <button id="buy-now-button" class="buy-now-button {%unless item_selected.available %}hide{%endunless%}" type="submit">
-                            Buy it now
-                        </button>
+                        {{ form | payment_button }} 
                     {% endform %}
                 {% endif %}
             </div>
@@ -318,6 +317,15 @@
     }
     else {
         var product = {{ product | json }};
+        var url1 = new URLParse(window.location.href, true);
+        var buy_now_status = true;
+        for (var i = 0; i < product.variants.length; i++){
+            buy_now_status = product.variants[i].id == url1.query.variant ? product.variants[i].available : buy_now_status;
+        }
+        if(buy_now_status == false){
+            document.querySelector('.single-product .shopify-payment-button').classList.add('hide');
+        }
+
         //Create result option: selectedOptions
         document.querySelectorAll('.single-product .product-options input[type="radio"]').forEach(radio => {
             radio.addEventListener('change', () => {
@@ -352,42 +360,37 @@
                 var available_status = document.querySelector('.single-product #single-product-available');
                 var available = available_status.dataset.available;
                 var addtocart = document.querySelector('#add-to-cart-button');
-                // var buy_now = document.querySelector('.single-product .shopify-payment-button');
-
+                var buy_now = document.querySelector('.single-product .shopify-payment-button');
                 if(matchedVariant.available){
                     available_status.textContent = '';
                     addtocart.disabled = false;
                     addtocart.textContent = '{{sec_set.add_to_cart}}';
                     addtocart.classList.remove('sold-out-button');
-                    // buy_now.classList.remove('hide');
+                    buy_now.classList.remove('hide');
                 }
                 else{
                     available_status.textContent = available;
                     addtocart.disabled = true;
                     addtocart.textContent = '{{sec_set.not_add_to_cart}}';
                     addtocart.classList.add('sold-out-button');
-                    // buy_now.classList.add('hide');
+                    buy_now.classList.add('hide');
                 }
+
                 //Change featured image
-                if(matchedVariant.featured_image){
-                    document.querySelector('.single-product .image-display img').setAttribute('src', matchedVariant.featured_image.src);
-                    document.querySelector('.single-product .thumbs li.selected').classList.remove('selected');
-                    document.querySelectorAll('.single-product .thumbs li')[matchedVariant.featured_image.position - 1].classList.add('selected');
+                if ({{sec_set.ck_variant_image}}){
+                    if(matchedVariant.featured_image){
+                        document.querySelector('.single-product .image-display img').setAttribute('src', matchedVariant.featured_image.src);
+                        document.querySelector('.single-product .thumbs li.selected').classList.remove('selected');
+                        document.querySelectorAll('.single-product .thumbs li')[matchedVariant.featured_image.position - 1].classList.add('selected');
+                    }
                 }
             })
         });
 
         //Buy now button
-        document.querySelector('#buy-now-button').addEventListener('click', (e) => {
-           e.preventDefault();
            var form = document.querySelector('.product-form-button');
-           var input = document.createElement('input');
-           input.value = '/checkout';
-           input.name = 'return_to';
-           input.type = 'hidden';
+           var input = '{{form | payment_button}}';
            form.appendChild(input);
-           form.submit();
-        });
 
         //Connect featured image with thumbs
         $('.single-product .thumbs li').each(function(){
@@ -615,6 +618,12 @@
                 }
             ],
             "default": "dropdown"
+        },
+        {
+            "type": "checkbox",
+            "id": "ck_variant_image",
+            "label": "Display Image Specific to the selected Variant",
+            "default": true
         },
         {
             "type": "text",
