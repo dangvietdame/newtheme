@@ -26,18 +26,21 @@ function selectCallback(variant, selector) {
     var available = document.getElementById('single-product-available');
     var add_to_cart = document.getElementById('add-to-cart-button');
     var buy_now = document.getElementsByClassName('shopify-payment-button__button');
+    var available_buy_now = document.querySelector('.single-product .shopify-payment-button');
     if (variant.available == false) {
         available.textContent = available.dataset.available;
         add_to_cart.textContent = add_to_cart.dataset.sold_out;
-        add_to_cart.removeAttribute('class', 'add-to-cart-button');
-        add_to_cart.setAttribute('class', 'sold-out-button');
+        add_to_cart.classList.remove('add-to-cart-button');
+        add_to_cart.classList.add('sold-out-button');
         add_to_cart.setAttribute('disabled', 'disable');
+        available_buy_now.classList.add('hide');
     }
     else {
         available.textContent = '';
         add_to_cart.textContent = add_to_cart.dataset.value;
-        add_to_cart.removeAttribute('class', 'sold-out-button');
+        add_to_cart.classList.remove('sold-out-button');
         add_to_cart.removeAttribute('disabled');
-        add_to_cart.setAttribute('class', 'add-to-cart-button');
+        add_to_cart.classList.add('add-to-cart-button');
+        available_buy_now.classList.remove('hide');
     }
 }

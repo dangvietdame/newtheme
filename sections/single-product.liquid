@@ -251,8 +251,8 @@
                                 <input type="number" name="quantity" min="1" value="1">
                                 <i class="las la-plus plus"></i>
                             </div>
-                            <button id="add-to-cart-button" class="add-to-cart-button" type="submit" data-value="{{sec_set.add_to_cart}}" data-sold_out="{{sec_set.not_add_to_cart}}">
-                                {{sec_set.add_to_cart}}
+                            <button {% unless item_selected.available %}disabled{% endunless %} id="add-to-cart-button" class="add-to-cart-button" type="submit" data-value="{{sec_set.add_to_cart}}" data-sold_out="{{sec_set.not_add_to_cart}}">
+                                {% if item_selected.available %}{{sec_set.add_to_cart}}{% else %}{{sec_set.not_add_to_cart}}{% endif %}
                             </button>
                         </div>
                         {{ form | payment_button }}
@@ -282,10 +282,14 @@
                                 <input type="number" name="quantity" min="1" value="1">
                                 <i class="las la-plus plus"></i>
                             </div>
-                            <button id="add-to-cart-button" class="add-to-cart-button" type="submit" data-value="{{sec_set.add_to_cart}}" data-sold_out="{{sec_set.not_add_to_cart}}">
-                                {{sec_set.add_to_cart}}
+                            <button {% unless item_selected.available %}disabled{% endunless %} id="add-to-cart-button" class="add-to-cart-button {%unless item_selected.available %}sold-out-button{%endunless%}" type="submit">
+                                {% if item_selected.available %}{{sec_set.add_to_cart}}{% else %}{{sec_set.not_add_to_cart}}{% endif %}
                             </button>
                         </div>
+                        {% comment %} {{ form | payment_button }} {% endcomment %}
+                        <button id="buy-now-button" class="buy-now-button {%unless item_selected.available %}hide{%endunless%}" type="submit">
+                            Buy it now
+                        </button>
                     {% endform %}
                 {% endif %}
             </div>
@@ -304,6 +308,7 @@
 {% endstyle %}
 
 <script>
+    //Check List Style
     if('{{sec_set.list_style}}'==='dropdown'){
         new Shopify.OptionSelectors('product-select', {
             product: {{ product | json }},
@@ -313,12 +318,14 @@
     }
     else {
         var product = {{ product | json }};
-        document.querySelectorAll('.product-options input[type="radio"]').forEach(radio => {
+        //Create result option: selectedOptions
+        document.querySelectorAll('.single-product .product-options input[type="radio"]').forEach(radio => {
             radio.addEventListener('change', () => {
                 var selectedOptions = [];
-                document.querySelectorAll('.product-options input[type="radio"]:checked').forEach(radio => {
+                document.querySelectorAll('.single-product .product-options input[type="radio"]:checked').forEach(radio => {
                     selectedOptions.push(radio.value);
                 })
+                //Create matched option: matchedVariant
                 var matchedVariant = product.variants.find(variant => {
                     var pass = true;
                     for (var i = 0; i < selectedOptions.length; i++){
@@ -329,22 +336,67 @@
                     }
                     return pass;
                 });
-                document.querySelector('#product-id').value = matchedVariant.id;
+                //Change ID of input in form
+                document.querySelector('.single-product #product-id').value = matchedVariant.id;
+
+                //Change URL of matched Variant
                 var url = new URLParse(window.location.href, true);
                 url.query.variant = matchedVariant.id;
                 window.history.replaceState(null, null, url.toString());
+
+                //Change price and compare price
                 document.querySelector('#single-product-price').textContent = Shopify.formatMoney(matchedVariant.price, '{{shop.money_format}}');
                 document.querySelector('#single-product-compare-price').textContent = matchedVariant.compare_at_price > 0 ? Shopify.formatMoney(matchedVariant.compare_at_price, '{{shop.money_format}}') : '';
-                var available = document.querySelector('#single-product-available').dataset.available;
-                document.querySelector('#single-product-available').textContent = matchedVariant.available == false ? available : '';
                 
+                //Change available status
+                var available_status = document.querySelector('.single-product #single-product-available');
+                var available = available_status.dataset.available;
+                var addtocart = document.querySelector('#add-to-cart-button');
+                // var buy_now = document.querySelector('.single-product .shopify-payment-button');
+
+                if(matchedVariant.available){
+                    available_status.textContent = '';
+                    addtocart.disabled = false;
+                    addtocart.textContent = '{{sec_set.add_to_cart}}';
+                    addtocart.classList.remove('sold-out-button');
+                    // buy_now.classList.remove('hide');
+                }
+                else{
+                    available_status.textContent = available;
+                    addtocart.disabled = true;
+                    addtocart.textContent = '{{sec_set.not_add_to_cart}}';
+                    addtocart.classList.add('sold-out-button');
+                    // buy_now.classList.add('hide');
+                }
+                //Change featured image
+                if(matchedVariant.featured_image){
+                    document.querySelector('.single-product .image-display img').setAttribute('src', matchedVariant.featured_image.src);
+                    document.querySelector('.single-product .thumbs li.selected').classList.remove('selected');
+                    document.querySelectorAll('.single-product .thumbs li')[matchedVariant.featured_image.position - 1].classList.add('selected');
+                }
             })
         });
-        document.querySelector('.thumbs li').forEach(li => {
-            li.addEventListener('click', () => {
-                console.log('abc');
+
+        //Buy now button
+        document.querySelector('#buy-now-button').addEventListener('click', (e) => {
+           e.preventDefault();
+           var form = document.querySelector('.product-form-button');
+           var input = document.createElement('input');
+           input.value = '/checkout';
+           input.name = 'return_to';
+           input.type = 'hidden';
+           form.appendChild(input);
+           form.submit();
+        });
+
+        //Connect featured image with thumbs
+        $('.single-product .thumbs li').each(function(){
+            $(this).click(function(){
+                $(this).siblings('li').removeClass('selected');
+                $(this).addClass('selected');
+                $('.single-product .image-display img').attr('src', $(this).children('img').attr('src'));
             })
-        })
+        })   
     }
 </script>
 {% schema %}
