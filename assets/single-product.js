@@ -21,6 +21,5 @@ jQuery(document).ready(function($) {
 
     });
 
-    $('select').niceSelect();
-
+    $('.product-form-dropdown #product-select').niceSelect();
 })

@@ -270,7 +270,7 @@
                                             {% for value in option.values %}
                                                 <div>
                                                     <input type="radio" name="{{option.name}}" value="{{value}}" id="{{option.name | handle}}-{{value | handle}}" {%if option.selected_value == value %}checked{%endif%}>
-                                                    <label for="{{option.name | handle}}-{{value | handle}}">{{value}}</label>
+                                                    <label class="{{value}}" for="{{option.name | handle}}-{{value | handle}}">{{value}}</label>
                                                 </div>  
                                             {% endfor %}
                                         </div>
@@ -295,7 +295,7 @@
         </div>
     </div>
 </div>
-
+{% comment %} <div>{{product.options_with_values | json }}</div> {% endcomment %}
 {% style %}
     .{{section.id}} .accordion-table{
         text-align: {{sec_set.table_align}};
@@ -317,15 +317,40 @@
     }
     else {
         var product = {{ product | json }};
+        //Check available for Buy Now button in first loading
         var url1 = new URLParse(window.location.href, true);
         var buy_now_status = true;
-        for (var i = 0; i < product.variants.length; i++){
+        var variants_length = product.variants.length;
+        for (var i = 0; i < variants_length; i++){
             buy_now_status = product.variants[i].id == url1.query.variant ? product.variants[i].available : buy_now_status;
         }
         if(buy_now_status == false){
             document.querySelector('.single-product .shopify-payment-button').classList.add('hide');
         }
-
+        //Check available option
+        var options_with_values = {{product.options_with_values | json}};
+        var ii = options_with_values.length;
+        var option_array = [];
+        for(var i = 0; i < ii; i++){
+            var jj = options_with_values[i].values.length;
+            for( var j = 0; j < jj; j++){
+                option_array.push(options_with_values[i].values[j]);
+            }
+        }
+        var option_array_count = [];
+        for(var i = 0; i < option_array.length; i++){
+            option_array_count.push(0);
+            for(var j = 0; j < variants_length; j++){
+                if(product.variants[j].options.includes(option_array[i]) == false || (product.variants[j].options.includes(option_array[i]) == true && product.variants[j].available == false)){
+                    option_array_count[i] += 1; 
+                }
+            }
+        }
+        for(i = 0; i < option_array_count.length; i++){
+            if(option_array_count[i] == product.variants.length){
+                document.querySelector('.option-wrapper .' + option_array[i]).classList.add('out-of-stock');
+            }
+        }
         //Create result option: selectedOptions
         document.querySelectorAll('.single-product .product-options input[type="radio"]').forEach(radio => {
             radio.addEventListener('change', () => {
@@ -387,11 +412,6 @@
             })
         });
 
-        //Buy now button
-           var form = document.querySelector('.product-form-button');
-           var input = '{{form | payment_button}}';
-           form.appendChild(input);
-
         //Connect featured image with thumbs
         $('.single-product .thumbs li').each(function(){
             $(this).click(function(){
@@ -401,6 +421,13 @@
             })
         })   
     }
+    
+    document.querySelector('#add-to-cart-button').addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log('abcd');
+    
+    });
+    
 </script>
 {% schema %}
 {
