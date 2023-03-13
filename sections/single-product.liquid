@@ -259,7 +259,8 @@
                     {% endform %}
                 {% else %}
                     {{ 'url-parse.min.js' | asset_url | script_tag }}
-                    {% form 'product', product, class: 'product-form-button' %}
+                    {% assign form_id = 'form-' | append: section.id %}
+                    {% form 'product', product, class: 'product-form-button', id: form_id %}
                         <input id="product-id" type="hidden" name="id" value="{{item_selected.id}}">
                         {% if product.variants.size > 1%}
                             <div class="product-options">
@@ -286,6 +287,7 @@
                             </div>
                             <button {% unless item_selected.available %}disabled{% endunless %} id="add-to-cart-button" class="add-to-cart-button {%unless item_selected.available %}sold-out-button{%endunless%}" type="submit">
                                 {% if item_selected.available %}{{sec_set.add_to_cart}}{% else %}{{sec_set.not_add_to_cart}}{% endif %}
+                                <div>{% render 'loading-icon' %}</div>
                             </button>
                         </div>
                         {{ form | payment_button }} 
@@ -424,10 +426,39 @@
     
     document.querySelector('#add-to-cart-button').addEventListener('click', (e) => {
         e.preventDefault();
-        console.log('abcd');
-    
+        var button = document.querySelector('#add-to-cart-button');
+        button.classList.add('loading');
+        let addToCartForm = document.querySelector('form[action$="/cart/add"]');
+        let formData = new FormData(addToCartForm);
+
+        {% comment %} console.log(formData); {% endcomment %}
+        fetch(window.Shopify.routes.root + 'cart/add.js', {
+        method: 'POST',
+        body: formData
+        })
+        .then(response => {
+        return response.json();
+        })
+        .then(data => {
+            button.classList.remove('loading');
+            fetch(window.Shopify.routes.root + 'cart.js')
+            .then(get_cart => {
+                return get_cart.json()
+            })
+            .then(cart_prm => {
+                document.querySelector('.cart .cart-count').innerHTML = cart_prm.item_count;
+                document.querySelector('.cart .function-content .title').innerHTML = Shopify.formatMoney(cart_prm.original_total_price);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+
     });
-    
+
 </script>
 {% schema %}
 {

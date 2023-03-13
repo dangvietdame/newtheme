@@ -498,6 +498,47 @@
   height: 100%;
   width: 200%;
 }
+.single-product-layout-1 .single-product-wrapper .product-function-container .product-form-dropdown .quantity-addtocart .loading, .single-product-layout-1 .single-product-wrapper .product-function-container .product-form-button .quantity-addtocart .loading {
+  border-color: #041E42;
+  background-color: #fff;
+  color: transparent;
+  position: relative;
+}
+.single-product-layout-1 .single-product-wrapper .product-function-container .product-form-dropdown .quantity-addtocart .loading::before, .single-product-layout-1 .single-product-wrapper .product-function-container .product-form-button .quantity-addtocart .loading::before {
+  content: none;
+}
+.single-product-layout-1 .single-product-wrapper .product-function-container .product-form-dropdown .quantity-addtocart .loading > div, .single-product-layout-1 .single-product-wrapper .product-function-container .product-form-button .quantity-addtocart .loading > div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.single-product-layout-1 .single-product-wrapper .product-function-container .product-form-dropdown .quantity-addtocart .loading .lds-ring, .single-product-layout-1 .single-product-wrapper .product-function-container .product-form-button .quantity-addtocart .loading .lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 15px;
+  height: 15px;
+}
+.single-product-layout-1 .single-product-wrapper .product-function-container .product-form-dropdown .quantity-addtocart .loading .lds-ring div, .single-product-layout-1 .single-product-wrapper .product-function-container .product-form-button .quantity-addtocart .loading .lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border: 2px solid #333;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #333 transparent transparent transparent;
+}
+.single-product-layout-1 .single-product-wrapper .product-function-container .product-form-dropdown .quantity-addtocart .loading .lds-ring div:nth-child(1), .single-product-layout-1 .single-product-wrapper .product-function-container .product-form-button .quantity-addtocart .loading .lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.single-product-layout-1 .single-product-wrapper .product-function-container .product-form-dropdown .quantity-addtocart .loading .lds-ring div:nth-child(2), .single-product-layout-1 .single-product-wrapper .product-function-container .product-form-button .quantity-addtocart .loading .lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.single-product-layout-1 .single-product-wrapper .product-function-container .product-form-dropdown .quantity-addtocart .loading .lds-ring div:nth-child(3), .single-product-layout-1 .single-product-wrapper .product-function-container .product-form-button .quantity-addtocart .loading .lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
 .single-product-layout-1 .single-product-wrapper .product-function-container .product-form-dropdown .quantity-addtocart .sold-out-button, .single-product-layout-1 .single-product-wrapper .product-function-container .product-form-button .quantity-addtocart .sold-out-button {
   border-radius: 60px;
   color: #041E42;
