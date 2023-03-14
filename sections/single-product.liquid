@@ -232,8 +232,9 @@
                         {% unless item_selected.available %}{{sec_set.sold_out}}{%endunless%}
                     </div>
                 </div>
+                {% assign form_id = 'form-' | append: section.id %}
                 {% if sec_set.list_style == 'dropdown' %}
-                    {% form 'product', product, class: 'product-form-dropdown' %}
+                    {% form 'product', product, class: 'product-form-dropdown', id: form_id %}
                         {% if product.variants.size > 1%}
                             {{ 'nice-select.css' | asset_url | stylesheet_tag }}
                             {{ 'jquery.nice-select.min.js' | asset_url | script_tag }}
@@ -259,7 +260,6 @@
                     {% endform %}
                 {% else %}
                     {{ 'url-parse.min.js' | asset_url | script_tag }}
-                    {% assign form_id = 'form-' | append: section.id %}
                     {% form 'product', product, class: 'product-form-button', id: form_id %}
                         <input id="product-id" type="hidden" name="id" value="{{item_selected.id}}">
                         {% if product.variants.size > 1%}
@@ -293,6 +293,19 @@
                         {{ form | payment_button }} 
                     {% endform %}
                 {% endif %}
+                <div class="cart-sidebar-container">
+                    <div class="cart-sidebar-overlay"></div>
+                    <div class="cart-sidebar-wrapper" data-total="Total:" data-empty="Your cart is empty!!!">
+                        <div class="cart-sidebar-title">Your Cart</div>
+                        <div class="cart-item-wrapper"></div>
+                        <div class="button-wrapper">
+                            <a class="view-cart" href="{{routes.cart_url}}">View Cart</a>
+                            <form action="/cart" method="post">
+                                <button type="submit" name="checkout" class="check-out">Check Out</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -424,14 +437,122 @@
         })   
     }
     
+    fetch(window.Shopify.routes.root + 'cart.js')
+    .then(get_cart => {
+        return get_cart.json()
+    })
+    .then(cart_prm => {
+        console.log(cart_prm);
+        var cart_wrapper = document.querySelector('.cart-sidebar-wrapper');
+        var cart_item_wrapper = document.querySelector('.cart-sidebar-wrapper .cart-item-wrapper');
+
+        for(var i = 0; i < cart_prm.items.length; i++){
+            //Create div wrapper to flex
+            var cart_item = document.createElement('div');
+            cart_item.classList.add('cart-item');
+            cart_item_wrapper.appendChild(cart_item);
+
+            //Create featured image
+            var cart_image = document.createElement('img');
+            cart_image.src = cart_prm.items[i].image;
+            cart_image.classList.add('item-image');
+            cart_item.appendChild(cart_image);
+
+            //Create title-quantity wrapper div
+            var cart_titqua = document.createElement('div');
+            cart_titqua.classList.add('item-title-quantity');
+            cart_item.appendChild(cart_titqua);
+
+            //Create title div
+            var cart_title = document.createElement('div');
+            cart_title.classList.add('item-title');
+            cart_title.innerHTML = cart_prm.items[i].product_title;
+            cart_titqua.appendChild(cart_title);
+
+            //Create Discount infor
+            //Create Discount wrapper
+            var discount_wrapper = document.createElement('div');
+            discount_wrapper.classList.add('discount-wrapper');
+            cart_titqua.appendChild(discount_wrapper);
+
+            //Create Original Price - Discount Price
+            var original_price = document.createElement('div');
+            original_price.classList.add('original-price');
+            original_price.innerHTML = Shopify.formatMoney(cart_prm.items[i].original_price);
+            discount_wrapper.appendChild(original_price);
+
+            var discount_price = document.createElement('div');
+            discount_price.classList.add('discount-price');
+            discount_price.innerHTML = Shopify.formatMoney(cart_prm.items[i].discounted_price);
+            discount_wrapper.appendChild(discount_price);
+
+            if(cart_prm.items[i].discounted_price > 0){
+                discount_price.classList.add('true-price')
+            }
+            else{
+                original_price.classList.add('true-price')
+            }
+
+            //Create Discount title
+            if(cart_prm.items[i].discounts.length > 0){
+                for(var j = 0; j < cart_prm.items[i].discounts.length; j++){
+                    var discount_title = document.createElement('div');
+                    discount_title.classList.add('discount-title');
+                    discount_title.innerHTML = '<i class="las la-tag"></i>'+cart_prm.items[i].discounts[j].title;
+                    cart_titqua.appendChild(discount_title);
+                }
+            }
+
+            //Create variant information div
+            var cart_var = document.createElement('div');
+            cart_var.classList.add('item-variant');
+            cart_var.innerHTML = cart_prm.items[i].variant_title;
+            cart_titqua.appendChild(cart_var);
+
+            //Create quantity-price div
+            var cart_quan_pri = document.createElement('div');
+            cart_quan_pri.classList.add('item-quantity-price');
+            cart_titqua.appendChild(cart_quan_pri);
+
+            //Create quantity div
+            var cart_quantity = document.createElement('input');
+            cart_quantity.classList.add('item-quantity');
+            cart_quantity.setAttribute('type','number');
+            cart_quantity.value = cart_prm.items[i].quantity;
+            cart_quan_pri.appendChild(cart_quantity);
+
+            //Create total price div
+            var cart_price = document.createElement('div');
+            cart_price.classList.add('item-price');
+            cart_price.innerHTML = Shopify.formatMoney(cart_prm.items[i].line_price);
+            cart_quan_pri.appendChild(cart_price);
+        }
+        //Create total price wrapper div
+        var total_price_wrapper = document.createElement('div');
+        total_price_wrapper.classList.add('total-price-wrapper');
+        cart_item_wrapper.appendChild(total_price_wrapper);
+
+        var total_text = cart_wrapper.dataset.total;
+        var total_text_div = document.createElement('div');
+        total_text_div.classList.add('total-text');
+        total_text_div.innerHTML = total_text;
+        total_price_wrapper.appendChild(total_text_div);
+        var total_price = document.createElement('div');
+        total_price.classList.add('total-price');
+        total_price.innerHTML = Shopify.formatMoney(cart_prm.total_price);
+        total_price_wrapper.appendChild(total_price);
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+
     document.querySelector('#add-to-cart-button').addEventListener('click', (e) => {
         e.preventDefault();
         var button = document.querySelector('#add-to-cart-button');
         button.classList.add('loading');
-        let addToCartForm = document.querySelector('form[action$="/cart/add"]');
+        let addToCartForm = document.querySelector('#{{form_id}}');
         let formData = new FormData(addToCartForm);
 
-        {% comment %} console.log(formData); {% endcomment %}
         fetch(window.Shopify.routes.root + 'cart/add.js', {
         method: 'POST',
         body: formData

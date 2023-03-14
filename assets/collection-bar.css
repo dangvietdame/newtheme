@@ -1,5 +1,5 @@
 .collection-bar-section {
-  background-color: #fff;
+  background-color: var(--primary-background-color);
 }
 .collection-bar-section .collections-list-wrapper {
   border-bottom: 1px solid #EAEAEA;
@@ -18,7 +18,7 @@
   text-transform: capitalize;
 }
 .collection-bar-section .collections-list-wrapper .collections-list .collection-item::before {
-  background-color: #041E42;
+  background-color: var(--primary-text-color);
   bottom: 0;
   content: "";
   height: 2px;
